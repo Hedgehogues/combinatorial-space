@@ -104,7 +104,7 @@ class Point:
     Возвращается количество произведённых модификаций внутри кластеров точки, флаг добавления кластера
     (True - добавлен, False - не добавлен)
     """
-    def add(self, in_code, out_code):
+    def add(self, in_code, out_code=None):
         in_x = np.array(in_code)[self.in_coords]
         out_x = np.array(out_code)[self.out_coords]
         count_modify = 0
@@ -239,7 +239,7 @@ class Minicolumn:
     Возвращается количество точек, которые оказались неактивными; количество модификаций кластеров;
     количество новых кластеров
     """
-    def learn(self, in_code, out_code):
+    def learn(self, in_code, out_code=None):
         if self.is_sleep():
             return None, None, None
         

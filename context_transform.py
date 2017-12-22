@@ -1,6 +1,20 @@
 import numpy as np
 import cv2
 
+# Получаем коды изображения во всех возможных контекстах
+def get_shift_context(image):
+    context_codes = []
+    window_size = np.array(image).shape
+    for context_y in np.arange(-window_size[0]+1, window_size[1], 1):
+        context_codes.append([])
+        map_of_distance.append([])
+        for context_x in np.arange(-window_size[1]+1, window_size[1], 1):
+            context_number = [context_y, context_x]
+            context_image = context_transform.get_context_image(context_number=context_number, image=image)
+            context_code = context_transform.get_codes(context_image)
+            context_codes[-1].append(context_code)
+    return context_codes
+
 def get_context_image(context_number, image):
     dx = context_number[1]
     dy = context_number[0]
@@ -23,6 +37,7 @@ def get_context_image(context_number, image):
         
     return np.uint8(context_image)
 
+# Получаем код изображения
 def get_codes(image, count_directs=16, width_angle=np.pi/2, strength_threshould=0):
     sobel_x = cv2.Sobel(image,cv2.CV_32F,1,0,ksize=1)
     sobel_y = cv2.Sobel(image,cv2.CV_32F,0,1,ksize=1)
