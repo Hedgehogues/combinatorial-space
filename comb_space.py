@@ -24,7 +24,7 @@ class Cluster:
                  in_threshold_modify, out_threshold_modify,
                  threshold_bin,
                  base_lr,
-                 is_modify_lr=True):
+                 is_modify_lr):
         self.in_threshold_modify, self.out_threshold_modify = in_threshold_modify, out_threshold_modify
         self.base_lr = base_lr
         
@@ -40,24 +40,30 @@ class Cluster:
     
     in_x - входной вектор
     
-    Возвращается значение похожести (корелляция), предсказанный вектор соответствующего размера
+    Возвращается значение похожести (корелляция), предсказанный подвектор соответствующего размера. Если похожесть
+    кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """  
     def predict_front(self, in_x): 
         corr = np.corrcoef(in_x, self.in_w)[0, 1]
-        if corr > self.in_threshold_modify:
+        if np.abs(corr) > self.in_threshold_modify:
             return corr, np.uint8(self.out_w > self.threshold_bin)
+        else:
+            return 0, None
         
     """
     Предсказание назад, т.е. предсказание выхода по входу
     
     out_x - выходной вектор
     
-    Возвращается значение похожести (корелляция), предсказанный вектор соответствующего размера
+    Возвращается значение похожести (корелляция), предсказанный подвектор соответствующего размера. Если похожесть
+    кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """
     def predict_back(self, out_x): 
         corr = np.corrcoef(out_x, self.out_w)[0, 1]
-        if corr > self.out_threshold_modify:
+        if np.abs(corr) > self.out_threshold_modify:
             return corr, np.uint8(self.in_w > self.threshold_bin)
+        else:
+            return 0, None
         
         
     """
@@ -74,8 +80,8 @@ class Cluster:
         out_corr = np.corrcoef(out_x, self.out_w)[0, 1]
         in_corr = np.corrcoef(out_x, self.out_w)[0, 1]
         
-        if in_corr > self.in_threshold_modify and \
-            out_corr > self.out_threshold_modify:
+        if np.abs(in_corr) > self.in_threshold_modify and \
+            np.abs(out_corr) > self.out_threshold_modify:
                 self.count_modifing += 1
                 if self.is_modify_lr:
                     delta_in = np.array((self.base_lr/self.count_modifing)*in_y*in_x)

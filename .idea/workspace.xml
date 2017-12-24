@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="228949ed-ca87-4f95-8133-28b85a7150ad" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_comb_space.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CombSpace_supervised_learning.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/comb_space_supervised_learning.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CombSpace.ipynb" afterPath="$PROJECT_DIR$/CombSpace.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/context_transform.py" afterPath="$PROJECT_DIR$/context_transform.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/image_transformations.py" afterPath="$PROJECT_DIR$/image_transformations.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_comb_space_.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/comb_space.py" afterPath="$PROJECT_DIR$/comb_space.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,23 +15,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="test_comb_space.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test_comb_space.py">
+      <file leaf-file-name="test_comb_space_.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test_comb_space_.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state relative-caret-position="304">
+              <caret line="134" column="0" lean-forward="true" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
               <folding>
-                <element signature="e#0#24#0" expanded="true" />
+                <element signature="e#27#42#0" expanded="true" />
+                <element signature="e#213#1229#0" expanded="false" />
+                <element signature="e#1273#1959#0" expanded="false" />
+                <element signature="e#2002#2682#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="comb_space.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="comb_space.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/comb_space.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-169">
-              <caret line="281" column="54" lean-forward="false" selection-start-line="281" selection-start-column="54" selection-end-line="281" selection-end-column="54" />
+            <state relative-caret-position="138">
+              <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -58,6 +57,8 @@
       <find>in_threshold_bin,</find>
       <find>in_threshold_bin</find>
       <find>threshold_bin</find>
+      <find>is_modify_lr=True</find>
+      <find>o</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -72,6 +73,7 @@
         <option value="$PROJECT_DIR$/image_transformations.py" />
         <option value="$PROJECT_DIR$/context_transform.py" />
         <option value="$PROJECT_DIR$/comb_space.py" />
+        <option value="$PROJECT_DIR$/test_comb_space_.py" />
       </list>
     </option>
   </component>
@@ -119,6 +121,7 @@
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/hedgehogues/python/redozubov/comb_space.py" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -132,7 +135,37 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test_comb_space">
+  <component name="RunManager" selected="Python tests.Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify">
+    <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="redozubov" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_comb_space_.Test_comb_space_cluster.test_modify&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+    </configuration>
+    <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_predict_front" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="redozubov" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_comb_space_.Test_comb_space_cluster.test_predict_front&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+    </configuration>
     <configuration name="prepare_one_image" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -167,14 +200,37 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <list size="2">
+    <configuration name="test_comb_space_" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="redozubov" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_comb_space_.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.prepare_one_image" />
       <item index="1" class="java.lang.String" itemvalue="Python.test_comb_space" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests for test_comb_space_.Test_comb_space_cluster.test_predict_front" />
+      <item index="3" class="java.lang.String" itemvalue="Python.test_comb_space_" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.test_comb_space" />
-        <item index="1" class="java.lang.String" itemvalue="Python.prepare_one_image" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" />
+        <item index="1" class="java.lang.String" itemvalue="Python.test_comb_space_" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests for test_comb_space_.Test_comb_space_cluster.test_predict_front" />
+        <item index="3" class="java.lang.String" itemvalue="Python.test_comb_space" />
+        <item index="4" class="java.lang.String" itemvalue="Python.prepare_one_image" />
       </list>
     </recent_temporary>
   </component>
@@ -191,6 +247,38 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 32m 39s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 33m 30s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 38m 03s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 38m 19s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 39m 08s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 39m 09s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 39m 34s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 39m 41s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 40m 14s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_for_test_comb_space__Test_comb_space_cluster_test_modify - 2017.12.24 at 18h 40m 49s.xml">
+      <configuration name="Nosetests for test_comb_space_.Test_comb_space_cluster.test_modify" configurationId="tests" />
+    </history-entry>
+  </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1535" height="904" extended-state="6" />
     <editor active="true" />
@@ -201,11 +289,11 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32904884" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39741936" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39741936" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36760926" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36645162" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25166446" sideWeight="0.50555557" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40903226" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39483872" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975152" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -220,26 +308,14 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/comb_space.py</url>
-          <line>440</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/comb_space.py</url>
-          <line>296</line>
-          <option name="timeStamp" value="29" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="30" />
+      <option name="time" value="70" />
     </breakpoint-manager>
     <watches-manager>
+      <configuration name="tests">
+        <watch expression="self.base_cluster_c.in_w" language="Python" />
+      </configuration>
       <configuration name="PythonConfigurationType">
-        <watch expression="context_code.shape" language="Python" />
-        <watch expression="np.array(context_codes).shape" language="Python" />
-        <watch expression="in_codes[index]" language="Python" />
-        <watch expression="len(in_codes)" language="Python" />
+        <watch expression="np.sum(in_x)" language="Python" />
       </configuration>
     </watches-manager>
   </component>
@@ -328,9 +404,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/lib/python3.5/contextlib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.5/dist-packages/numpy/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test_comb_space.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
+        <state relative-caret-position="396">
           <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
@@ -340,10 +432,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/comb_space.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-169">
-          <caret line="281" column="54" lean-forward="false" selection-start-line="281" selection-start-column="54" selection-end-line="281" selection-end-column="54" />
+        <state relative-caret-position="138">
+          <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.5/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
+          <caret line="599" column="0" lean-forward="false" selection-start-line="599" selection-start-column="0" selection-end-line="599" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_comb_space_.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="134" column="0" lean-forward="true" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
+          <folding>
+            <element signature="e#27#42#0" expanded="true" />
+            <element signature="e#213#1229#0" expanded="false" />
+            <element signature="e#1273#1959#0" expanded="false" />
+            <element signature="e#2002#2682#0" expanded="false" />
           </folding>
         </state>
       </provider>
