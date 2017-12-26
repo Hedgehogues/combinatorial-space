@@ -1,8 +1,9 @@
-import context_transform
-import image_transformations
-from comb_space import Minicolumn
 import numpy as np
 import pandas as pd
+
+import context_transform
+import image_transformations
+from combinatorial_space.comb_space import Minicolumn
 
 df = pd.read_csv('data/test_image.csv', header=None)
 
