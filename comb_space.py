@@ -2,10 +2,8 @@ from copy import deepcopy
 import numpy as np
 import Levenshtein
 
-np.warnings.filterwarnings('ignore')
 
-# TODO: CUPY
-# TODO: Правило Ойо не сходится по непонятным причинам
+np.warnings.filterwarnings('ignore')
 
 
 """
@@ -44,10 +42,10 @@ class Cluster:
         Возвращается значение похожести (корелляция), предсказанный подвектор соответствующего размера. Если похожесть
         кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """  
-    def predict_front(self, in_x): 
-        corr = np.corrcoef(in_x, self.in_w)[0, 1]
-        if np.abs(corr) > self.in_threshold_modify:
-            return corr, np.uint8(self.out_w > self.threshold_bin)
+    def predict_front(self, in_x):
+        dot = np.dot(in_x, self.in_w)
+        if np.abs(dot) > self.in_threshold_modify:
+            return dot, np.uint8(self.out_w > self.threshold_bin)
         else:
             return 0, None
         
@@ -60,9 +58,9 @@ class Cluster:
         кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """
     def predict_back(self, out_x): 
-        corr = np.corrcoef(out_x, self.out_w)[0, 1]
-        if np.abs(corr) > self.out_threshold_modify:
-            return corr, np.uint8(self.in_w > self.threshold_bin)
+        dot = np.dot(out_x, self.out_w)
+        if np.abs(dot) > self.out_threshold_modify:
+            return dot, np.uint8(self.in_w > self.threshold_bin)
         else:
             return 0, None
 
@@ -96,12 +94,11 @@ class Cluster:
         возвращается 0
     """
     def modify(self, in_x, out_x):
-        out_corr = np.corrcoef(out_x, self.out_w)[0, 1]
-        # TODO: Бага
-        in_corr = np.corrcoef(out_x, self.out_w)[0, 1]
+        in_dot = np.dot(in_x, self.in_w)
+        out_dot = np.dot(out_x, self.out_w)
         
-        if np.abs(in_corr) > self.in_threshold_modify and \
-            np.abs(out_corr) > self.out_threshold_modify:
+        if np.abs(in_dot) > self.in_threshold_modify and \
+            np.abs(out_dot) > self.out_threshold_modify:
                 self.count_modifing += 1
                 delta_in, delta_out = self.__get_delta(in_x, out_x)
                 self.in_w = np.divide((self.in_w + delta_in), (np.sum(self.in_w**2)**(0.5)))
@@ -109,10 +106,9 @@ class Cluster:
 
                 return 1
         return 0
-                
-        
-class Point:
-    """
+
+
+"""
     Точка комбинаторного пространства. Каждая точка содержит набор кластеров
     
     in_threshold_modify, out_threshold_modify - порог активации кластера. Если скалярное произведение базового 
@@ -127,7 +123,8 @@ class Point:
     base_lr - начальное значение скорости обучения
     is_modify_lr - модификация скорости обучения пропорционально номер шага
     max_cluster_per_point - максимальное количество кластеров в точке
-    """
+"""
+class Point:
     def __init__(self,
                  in_threshold_modify, out_threshold_modify,
                  in_threshold_activate, out_threshold_activate,
@@ -148,23 +145,23 @@ class Point:
         self.max_cluster_per_point = max_cluster_per_point        
     
     """
-    Осуществление выбора оптимального кластера при прямом предсказании 
-    
-    in_code - входной вектор 
-    type_code - тип возвращаемого кода (с -1 или с 0)
-    
-    Возвращается оптимальный выходной вектор
+        Осуществление выбора оптимального кластера при прямом предсказании 
+        
+        in_code - входной вектор 
+        type_code - тип возвращаемого кода (с -1 или с 0)
+        
+        Возвращается оптимальный выходной вектор
     """
     def predict_front(self, in_code, type_code=-1):
         in_x = np.array(in_code)[self.in_coords]
         is_active = np.sum(in_x) > self.in_threshold_activate
-        opt_corr = -np.inf
+        opt_dot = -np.inf
         opt_out_code = None
         if is_active:
             for cluster in self.clusters:
-                corr, out_x = cluster.predict_front(in_x)
-                if corr > opt_corr:
-                    opt_corr = corr
+                dot, out_x = cluster.predict_front(in_x)
+                if dot > opt_dot:
+                    opt_dot = dot
                     opt_out_code = np.array([0] * self.count_out_demensions)
                     if type_code == -1:
                         out_x[out_x == 0] = -1
@@ -172,23 +169,23 @@ class Point:
         return opt_out_code
     
     """
-    Осуществление выбора оптимального кластера при обратном предсказании 
-    
-    out_code - выходной вектор
-    type_code - тип возвращаемого кода (с -1 или с 0)
-    
-    Возвращается оптимальный входной вектор
+        Осуществление выбора оптимального кластера при обратном предсказании 
+        
+        out_code - выходной вектор
+        type_code - тип возвращаемого кода (с -1 или с 0)
+        
+        Возвращается оптимальный входной вектор
     """
     def predict_back(self, out_code, type_code):
         out_x = np.array(out_code)[self.out_coords]
         is_active = np.sum(out_x) > self.out_threshold_activate
-        opt_corr = -np.inf
+        opt_dot = -np.inf
         opt_in_code = None
         if is_active:
             for cluster in self.clusters:
-                corr, in_x = cluster.predict_back(out_x)
-                if corr > opt_corr:
-                    opt_corr = corr
+                dot, in_x = cluster.predict_back(out_x)
+                if dot > opt_dot:
+                    opt_dot = dot
                     opt_in_code = np.array([0] * self.count_in_demensions)
                     if type_code == -1:
                         in_x[in_x == 0] = -1
@@ -196,12 +193,12 @@ class Point:
         return opt_in_code
     
     """
-    Функция, производящая добавление пары кодов в каждый кластер точки комбинаторного пространства
-    
-    in_code, out_code - входной и выходной бинарные векторы кодов соответствующих размерностей
-    
-    Возвращается количество произведённых модификаций внутри кластеров точки, флаг добавления кластера
-    (True - добавлен, False - не добавлен)
+        Функция, производящая добавление пары кодов в каждый кластер точки комбинаторного пространства
+        
+        in_code, out_code - входной и выходной бинарные векторы кодов соответствующих размерностей
+        
+        Возвращается количество произведённых модификаций внутри кластеров точки, флаг добавления кластера
+        (True - добавлен, False - не добавлен)
     """
     def add(self, in_code, out_code=None):
         in_x = np.array(in_code)[self.in_coords]
