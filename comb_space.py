@@ -7,10 +7,10 @@ np.warnings.filterwarnings('ignore')
 # TODO: CUPY
 # TODO: Правило Ойо не сходится по непонятным причинам
 
-class Cluster:
-    """
+
+"""
     Кластер в точке комбинаторного пространства
-    
+
     base_in_subvector, base_out_subvector - бинарный код, образующий кластер. Между образующим кодом и новым кодом
     будет вычисляться скалярное произведение
     in_threshold_modify, out_threshold_modify - порог активации кластера 
@@ -18,7 +18,8 @@ class Cluster:
     вектора на новый вектор больше порога, то будет пересчитан веса кластера, выделяющие первую главную компоненту
     base_lr - начальное значение скорости обучения
     is_modify_lr - модификация скорости обучения пропорционально номер шага
-    """   
+"""
+class Cluster:
     def __init__(self, 
                  base_in, base_out,
                  in_threshold_modify, out_threshold_modify,
@@ -36,12 +37,12 @@ class Cluster:
         self.count_modifing = 0
         
     """
-    Предсказание вперёд, т.е. предсказание входа по выходу
-    
-    in_x - входной вектор
-    
-    Возвращается значение похожести (корелляция), предсказанный подвектор соответствующего размера. Если похожесть
-    кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
+        Предсказание вперёд, т.е. предсказание входа по выходу
+        
+        in_x - входной вектор
+        
+        Возвращается значение похожести (корелляция), предсказанный подвектор соответствующего размера. Если похожесть
+        кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """  
     def predict_front(self, in_x): 
         corr = np.corrcoef(in_x, self.in_w)[0, 1]
@@ -51,12 +52,12 @@ class Cluster:
             return 0, None
         
     """
-    Предсказание назад, т.е. предсказание выхода по входу
-    
-    out_x - выходной вектор
-    
-    Возвращается значение похожести (корелляция), предсказанный подвектор соответствующего размера. Если похожесть
-    кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
+        Предсказание назад, т.е. предсказание выхода по входу
+        
+        out_x - выходной вектор
+        
+        Возвращается значение похожести (корелляция), предсказанный подвектор соответствующего размера. Если похожесть
+        кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """
     def predict_back(self, out_x): 
         corr = np.corrcoef(out_x, self.out_w)[0, 1]
@@ -64,37 +65,45 @@ class Cluster:
             return corr, np.uint8(self.in_w > self.threshold_bin)
         else:
             return 0, None
-        
-        
+
     """
-    Функция, производящая модификацию пары кодов кластера точки комбинаторного пространства
-    
-    in_x, out_x - входной и выходной бинарные векторы подкодов соответствующих размерностей
-    
-    Возвращается 1, если была произведена модификация весов (т.е. кластер был активирован). В противном случае
-    возвращается 0
+        Получение величин delta, используемых в обучении Хебба
     """
-    def modify(self, in_x, out_x):
+    def __get_delta(self, in_x, out_x):
         in_y = np.dot(in_x, self.in_w)
         out_y = np.dot(out_x, self.out_w)
+        if self.is_modify_lr:
+            delta_in = np.array((self.base_lr / self.count_modifing) * in_y * in_x)
+            delta_out = np.array((self.base_lr / self.count_modifing) * out_y * out_x)
+            # Правило Ойо почему-то расходится
+            #                   self.in_w = self.in_w + (self.base_lr/self.count_modifing)*in_y*(in_x - in_y*self.in_w)
+            #                   self.out_w = self.out_w + (self.base_lr/self.count_modifing)*out_y*(out_x - out_y*self.out_w)
+        else:
+            delta_in = np.array(self.base_lr * in_y * in_x)
+            delta_out = np.array(self.base_lr * out_y * out_x)
+            # Правило Ойо почему-то расходится
+            #                   self.in_w = self.in_w + (self.base_lr*in_y*(in_x - in_y*self.in_w)
+            #                   self.out_w = self.out_w + (self.base_lr*out_y*(out_x - out_y*self.out_w)
+        return delta_in, delta_out
+
+        
+    """
+        Функция, производящая модификацию пары кодов кластера точки комбинаторного пространства
+        
+        in_x, out_x - входной и выходной бинарные векторы подкодов соответствующих размерностей
+        
+        Возвращается 1, если была произведена модификация весов (т.е. кластер был активирован). В противном случае
+        возвращается 0
+    """
+    def modify(self, in_x, out_x):
         out_corr = np.corrcoef(out_x, self.out_w)[0, 1]
+        # TODO: Бага
         in_corr = np.corrcoef(out_x, self.out_w)[0, 1]
         
         if np.abs(in_corr) > self.in_threshold_modify and \
             np.abs(out_corr) > self.out_threshold_modify:
                 self.count_modifing += 1
-                if self.is_modify_lr:
-                    delta_in = np.array((self.base_lr/self.count_modifing)*in_y*in_x)
-                    delta_out = np.array((self.base_lr/self.count_modifing)*out_y*out_x)
-                    # Правило Ойо почему-то расходится
-#                   self.in_w = self.in_w + (self.base_lr/self.count_modifing)*in_y*(in_x - in_y*self.in_w)
-#                   self.out_w = self.out_w + (self.base_lr/self.count_modifing)*out_y*(out_x - out_y*self.out_w)
-                else:
-                    delta_in = np.array(self.base_lr*in_y*in_x)
-                    delta_out = np.array(self.base_lr*out_y*out_x)
-                    # Правило Ойо почему-то расходится
-#                   self.in_w = self.in_w + (self.base_lr*in_y*(in_x - in_y*self.in_w)
-#                   self.out_w = self.out_w + (self.base_lr*out_y*(out_x - out_y*self.out_w)
+                delta_in, delta_out = self.__get_delta(in_x, out_x)
                 self.in_w = np.divide((self.in_w + delta_in), (np.sum(self.in_w**2)**(0.5)))
                 self.out_w = np.divide((self.out_w + delta_out), (np.sum(self.out_w**2)**(0.5)))
 
