@@ -442,5 +442,13 @@ class TestCombSpaceCluster(unittest.TestCase):
             target[base_point_d.out_coords] = np.array([1, 1, 1, -1])[base_point_d.out_coords]
             np.testing.assert_array_equal(target, opt_out_code)
 
+    @unittest.skip("Не написан")
+    def test_predict_back_get_max_dot_for_opt(self):
+        pass
+
+    @unittest.skip("Не написан")
+    def test_predict_front__get_max_dot_for_opt(self):
+        pass
+
 if __name__ == '__main__':
     unittest.main()
