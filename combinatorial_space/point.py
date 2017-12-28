@@ -1,5 +1,6 @@
 import numpy as np
-from combinatorial_space.cluster_factory import ClusterFactory
+
+from combinatorial_space.cluster import Cluster
 
 """
     Точка комбинаторного пространства. Каждая точка содержит набор кластеров
@@ -30,11 +31,28 @@ class Point:
                  count_in_demensions, count_out_demensions,
                  base_lr, is_modify_lr,
                  max_cluster_per_point,
-                 cluster_factory=ClusterFactory()):
+                 cluster_class=Cluster):
         # TODO: count_in_demensions <= 0
         # TODO: in_size <= 0
-        self.in_coords = np.random.random_integers(0, in_size - 1, count_in_demensions)
-        self.out_coords = np.random.random_integers(0, out_size - 1, count_out_demensions)
+        # TODO: in_size <= count_in_dem
+
+        if in_threshold_modify is None or out_threshold_modify is None or \
+            in_threshold_activate is None or out_threshold_activate is None or \
+            in_size is None or out_size is None or \
+            threshold_bin is None or is_modify_lr is None or \
+            cluster_class is None or base_lr is None or \
+            count_in_demensions is None or count_out_demensions is None or \
+            in_size > count_in_demensions or out_size > count_out_demensions or \
+            max_cluster_per_point < 0 or \
+            out_size < 0 or in_size < 0 or \
+            in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
+            in_threshold_activate < 0 or out_threshold_activate < 0 or \
+            count_in_demensions < 0 or count_out_demensions < 0 or \
+            threshold_bin < 0 or type(is_modify_lr) is not bool:
+                raise ValueError("Неожиданное значение переменной")
+
+        self.in_coords = np.sort(np.random.permutation(count_in_demensions)[:in_size])
+        self.out_coords = np.sort(np.random.permutation(count_out_demensions)[:out_size])
         self.count_in_demensions, self.count_out_demensions = count_in_demensions, count_out_demensions
         self.clusters = []
         self.in_threshold_modify, self.out_threshold_modify = in_threshold_modify, out_threshold_modify
@@ -43,7 +61,7 @@ class Point:
         self.base_lr = base_lr
         self.is_modify_lr = is_modify_lr
         self.max_cluster_per_point = max_cluster_per_point
-        self.cluster_factory = cluster_factory
+        self.cluster_class = cluster_class
 
     """
         Осуществление выбора оптимального кластера при прямом предсказании 
@@ -58,6 +76,9 @@ class Point:
         assert len(in_code) == self.count_in_demensions, "Не совпадает заданная размерность с поданой"
         if not (type_code == -1 or type_code == 0):
             raise ValueError("Неверное значение type_code")
+        # Значения выходного вектора могут быть равны 0 или 1
+        if np.sum(np.uint8(np.logical_not(np.array(in_code) != 0) ^ (np.array(in_code) != 1))) > 0:
+            raise ValueError("Значение аргумента недопустимо")
 
         in_x = np.array(in_code)[self.in_coords]
         is_active = np.sum(in_x) > self.in_threshold_activate
@@ -66,12 +87,20 @@ class Point:
         if is_active:
             for cluster in self.clusters:
                 dot, out_x = cluster.predict_front(in_x)
+
+                if dot < 0:
+                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
+                                     "Отрицательное значение скалярного произведения")
+                if dot != 0 and out_x is None:
+                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
+                                     "Скалярное произведение > 0. Предсказанный вектор None")
+
                 if dot > opt_dot:
                     opt_dot = dot
                     opt_out_code = np.array([0] * self.count_out_demensions)
                     if type_code == -1:
                         out_x[out_x == 0] = -1
-                    opt_out_code[self.out_coords] = out_x
+                    opt_out_code[self.out_coords] = out_x[self.out_coords]
         return opt_out_code
 
     """
@@ -84,9 +113,12 @@ class Point:
     """
 
     def predict_back(self, out_code, type_code=-1):
-        assert len(out_code) == self.count_in_demensions, "Не совпадает заданная размерность с поданой"
+        assert len(out_code) == self.count_out_demensions, "Не совпадает заданная размерность с поданой"
         if not (type_code == -1 or type_code == 0):
             raise ValueError("Неверное значение type_code")
+        # Значения выходного вектора могут быть равны 0 или 1
+        if np.sum(np.uint8(np.logical_not(np.array(out_code) != 0) ^ (np.array(out_code) != 1))) > 0:
+            raise ValueError("Значение аргумента недопустимо")
         out_x = np.array(out_code)[self.out_coords]
         is_active = np.sum(out_x) > self.out_threshold_activate
         opt_dot = -np.inf
@@ -94,12 +126,20 @@ class Point:
         if is_active:
             for cluster in self.clusters:
                 dot, in_x = cluster.predict_back(out_x)
+
+                if dot < 0:
+                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
+                                     "Отрицательное значение скалярного произведения")
+                if dot != 0 and in_x is None:
+                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
+                                     "Скалярное произведение > 0. Предсказанный вектор None")
+
                 if dot > opt_dot:
                     opt_dot = dot
                     opt_in_code = np.array([0] * self.count_in_demensions)
                     if type_code == -1:
                         in_x[in_x == 0] = -1
-                    opt_in_code[self.in_coords] = in_x
+                    opt_in_code[self.in_coords] = in_x[self.in_coords]
         return opt_in_code
 
     """
@@ -117,8 +157,8 @@ class Point:
         count_modify = 0
         count_fails = 0
 
-        # Возможно, проверять активацию не нужно, поскольку это будет отсекаться по скалярному произведению
-        # при подсчёте корелляции
+        # TODO: Возможно, проверять активацию не нужно, поскольку это будет отсекаться по скалярному
+        # TODO: произведению при подсчёте корелляции
         is_active = np.sum(in_x) > self.in_threshold_activate and \
                     np.sum(out_x) > self.out_threshold_activate
         if len(self.clusters) < self.max_cluster_per_point:
@@ -131,7 +171,7 @@ class Point:
                 return count_fails, count_modify, False
             else:
                 self.clusters.append(
-                    self.cluster_factory.get()(
+                    self.cluster_class(
                         base_in_subvector=in_x,
                         base_out_subvector=out_x,
                         in_threshold_modify=self.in_threshold_modify,

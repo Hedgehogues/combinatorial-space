@@ -22,10 +22,13 @@ class Cluster:
                  threshold_bin,
                  base_lr,
                  is_modify_lr):
-        if in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
+        if in_threshold_modify is None or out_threshold_modify is None or \
+            np.sum(np.uint8(np.array(base_in) is None)) or np.sum(np.uint8(np.array(base_out) is None)) or \
+            threshold_bin is None or is_modify_lr is None or \
+            in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
             np.sum(np.uint8(np.array(base_in) < 0)) or np.sum(np.uint8(np.array(base_out) < 0)) or \
-            threshold_bin < 0 or is_modify_lr < 0:
-                raise ValueError("Значение переменной меньше 0")
+            threshold_bin < 0 or type(is_modify_lr) is not bool:
+                raise ValueError("Неожиданное значение переменной")
         self.in_threshold_modify, self.out_threshold_modify = in_threshold_modify, out_threshold_modify
         self.base_lr = base_lr
 
@@ -46,8 +49,9 @@ class Cluster:
     """
 
     def predict_front(self, in_x):
-        if np.sum(np.uint8(np.array(in_x) < 0)) > 0:
-            raise ValueError("Значение переменной меньше 0")
+        # Значения входного вектора могут быть равны 0 или 1
+        if np.sum(np.uint8(np.logical_not(np.array(in_x) != 0) ^ (np.array(in_x) != 1))) > 0:
+            raise ValueError("Значение аргумента недопустимо")
         assert len(in_x) == len(self.in_w), "Не совпадает заданная размерность с поданой"
         dot = np.dot(in_x, self.in_w)
         if np.abs(dot) > self.in_threshold_modify:
@@ -65,8 +69,9 @@ class Cluster:
     """
 
     def predict_back(self, out_x):
-        if np.sum(np.uint8(np.array(out_x) < 0)) > 0:
-            raise ValueError("Значение переменной меньше 0")
+        # Значения выходного вектора могут быть равны 0 или 1
+        if np.sum(np.uint8(np.logical_not(np.array(out_x) != 0) ^ (np.array(out_x) != 1))) > 0:
+            raise ValueError("Значение аргумента недопустимо")
         assert len(out_x) == len(self.out_w), "Не совпадает заданная размерность с поданой"
         dot = np.dot(out_x, self.out_w)
         if np.abs(dot) > self.out_threshold_modify:

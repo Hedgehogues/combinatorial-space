@@ -108,6 +108,18 @@ class Test_comb_space_cluster(unittest.TestCase):
     def test_less_0_predict_back(self):
         self.assertRaises(ValueError, self.base_cluster_a.predict_back, [-1] * 1 + [0] * 5)
 
+    def test_not_0_not_1_predict_front(self):
+        self.assertRaises(ValueError, self.base_cluster_a.predict_front, [1] * 1 + [0.2] * 5 + [0] * 4)
+
+    def test_not_0_not_1_predict_back(self):
+        self.assertRaises(ValueError, self.base_cluster_a.predict_back, [1] * 1 + [0] * 3 + [0.2] * 2)
+
+    def test_not_0_not_1_predict_front_2(self):
+        self.assertRaises(ValueError, self.base_cluster_a.predict_front, [-1] * 1 + [0.2] * 5 + [0] * 4)
+
+    def test_not_0_not_1_predict_back_2(self):
+        self.assertRaises(ValueError, self.base_cluster_a.predict_back, [-1] * 1 + [0] * 3 + [0.2] * 2)
+
     def test_less_0_modify_in(self):
         in_x = np.array([-1] * 9 + [0] * 1)
         out_x = np.array([1] * 5 + [0] * 1)
@@ -127,7 +139,7 @@ class Test_comb_space_cluster(unittest.TestCase):
     def test_predict_front_not_in_threshold_modify(self):
         dot, out_sub_code = self.base_cluster_a.predict_front([1] * 1 + [0] * 9)
         self.assertAlmostEqual(dot, 0, places=5)
-        self.assertIsNone(out_sub_code, None)
+        self.assertIsNone(out_sub_code)
 
     def test_predict_front_modify_not_more_threshold_bin(self):
         dot, out_sub_code = self.base_cluster_b.predict_front(np.array([1] * 1 + [0] * 9))
