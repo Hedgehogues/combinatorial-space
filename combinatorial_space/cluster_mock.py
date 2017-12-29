@@ -77,7 +77,7 @@ class ClusterMock1CustomBase:
         return 1
 
 
-class ClusterMock0CustomBase:
+class ClusterMockGetDotCustomBase:
     def __init__(self,
                  base_in, base_out,
                  in_threshold_modify, out_threshold_modify,
@@ -88,10 +88,10 @@ class ClusterMock0CustomBase:
         self.base_out = base_out
 
     def predict_front(self, in_x):
-        return 0, self.base_out
+        return np.dot(self.base_in, in_x), self.base_out
 
     def predict_back(self, out_x):
-        return 0, self.base_in
+        return np.dot(self.base_in, out_x), self.base_in
 
     def modify(self, in_x, out_x):
-        return 0
+        return 1

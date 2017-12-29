@@ -442,13 +442,35 @@ class TestCombSpaceCluster(unittest.TestCase):
             target[base_point_d.out_coords] = np.array([1, 1, 1, -1])[base_point_d.out_coords]
             np.testing.assert_array_equal(target, opt_out_code)
 
-    @unittest.skip("Не написан")
-    def test_predict_back_get_max_dot_for_opt(self):
-        pass
+    def test_predict_back_get_max_dot_for_opt_1(self):
+        self.base_point_c.clusters = [
+            cluster_mock.ClusterMockGetDotCustomBase(
+                np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0),
+            cluster_mock.ClusterMockGetDotCustomBase(
+                np.array([1, 0, 0, 0]), np.array([1, 0, 0, 0]), 0, 0, 0, 0, 0),
+            cluster_mock.ClusterMockGetDotCustomBase(
+                np.array([1, 1, 1, 1]), np.array([1, 1, 1, 1]), 0, 0, 0, 0, 0),
+            cluster_mock.ClusterMockGetDotCustomBase(
+                np.array([1, 1, 0, 1]), np.array([1, 1, 0, 1]), 0, 0, 0, 0, 0)
+        ]
+        opt_in_code = self.base_point_c.predict_back([1, 1, 1, 1], 0)
+        target = np.array([1, 1, 1, 1])
+        np.testing.assert_array_equal(target, opt_in_code)
 
-    @unittest.skip("Не написан")
     def test_predict_front__get_max_dot_for_opt(self):
-        pass
+        self.base_point_c.clusters = [
+            cluster_mock.ClusterMockGetDotCustomBase(
+                np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0),
+            cluster_mock.ClusterMockGetDotCustomBase(
+                np.array([1, 0, 0, 0]), np.array([1, 0, 0, 0]), 0, 0, 0, 0, 0),
+            cluster_mock.ClusterMockGetDotCustomBase(
+                np.array([1, 1, 1, 1]), np.array([1, 1, 1, 1]), 0, 0, 0, 0, 0),
+            cluster_mock.ClusterMockGetDotCustomBase(
+                np.array([1, 1, 0, 1]), np.array([1, 1, 0, 1]), 0, 0, 0, 0, 0)
+        ]
+        opt_out_code = self.base_point_c.predict_front([1, 1, 1, 1], 0)
+        target = np.array([1, 1, 1, 1])
+        np.testing.assert_array_equal(target, opt_out_code)
 
 if __name__ == '__main__':
     unittest.main()
