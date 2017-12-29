@@ -74,7 +74,6 @@ class TestCluster__init__(unittest.TestCase):
 
 
 class TestClusterBase(unittest.TestCase):
-    # Вызывается перед каждым тестом
     def setUp(self):
         n = 5
         m = 3
@@ -105,6 +104,14 @@ class TestClusterBase(unittest.TestCase):
         self.base_cluster_d = Cluster(
             base_in=np.array([0.2] * n + [0] * n),
             base_out=np.array([0.2] * m + [0] * m),
+            in_threshold_modify=0.1, out_threshold_modify=0.1,
+            threshold_bin=0.1,
+            base_lr=0.5,
+            is_modify_lr=True
+        )
+        self.base_cluster_e = Cluster(
+            base_in=np.array([0.3] * n + [0] * n),
+            base_out=np.array([0.3] * m + [0] * m),
             in_threshold_modify=0.1, out_threshold_modify=0.1,
             threshold_bin=0.1,
             base_lr=0.5,
@@ -149,44 +156,37 @@ class TestClusterException(TestClusterBase):
 
 
 class TestClusterPredict(TestClusterBase):
-    @unittest.skip("Необходима проверка")
     def test_front_not_threshold_modify(self):
         dot, out_sub_code = self.base_cluster_a.predict_front([1] * 1 + [0] * 9)
         self.assertEqual(dot, 0)
         self.assertIsNone(out_sub_code)
 
-    @unittest.skip("Необходима проверка")
     def test_back_not_threshold_modify(self):
-        dot, out_sub_code = self.base_cluster_a.predict_back([1] * 1 + [0] * 5)
+        dot, in_sub_code = self.base_cluster_a.predict_back([1] * 1 + [0] * 5)
         self.assertEqual(dot, 0)
-        self.assertIsNone(out_sub_code)
+        self.assertIsNone(in_sub_code)
 
-    @unittest.skip("Необходима проверка")
     def test_front_modify_not_more_threshold_bin(self):
         dot, out_sub_code = self.base_cluster_b.predict_front(np.array([1] * 1 + [0] * 9))
         self.assertAlmostEqual(dot, 0.2, places=5)
         np.testing.assert_array_equal(out_sub_code, [0] * 6)
 
-    @unittest.skip("Необходима проверка")
     def test_back_modify_not_more_threshold_bin(self):
-        dot, out_sub_code = self.base_cluster_d.predict_back(np.array([1] * 1 + [0] * 5))
+        dot, in_sub_code = self.base_cluster_d.predict_back(np.array([1] * 1 + [0] * 5))
         self.assertAlmostEqual(dot, 0.2, places=5)
-        np.testing.assert_array_equal(out_sub_code, [1] * 5 + [0] * 5)
+        np.testing.assert_array_equal(in_sub_code, [1] * 5 + [0] * 5)
 
-    @unittest.skip("Необходима проверка")
     def test_front_modify_more_threshold_bin(self):
         dot, out_sub_code = self.base_cluster_c.predict_front(np.array([0] * 1 + [1] * 9))
         self.assertAlmostEqual(dot, 1.4, places=5)
         np.testing.assert_array_equal(out_sub_code, [1] * 6)
 
-    @unittest.skip("Необходима проверка")
     def test_back_modify_more_threshold_bin(self):
-        dot, out_sub_code = self.base_cluster_c.predict_back(np.array([0] * 1 + [1] * 9))
-        self.assertAlmostEqual(dot, 1.4, places=5)
-        np.testing.assert_array_equal(out_sub_code, [1] * 6)
+        dot, in_sub_code = self.base_cluster_e.predict_back(np.array([0] * 1 + [1] * 5))
+        self.assertAlmostEqual(dot, 0.6, places=5)
+        np.testing.assert_array_equal(in_sub_code, [1] * 5 + [0] * 5)
 
 
-@unittest.skip("Необходимо проверить наличие всех тестов")
 class TestClusterModify(TestClusterBase):
     def test_modify_not_threshold_modify(self):
         in_x = np.array([1] * 1 + [0] * 9)

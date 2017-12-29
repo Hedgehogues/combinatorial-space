@@ -6,43 +6,7 @@ from combinatorial_space.point import Point
 import numpy as np
 
 
-class TestCombSpaceCluster(unittest.TestCase):
-    # Вызывается перед каждым тестом
-    def setUp(self):
-
-        self.base_point_a = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=1, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=1, out_size=1,
-            count_in_demensions=1, count_out_demensions=1,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1,
-            cluster_class=cluster_mock.ClusterMock0None
-        )
-
-        self.base_point_b = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
-            in_size=1, out_size=1,
-            count_in_demensions=1, count_out_demensions=1,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1,
-            cluster_class=cluster_mock.ClusterMock0None
-        )
-
-        self.base_point_c = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1,
-            cluster_class=cluster_mock.ClusterMock0None
-        )
-
+class TestPoint__init__(unittest.TestCase):
     def test__init__cluster_class(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=0,
@@ -264,6 +228,44 @@ class TestCombSpaceCluster(unittest.TestCase):
             max_cluster_per_point=-1
         )
 
+
+class TestPointBase(unittest.TestCase):
+    def setUp(self):
+        self.base_point_a = Point(
+            in_threshold_modify=1, out_threshold_modify=1,
+            in_threshold_activate=1, out_threshold_activate=1,
+            threshold_bin=1,
+            in_size=1, out_size=1,
+            count_in_demensions=1, count_out_demensions=1,
+            base_lr=0, is_modify_lr=True,
+            max_cluster_per_point=1,
+            cluster_class=cluster_mock.ClusterMock0None
+        )
+
+        self.base_point_b = Point(
+            in_threshold_modify=1, out_threshold_modify=1,
+            in_threshold_activate=0, out_threshold_activate=0,
+            threshold_bin=1,
+            in_size=1, out_size=1,
+            count_in_demensions=1, count_out_demensions=1,
+            base_lr=0, is_modify_lr=True,
+            max_cluster_per_point=1,
+            cluster_class=cluster_mock.ClusterMock0None
+        )
+
+        self.base_point_c = Point(
+            in_threshold_modify=1, out_threshold_modify=1,
+            in_threshold_activate=0, out_threshold_activate=0,
+            threshold_bin=1,
+            in_size=4, out_size=4,
+            count_in_demensions=4, count_out_demensions=4,
+            base_lr=0, is_modify_lr=True,
+            max_cluster_per_point=1,
+            cluster_class=cluster_mock.ClusterMock0None
+        )
+
+
+class TestPointException(TestPointBase):
     def test_less_0_predict_front(self):
         self.assertRaises(ValueError, self.base_point_c.predict_front, [-1] * 1 + [0] * 3)
 
@@ -294,22 +296,6 @@ class TestCombSpaceCluster(unittest.TestCase):
     def test_predict_back_not_activate(self):
         self.assertRaises(AssertionError, self.base_point_a.predict_back, [-1] * 1 + [0] * 9)
 
-    def test_predict_back_not_active(self):
-        opt_in_code = self.base_point_a.predict_back([1])
-        self.assertIsNone(opt_in_code)
-
-    def test_predict_front_not_active(self):
-        opt_in_code = self.base_point_a.predict_front([1])
-        self.assertIsNone(opt_in_code)
-
-    def test_predict_back_active_empty_cluster(self):
-        opt_in_code = self.base_point_b.predict_back([1])
-        self.assertIsNone(opt_in_code)
-
-    def test_predict_front_active_empty_cluster(self):
-        opt_in_code = self.base_point_b.predict_front([1])
-        self.assertIsNone(opt_in_code)
-
     def test_predict_back_dot_less_0(self):
         self.base_point_b.clusters.append(cluster_mock.ClusterMockMinusNone(0, 0, 0, 0, 0, 0, 0))
         self.assertRaises(ValueError, self.base_point_b.predict_back, [1])
@@ -325,6 +311,24 @@ class TestCombSpaceCluster(unittest.TestCase):
     def test_predict_front_dot_more_0_out_is_none(self):
         self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
         self.assertRaises(ValueError, self.base_point_b.predict_front, [1])
+
+
+class TestPointPredict(TestPointBase):
+    def test_predict_back_not_active(self):
+        opt_in_code = self.base_point_a.predict_back([1])
+        self.assertIsNone(opt_in_code)
+
+    def test_predict_front_not_active(self):
+        opt_in_code = self.base_point_a.predict_front([1])
+        self.assertIsNone(opt_in_code)
+
+    def test_predict_back_active_empty_cluster(self):
+        opt_in_code = self.base_point_b.predict_back([1])
+        self.assertIsNone(opt_in_code)
+
+    def test_predict_front_active_empty_cluster(self):
+        opt_in_code = self.base_point_b.predict_front([1])
+        self.assertIsNone(opt_in_code)
 
     def test_predict_back_1_cluster_type_code_0(self):
         self.base_point_c.clusters.append(
@@ -471,6 +475,11 @@ class TestCombSpaceCluster(unittest.TestCase):
         opt_out_code = self.base_point_c.predict_front([1, 1, 1, 1], 0)
         target = np.array([1, 1, 1, 1])
         np.testing.assert_array_equal(target, opt_out_code)
+
+
+class TestPointAdd(TestPointBase):
+    pass
+
 
 if __name__ == '__main__':
     unittest.main()
