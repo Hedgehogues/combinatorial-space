@@ -32,9 +32,6 @@ class Point:
                  base_lr, is_modify_lr,
                  max_cluster_per_point,
                  cluster_class=Cluster):
-        # TODO: count_in_demensions <= 0
-        # TODO: in_size <= 0
-        # TODO: in_size <= count_in_dem
 
         if in_threshold_modify is None or out_threshold_modify is None or \
             in_threshold_activate is None or out_threshold_activate is None or \
@@ -126,6 +123,7 @@ class Point:
     """
 
     def predict_back(self, out_code, type_code=-1):
+
         self.none_exeption(out_code)
         self.len_exeption(len(out_code), self.count_out_demensions)
         self.type_code_exeption(type_code)
@@ -164,16 +162,13 @@ class Point:
     """
 
     def add(self, in_code, out_code):
-        # Значения выходного вектора могут быть равны 0 или 1
-        if out_code is None or \
-           np.sum(np.uint8(np.logical_not(np.array(out_code) != 0) ^ (np.array(out_code) != 1))) > 0:
-            raise ValueError("Значение аргумента out_code недопустимо")
-        if in_code is None or \
-           np.sum(np.uint8(np.logical_not(np.array(in_code) != 0) ^ (np.array(in_code) != 1))) > 0:
-            raise ValueError("Значение аргумента in_code недопустимо")
-        assert len(out_code) == self.count_out_demensions, "Не совпадает заданная размерность с поданой"
-        assert len(in_code) == self.count_in_demensions, "Не совпадает заданная размерность с поданой"
 
+        self.none_exeption(in_code)
+        self.none_exeption(out_code)
+        self.len_exeption(len(out_code), self.count_out_demensions)
+        self.len_exeption(len(in_code), self.count_in_demensions)
+        self.code_value_exeption(out_code)
+        self.code_value_exeption(in_code)
 
         in_x = np.array(in_code)[self.in_coords]
         out_x = np.array(out_code)[self.out_coords]
@@ -195,10 +190,10 @@ class Point:
             else:
                 self.clusters.append(
                     self.cluster_class(
-                        base_in_subvector=in_x,
-                        base_out_subvector=out_x,
+                        base_in=in_x, base_out=out_x,
                         in_threshold_modify=self.in_threshold_modify,
                         out_threshold_modify=self.out_threshold_modify,
+                        threshold_bin=self.threshold_bin,
                         base_lr=self.base_lr, is_modify_lr=self.is_modify_lr
                     )
                 )
