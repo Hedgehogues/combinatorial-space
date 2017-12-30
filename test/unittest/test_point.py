@@ -8,223 +8,47 @@ from test.unittest import cluster_mock
 
 class TestPoint__init__(unittest.TestCase):
     def test_cluster_class(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1,
-            cluster_class=None
-        )
+        self.assertRaises(ValueError, Point, cluster_class=None)
 
     def test_threshold_modify(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=-1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=-1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=None, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=None,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
+        self.assertRaises(ValueError, Point, in_threshold_modify=-1)
+        self.assertRaises(ValueError, Point, out_threshold_modify=-1)
+        self.assertRaises(ValueError, Point, in_threshold_modify=None)
+        self.assertRaises(ValueError, Point, out_threshold_modify=None)
 
     def test_threshold_activate(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=-1, out_threshold_activate=0,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=-1,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=None, out_threshold_activate=0,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=None,
-            threshold_bin=1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
+        self.assertRaises(ValueError, Point, in_threshold_activate=-1)
+        self.assertRaises(ValueError, Point, out_threshold_activate=-1)
+        self.assertRaises(ValueError, Point, in_threshold_activate=None)
+        self.assertRaises(ValueError, Point, out_threshold_activate=None)
 
     def test_threshold_bin(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=-1,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=None,
-            in_size=4, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
+        self.assertRaises(ValueError, Point, threshold_bin=-1)
+        self.assertRaises(ValueError, Point, threshold_bin=None)
 
     def test_in_out_size(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=-1, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=4, out_size=-1,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=None, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=4, out_size=None,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
+        self.assertRaises(ValueError, Point, in_random_bits=-1)
+        self.assertRaises(ValueError, Point, out_random_bits=-1)
+        self.assertRaises(ValueError, Point, in_random_bits=None)
+        self.assertRaises(ValueError, Point, out_random_bits=None)
 
     def test_count_demensions(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=1, out_size=4,
-            count_in_demensions=4, count_out_demensions=-4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=4, out_size=1,
-            count_in_demensions=-4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=1, out_size=4,
-            count_in_demensions=4, count_out_demensions=None,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=4, out_size=1,
-            count_in_demensions=None, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
+        self.assertRaises(ValueError, Point, count_out_demensions=-4)
+        self.assertRaises(ValueError, Point, count_in_demensions=-4)
+        self.assertRaises(ValueError, Point, count_out_demensions=None)
+        self.assertRaises(ValueError, Point, count_in_demensions=None)
 
     def test_base_lr(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=1, out_size=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=-1, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=4, out_size=1,
-            count_in_demensions=-4, count_out_demensions=4,
-            base_lr=None, is_modify_lr=True,
-            max_cluster_per_point=1
-        )
+        self.assertRaises(ValueError, Point, base_lr=-1)
+        self.assertRaises(ValueError, Point, base_lr=None)
 
     def test_max_cluster_per_point(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=1, out_size=4,
-            count_in_demensions=4, count_out_demensions=-4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=None
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=4, out_size=1,
-            count_in_demensions=-4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=-1
-        )
+        self.assertRaises(ValueError, Point, max_cluster_per_point=None)
+        self.assertRaises(ValueError, Point, max_cluster_per_point=-1)
 
     def test_is_modify_lr(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=1, out_size=4,
-            count_in_demensions=4, count_out_demensions=-4,
-            base_lr=0, is_modify_lr=None,
-            max_cluster_per_point=None
-        )
-        self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=4, out_size=1,
-            count_in_demensions=-4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=0,
-            max_cluster_per_point=-1
-        )
+        self.assertRaises(ValueError, Point, is_modify_lr=None)
+        self.assertRaises(ValueError, Point, is_modify_lr=0)
 
 
 class TestPointBase(unittest.TestCase):
@@ -233,7 +57,7 @@ class TestPointBase(unittest.TestCase):
             in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=1, out_threshold_activate=1,
             threshold_bin=1,
-            in_size=1, out_size=1,
+            in_random_bits=1, out_random_bits=1,
             count_in_demensions=1, count_out_demensions=1,
             base_lr=0, is_modify_lr=True,
             max_cluster_per_point=1,
@@ -244,7 +68,7 @@ class TestPointBase(unittest.TestCase):
             in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=0,
             threshold_bin=1,
-            in_size=1, out_size=1,
+            in_random_bits=1, out_random_bits=1,
             count_in_demensions=1, count_out_demensions=1,
             base_lr=0, is_modify_lr=True,
             max_cluster_per_point=1,
@@ -255,7 +79,7 @@ class TestPointBase(unittest.TestCase):
             in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=0,
             threshold_bin=1,
-            in_size=4, out_size=4,
+            in_random_bits=4, out_random_bits=4,
             count_in_demensions=4, count_out_demensions=4,
             base_lr=0, is_modify_lr=True,
             max_cluster_per_point=1,
@@ -266,7 +90,7 @@ class TestPointBase(unittest.TestCase):
             in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=100, out_threshold_activate=100,
             threshold_bin=1,
-            in_size=3, out_size=3,
+            in_random_bits=3, out_random_bits=3,
             count_in_demensions=3, count_out_demensions=3,
             base_lr=0, is_modify_lr=True,
             max_cluster_per_point=5,
@@ -277,7 +101,7 @@ class TestPointBase(unittest.TestCase):
             in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=100, out_threshold_activate=0,
             threshold_bin=1,
-            in_size=3, out_size=3,
+            in_random_bits=3, out_random_bits=3,
             count_in_demensions=3, count_out_demensions=3,
             base_lr=0, is_modify_lr=True,
             max_cluster_per_point=5,
@@ -288,7 +112,7 @@ class TestPointBase(unittest.TestCase):
             in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=100,
             threshold_bin=1,
-            in_size=3, out_size=3,
+            in_random_bits=3, out_random_bits=3,
             count_in_demensions=3, count_out_demensions=3,
             base_lr=0, is_modify_lr=True,
             max_cluster_per_point=5,
@@ -299,7 +123,7 @@ class TestPointBase(unittest.TestCase):
             in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=0,
             threshold_bin=1,
-            in_size=3, out_size=3,
+            in_random_bits=3, out_random_bits=3,
             count_in_demensions=3, count_out_demensions=3,
             base_lr=0, is_modify_lr=True,
             max_cluster_per_point=5,
@@ -310,7 +134,7 @@ class TestPointBase(unittest.TestCase):
             in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=0,
             threshold_bin=1,
-            in_size=3, out_size=3,
+            in_random_bits=3, out_random_bits=3,
             count_in_demensions=3, count_out_demensions=3,
             base_lr=0, is_modify_lr=True,
             max_cluster_per_point=5,
@@ -429,7 +253,7 @@ class TestPointPredict(TestPointBase):
                 in_threshold_modify=1, out_threshold_modify=1,
                 in_threshold_activate=0, out_threshold_activate=0,
                 threshold_bin=1,
-                in_size=3, out_size=3,
+                in_random_bits=3, out_random_bits=3,
                 count_in_demensions=4, count_out_demensions=4,
                 base_lr=0, is_modify_lr=True,
                 max_cluster_per_point=1,
@@ -450,7 +274,7 @@ class TestPointPredict(TestPointBase):
                 in_threshold_modify=1, out_threshold_modify=1,
                 in_threshold_activate=0, out_threshold_activate=0,
                 threshold_bin=1,
-                in_size=3, out_size=3,
+                in_random_bits=3, out_random_bits=3,
                 count_in_demensions=4, count_out_demensions=4,
                 base_lr=0, is_modify_lr=True,
                 max_cluster_per_point=1,
@@ -471,7 +295,7 @@ class TestPointPredict(TestPointBase):
                 in_threshold_modify=1, out_threshold_modify=1,
                 in_threshold_activate=0, out_threshold_activate=0,
                 threshold_bin=1,
-                in_size=3, out_size=3,
+                in_random_bits=3, out_random_bits=3,
                 count_in_demensions=4, count_out_demensions=4,
                 base_lr=0, is_modify_lr=True,
                 max_cluster_per_point=1,
@@ -492,7 +316,7 @@ class TestPointPredict(TestPointBase):
                 in_threshold_modify=1, out_threshold_modify=1,
                 in_threshold_activate=0, out_threshold_activate=0,
                 threshold_bin=1,
-                in_size=3, out_size=3,
+                in_random_bits=3, out_random_bits=3,
                 count_in_demensions=4, count_out_demensions=4,
                 base_lr=0, is_modify_lr=True,
                 max_cluster_per_point=1,

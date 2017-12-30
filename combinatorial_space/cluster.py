@@ -18,10 +18,10 @@ np.warnings.filterwarnings('ignore')
 class Cluster:
     def __init__(self,
                  base_in, base_out,
-                 in_threshold_modify, out_threshold_modify,
-                 threshold_bin,
-                 base_lr,
-                 is_modify_lr):
+                 in_threshold_modify=5, out_threshold_modify=0,
+                 threshold_bin=0.1,
+                 base_lr=0.01,
+                 is_modify_lr=True):
         if in_threshold_modify is None or out_threshold_modify is None or \
             np.sum(np.uint8(np.array(base_in) is None)) or np.sum(np.uint8(np.array(base_out) is None)) or \
             threshold_bin is None or is_modify_lr is None or \

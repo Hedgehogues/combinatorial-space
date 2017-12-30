@@ -18,39 +18,39 @@ from combinatorial_space.point import Point
     in_threshold_activate, out_threshold_activate - порог активации точки комбинаторного пространства. Если кол-во
     активных битов больше порога, то будет инициирован процесс модификации существующих кластеров, а также будет
     добавлен новый кластер
-    in_size, out_size - количество случайных битов входного/выходного вектора
+    in_random_bits, out_random_bits - количество случайных битов входного/выходного вектора
     base_lr - начальное значение скорости обучения
     is_modify_lr - модификация скорости обучения пропорционально номер шага
-    count_in_demensions, count_out_demensions - размер входного и выходного векторов в точке комб. пространства
+    count_in_demensions, count_out_demensions - размер входного и выходного векторов
     threshold_bits_controversy - порог противоречия для битов кодов
     out_non_zero_bits - число ненулевых бит в выходном векторе
 """
 class Minicolumn:
     
     def __init__(self, space_size=60000, max_cluster_per_point=100,
-                 max_count_clusters=1000000, seed=42, 
-                 in_threshold_modify=5, out_threshold_modify=0, 
+                 max_count_clusters=1000000, seed=42,
+                 in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
                  threshold_bin=0.1,
-                 in_size=256, out_size=16,
+                 in_random_bits=24, out_random_bits=10,
                  base_lr=0.01, is_modify_lr=True,
-                 count_in_demensions=24, count_out_demensions=10,
+                 count_in_demensions=256, count_out_demensions=16,
                  threshold_bits_controversy=0.1,
                  out_non_zero_bits=6, class_point=Point):
 
         if seed is None or \
             space_size is None or in_threshold_modify is None or out_threshold_modify is None or \
             in_threshold_activate is None or out_threshold_activate is None or \
-            in_size is None or out_size is None or \
+            in_random_bits is None or out_random_bits is None or \
             threshold_bin is None or is_modify_lr is None or \
             base_lr is None or max_cluster_per_point is None or \
             count_in_demensions is None or count_out_demensions is None or \
             max_count_clusters is None or threshold_bits_controversy is None or \
             out_non_zero_bits is None or class_point is None or \
             max_count_clusters <= 0 or space_size <= 0 or \
-            in_size > count_in_demensions or out_size > count_out_demensions or \
+            in_random_bits > count_in_demensions or out_random_bits > count_out_demensions or \
             max_cluster_per_point < 0 or \
-            out_size < 0 or in_size < 0 or \
+            out_random_bits < 0 or in_random_bits < 0 or \
             in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
             in_threshold_activate < 0 or out_threshold_activate < 0 or \
             count_in_demensions < 0 or count_out_demensions < 0 or \
@@ -64,8 +64,8 @@ class Minicolumn:
                     in_threshold_modify, out_threshold_modify,
                     in_threshold_activate, out_threshold_activate,
                     threshold_bin,
+                    in_random_bits, out_random_bits,
                     count_in_demensions, count_out_demensions,
-                    in_size, out_size,
                     base_lr, is_modify_lr,
                     max_cluster_per_point
                 ) for _ in range(space_size)

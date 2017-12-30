@@ -6,77 +6,57 @@ from combinatorial_space.cluster import Cluster
 
 
 class TestCluster__init__(unittest.TestCase):
-    def test__init__base_lr_less_0(self):
-        n = 5
-        m = 3
-        self.assertRaises(ValueError, Cluster, base_in=np.array([0.1] * n + [0.2] * n),
+
+    def test_base_lr_less_0(self):
+        n, m = 5, 3
+        self.assertRaises(ValueError, Cluster,
+            base_in=np.array([0.1] * n + [0.2] * n),
             base_out=np.array([0.3] * m + [0.4] * m),
-            in_threshold_modify=0.1, out_threshold_modify=0.1,
-            threshold_bin=0.25,
-            base_lr=-0.5,
-            is_modify_lr=False
+            base_lr=-0.5
         )
 
-    def test__init__threshold_bin_less_0(self):
-        n = 5
-        m = 3
-        self.assertRaises(ValueError, Cluster, base_in=np.array([0.1] * n + [0.2] * n),
+    def test_threshold_bin_less_0(self):
+        n, m = 5, 3
+        self.assertRaises(ValueError, Cluster,
+            base_in=np.array([0.1] * n + [0.2] * n),
             base_out=np.array([0.3] * m + [0.4] * m),
-            in_threshold_modify=0.1, out_threshold_modify=0.1,
-            threshold_bin=-0.25,
-            base_lr=0.5,
-            is_modify_lr=False
+            threshold_bin=-0.25
         )
 
-    def test__init__in_threshold_modify_less_0(self):
-        n = 5
-        m = 3
-        self.assertRaises(ValueError, Cluster, base_in=np.array([0.1] * n + [0.2] * n),
+    def test_in_threshold_modify_less_0(self):
+        n, m = 5, 3
+        self.assertRaises(ValueError, Cluster,
+                base_in=np.array([0.1] * n + [0.2] * n),
                 base_out=np.array([0.3] * m + [0.4] * m),
-                in_threshold_modify=-0.1, out_threshold_modify=0.1,
-                threshold_bin=0.25,
-                base_lr=0.5,
-                is_modify_lr=False
+                in_threshold_modify=-0.1
         )
 
-    def test__init__out_threshold_modify_less_0(self):
-        n = 5
-        m = 3
-        self.assertRaises(ValueError, Cluster, base_in=np.array([0.1] * n + [0.2] * n),
+    def test_out_threshold_modify_less_0(self):
+        n, m = 5, 3
+        self.assertRaises(ValueError, Cluster,
+                base_in=np.array([0.1] * n + [0.2] * n),
                 base_out=np.array([0.3] * m + [0.4] * m),
-                in_threshold_modify=0.1, out_threshold_modify=-0.1,
-                threshold_bin=0.25,
-                base_lr=0.5,
-                is_modify_lr=False
+                out_threshold_modify=-0.1
         )
 
-    def test__init__base_in_less_0(self):
-        n = 5
-        m = 3
-        self.assertRaises(ValueError, Cluster, base_in=np.array([-0.1] * n + [0.2] * n),
-                base_out=np.array([0.3] * m + [0.4] * m),
-                in_threshold_modify=0.1, out_threshold_modify=0.1,
-                threshold_bin=0.25,
-                base_lr=0.5,
-                is_modify_lr=False
+    def test_base_in_less_0(self):
+        n, m = 5, 3
+        self.assertRaises(ValueError, Cluster,
+                base_in=np.array([-0.1] * n + [0.2] * n),
+                base_out=np.array([0.3] * m + [0.4] * m)
         )
 
-    def test__init__base_out_less_0(self):
-        n = 5
-        m = 3
-        self.assertRaises(ValueError, Cluster, base_in=np.array([0.1] * n + [0.2] * n),
-                base_out=np.array([-0.3] * m + [0.4] * m),
-                in_threshold_modify=0.1, out_threshold_modify=0.1,
-                threshold_bin=0.25,
-                base_lr=0.5,
-                is_modify_lr=False
+    def test_base_out_less_0(self):
+        n, m = 5, 3
+        self.assertRaises(ValueError, Cluster,
+                base_in=np.array([0.1] * n + [0.2] * n),
+                base_out=np.array([-0.3] * m + [0.4] * m)
         )
 
 
 class TestClusterBase(unittest.TestCase):
     def setUp(self):
-        n = 5
-        m = 3
+        n, m = 5, 3
         self.base_cluster_a = Cluster(
             base_in=np.array([0.005] * n + [0.0006] * n),
             base_out=np.array([0.007] * m + [0.0008] * m),

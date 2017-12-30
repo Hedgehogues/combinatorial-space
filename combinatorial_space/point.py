@@ -24,32 +24,33 @@ from combinatorial_space.cluster import Cluster
 
 class Point:
     def __init__(self,
-                 in_threshold_modify, out_threshold_modify,
-                 in_threshold_activate, out_threshold_activate,
-                 threshold_bin,
-                 in_size, out_size,
-                 count_in_demensions, count_out_demensions,
-                 base_lr, is_modify_lr,
-                 max_cluster_per_point,
+                 in_threshold_modify=5, out_threshold_modify=0,
+                 in_threshold_activate=5, out_threshold_activate=0,
+                 threshold_bin=0.1,
+                 in_random_bits=24, out_random_bits=10,
+                 count_in_demensions=256, count_out_demensions=16,
+                 base_lr=0.01, is_modify_lr=True,
+                 max_cluster_per_point=100,
                  cluster_class=Cluster):
 
         if in_threshold_modify is None or out_threshold_modify is None or \
             in_threshold_activate is None or out_threshold_activate is None or \
-            in_size is None or out_size is None or \
+            in_random_bits is None or out_random_bits is None or \
             threshold_bin is None or is_modify_lr is None or \
             cluster_class is None or base_lr is None or \
             count_in_demensions is None or count_out_demensions is None or \
-            in_size > count_in_demensions or out_size > count_out_demensions or \
+            max_cluster_per_point is None or \
+            in_random_bits > count_in_demensions or out_random_bits > count_out_demensions or \
             max_cluster_per_point < 0 or \
-            out_size < 0 or in_size < 0 or \
+            out_random_bits < 0 or in_random_bits < 0 or \
             in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
             in_threshold_activate < 0 or out_threshold_activate < 0 or \
             count_in_demensions < 0 or count_out_demensions < 0 or \
             threshold_bin < 0 or type(is_modify_lr) is not bool:
                 raise ValueError("Неожиданное значение переменной")
 
-        self.in_coords = np.sort(np.random.permutation(count_in_demensions)[:in_size])
-        self.out_coords = np.sort(np.random.permutation(count_out_demensions)[:out_size])
+        self.in_coords = np.sort(np.random.permutation(count_in_demensions)[:in_random_bits])
+        self.out_coords = np.sort(np.random.permutation(count_out_demensions)[:out_random_bits])
         self.count_in_demensions, self.count_out_demensions = count_in_demensions, count_out_demensions
         self.clusters = []
         self.in_threshold_modify, self.out_threshold_modify = in_threshold_modify, out_threshold_modify
