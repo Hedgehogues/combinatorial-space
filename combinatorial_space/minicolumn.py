@@ -1,10 +1,11 @@
 from copy import deepcopy
 import Levenshtein
 import numpy as np
-                
 
-class Minicolumn:
-    """
+from combinatorial_space.point import Point
+
+
+"""
     Миниколонка. Миниколонка - это набор точек комбинаторного пространства
     
     space_size - количество точек комбинаторного пространства
@@ -23,7 +24,8 @@ class Minicolumn:
     count_in_demensions, count_out_demensions - размер входного и выходного векторов в точке комб. пространства
     threshold_bits_controversy - порог противоречия для битов кодов
     out_non_zero_bits - число ненулевых бит в выходном векторе
-    """
+"""
+class Minicolumn:
     
     def __init__(self, space_size=60000, max_cluster_per_point=100,
                  max_count_clusters=1000000, seed=42, 
@@ -34,10 +36,31 @@ class Minicolumn:
                  base_lr=0.01, is_modify_lr=True,
                  count_in_demensions=24, count_out_demensions=10,
                  threshold_bits_controversy=0.1,
-                 out_non_zero_bits=6):
+                 out_non_zero_bits=6, class_point=Point):
+
+        if seed is None or \
+            space_size is None or in_threshold_modify is None or out_threshold_modify is None or \
+            in_threshold_activate is None or out_threshold_activate is None or \
+            in_size is None or out_size is None or \
+            threshold_bin is None or is_modify_lr is None or \
+            base_lr is None or max_cluster_per_point is None or \
+            count_in_demensions is None or count_out_demensions is None or \
+            max_count_clusters is None or threshold_bits_controversy is None or \
+            out_non_zero_bits is None or class_point is None or \
+            max_count_clusters <= 0 or space_size <= 0 or \
+            in_size > count_in_demensions or out_size > count_out_demensions or \
+            max_cluster_per_point < 0 or \
+            out_size < 0 or in_size < 0 or \
+            in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
+            in_threshold_activate < 0 or out_threshold_activate < 0 or \
+            count_in_demensions < 0 or count_out_demensions < 0 or \
+            threshold_bin < 0 or type(is_modify_lr) is not bool or \
+            threshold_bits_controversy < 0 or out_non_zero_bits < 0:
+                raise ValueError("Неожиданное значение переменной")
+
         self.space = np.array(
             [
-                Point(
+                class_point(
                     in_threshold_modify, out_threshold_modify,
                     in_threshold_activate, out_threshold_activate,
                     threshold_bin,
@@ -66,7 +89,7 @@ class Minicolumn:
     """
     def front_predict(self, in_code):
         out_code = [0] * self.count_out_demensions
-        count = [0] * self.count_out_demensions
+        count = np.array([0] * self.count_out_demensions)
         for point in self.space:
             __out_code = point.predict_front(in_code, -1)
             
@@ -79,7 +102,7 @@ class Minicolumn:
             out_code += __out_code
         if np.sum(count == 0) > 0:
             raise ValueError("Не все биты входного вектора учитываются")
-            controversy = np.sum(np.abs(out_code / count) < self.threshold_controversy)
+            controversy = np.sum(np.abs(np.divide(out_code, count)) < self.threshold_controversy)
             out_code[out_code <= 0] = 0
             out_code[out_code > 0] = 1
             return controversy, out_code

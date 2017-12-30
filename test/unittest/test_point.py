@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 
 import unittest
-import combinatorial_space.cluster_mock as cluster_mock
-from combinatorial_space.point import Point
 import numpy as np
+from combinatorial_space.point import Point
+from test.unittest import cluster_mock
 
 
 class TestPoint__init__(unittest.TestCase):

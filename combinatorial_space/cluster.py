@@ -39,12 +39,12 @@ class Cluster:
         self.is_modify_lr = is_modify_lr
         self.count_modifing = 0
 
-    def code_value_exeption(self, code):
+    def __code_value_exeption(self, code):
         # Значения выходного вектора могут быть равны 0 или 1
         if np.sum(np.uint8(np.logical_not(np.array(code) != 0) ^ (np.array(code) != 1))) > 0:
             raise ValueError("Значение аргумента может принимать значение 0 или 1")
 
-    def len_exeption(self, obj_len, target_len):
+    def __len_exeption(self, obj_len, target_len):
         assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
 
     """
@@ -56,8 +56,8 @@ class Cluster:
         кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """
     def predict_front(self, in_x):
-        self.code_value_exeption(in_x)
-        self.len_exeption(len(in_x), len(self.in_w))
+        self.__code_value_exeption(in_x)
+        self.__len_exeption(len(in_x), len(self.in_w))
         dot = np.dot(in_x, self.in_w)
         if np.abs(dot) > self.in_threshold_modify:
             return dot, np.uint8(self.out_w > self.threshold_bin)
@@ -74,8 +74,8 @@ class Cluster:
     """
 
     def predict_back(self, out_x):
-        self.code_value_exeption(out_x)
-        self.len_exeption(len(out_x), len(self.out_w))
+        self.__code_value_exeption(out_x)
+        self.__len_exeption(len(out_x), len(self.out_w))
         dot = np.dot(out_x, self.out_w)
         if np.abs(dot) > self.out_threshold_modify:
             return dot, np.uint8(self.in_w > self.threshold_bin)
@@ -112,10 +112,10 @@ class Cluster:
         возвращается 0
     """
     def modify(self, in_x, out_x):
-        self.code_value_exeption(out_x)
-        self.code_value_exeption(in_x)
-        self.len_exeption(len(out_x), len(self.out_w))
-        self.len_exeption(len(in_x), len(self.in_w))
+        self.__code_value_exeption(out_x)
+        self.__code_value_exeption(in_x)
+        self.__len_exeption(len(out_x), len(self.out_w))
+        self.__len_exeption(len(in_x), len(self.in_w))
 
         in_dot = np.dot(in_x, self.in_w)
         out_dot = np.dot(out_x, self.out_w)

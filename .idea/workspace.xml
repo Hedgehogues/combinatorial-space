@@ -2,9 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="228949ed-ca87-4f95-8133-28b85a7150ad" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/unittest/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/unittest/point_mock.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/combinatorial_space/cluster_mock.py" afterPath="$PROJECT_DIR$/test/unittest/cluster_mock.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/combinatorial_space/comb_space.py" afterPath="$PROJECT_DIR$/combinatorial_space/minicolumn.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/test/unittest/test_comb_space_cluster.py" afterPath="$PROJECT_DIR$/test/unittest/test_cluster.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/test/unittest/test_comb_space_point.py" afterPath="$PROJECT_DIR$/test/unittest/test_point.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combinatorial_space/cluster.py" afterPath="$PROJECT_DIR$/combinatorial_space/cluster.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combinatorial_space/point.py" afterPath="$PROJECT_DIR$/combinatorial_space/point.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unittest/test_comb_space_point.py" afterPath="$PROJECT_DIR$/test/unittest/test_comb_space_point.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/__test_comb_space.py" afterPath="$PROJECT_DIR$/test/__test_comb_space.py" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,84 +25,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="point.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/combinatorial_space/point.py">
+      <file leaf-file-name="test_minicolumn.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/unittest/test_minicolumn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="184" column="0" lean-forward="false" selection-start-line="184" selection-start-column="0" selection-end-line="184" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_comb_space_point.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/unittest/test_comb_space_point.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="609" column="0" lean-forward="true" selection-start-line="609" selection-start-column="0" selection-end-line="609" selection-end-column="0" />
+            <state relative-caret-position="126">
+              <caret line="78" column="15" lean-forward="false" selection-start-line="78" selection-start-column="15" selection-end-line="87" selection-end-column="15" />
               <folding>
-                <element signature="e#212#9763#0" expanded="false" />
-                <element signature="e#250#639#0" expanded="false" />
-                <element signature="e#686#2149#0" expanded="false" />
-                <element signature="e#2198#3661#0" expanded="false" />
-                <element signature="e#3705#4432#0" expanded="false" />
-                <element signature="e#4474#5937#0" expanded="false" />
-                <element signature="e#5984#7447#0" expanded="false" />
-                <element signature="e#7485#8213#0" expanded="false" />
-                <element signature="e#8265#8994#0" expanded="false" />
-                <element signature="e#9037#9763#0" expanded="false" />
-                <element signature="e#13325#15915#0" expanded="false" />
-                <element signature="e#13362#13444#0" expanded="false" />
-                <element signature="e#13486#13567#0" expanded="false" />
-                <element signature="e#13615#13708#0" expanded="false" />
-                <element signature="e#13755#13847#0" expanded="false" />
-                <element signature="e#13897#13991#0" expanded="false" />
-                <element signature="e#14040#14133#0" expanded="false" />
-                <element signature="e#14189#14259#0" expanded="false" />
-                <element signature="e#14308#14394#0" expanded="false" />
-                <element signature="e#14449#14518#0" expanded="false" />
-                <element signature="e#14566#14651#0" expanded="false" />
-                <element signature="e#14697#14861#0" expanded="false" />
-                <element signature="e#14908#15073#0" expanded="false" />
-                <element signature="e#15131#15291#0" expanded="false" />
-                <element signature="e#15350#15511#0" expanded="false" />
-                <element signature="e#15552#15714#0" expanded="false" />
-                <element signature="e#15754#15915#0" expanded="false" />
-                <element signature="e#16001#16089#0" expanded="false" />
-                <element signature="e#16136#16225#0" expanded="false" />
-                <element signature="e#16281#16369#0" expanded="false" />
-                <element signature="e#16426#16515#0" expanded="false" />
-                <element signature="e#16572#16889#0" expanded="false" />
-                <element signature="e#16947#17267#0" expanded="false" />
-                <element signature="e#17330#17636#0" expanded="false" />
-                <element signature="e#17700#18009#0" expanded="false" />
-                <element signature="e#18079#19020#0" expanded="false" />
-                <element signature="e#19091#20049#0" expanded="false" />
-                <element signature="e#20125#21078#0" expanded="false" />
-                <element signature="e#21155#22101#0" expanded="false" />
-                <element signature="e#22156#22900#0" expanded="false" />
-                <element signature="e#22956#23703#0" expanded="false" />
+                <element signature="e#27#42#0" expanded="true" />
+                <element signature="e#299#1420#0" expanded="false" />
+                <element signature="e#1483#2603#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="case.py" pinned="false" current-in-tab="false">
-        <entry file="file:///usr/lib/python3.5/unittest/case.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="599" column="0" lean-forward="false" selection-start-line="599" selection-start-column="0" selection-end-line="599" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cluster_mock.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster_mock.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -124,6 +65,7 @@
       <find>base_po</find>
       <find>opt_in_code</find>
       <find>[</find>
+      <find>out_non_zero_bits</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -145,14 +87,21 @@
         <option value="$PROJECT_DIR$/combinatorial_space/factories.py" />
         <option value="$PROJECT_DIR$/combinatorial_space/cluster_factory.py" />
         <option value="$PROJECT_DIR$/TODO.md" />
-        <option value="$PROJECT_DIR$/combinatorial_space/comb_space.py" />
         <option value="$PROJECT_DIR$/tmp.py" />
         <option value="$PROJECT_DIR$/combinatorial_space/cluster_mock.py" />
         <option value="$PROJECT_DIR$/test/test_comb_space_cluster.py" />
         <option value="$PROJECT_DIR$/test/test_comb_space_point.py" />
+        <option value="$PROJECT_DIR$/test/unittest/test_comb_space_point.py" />
+        <option value="$PROJECT_DIR$/combinatorial_space/comb_space.py" />
+        <option value="$PROJECT_DIR$/combinatorial_space/minicolumn.py" />
         <option value="$PROJECT_DIR$/combinatorial_space/cluster.py" />
         <option value="$PROJECT_DIR$/combinatorial_space/point.py" />
-        <option value="$PROJECT_DIR$/test/unittest/test_comb_space_point.py" />
+        <option value="$PROJECT_DIR$/testing/unittest/test_point.py" />
+        <option value="$PROJECT_DIR$/test/unittest/test_point.py" />
+        <option value="$PROJECT_DIR$/test/unittest/__init__.py" />
+        <option value="$PROJECT_DIR$/test/__init__.py" />
+        <option value="$PROJECT_DIR$/test/unittest/point_mock.py" />
+        <option value="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
       </list>
     </option>
   </component>
@@ -177,7 +126,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -185,6 +133,11 @@
             <path>
               <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
               <item name="redozubov" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
+              <item name="redozubov" type="462c0819:PsiDirectoryNode" />
+              <item name="combinatorial_space" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
@@ -201,6 +154,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -210,11 +164,13 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test/unittest" />
       <recent name="$PROJECT_DIR$/test" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/combinatorial_space" />
+      <recent name="$PROJECT_DIR$/test/unittest" />
       <recent name="$PROJECT_DIR$/test" />
+      <recent name="$PROJECT_DIR$/combinatorial_space" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -229,7 +185,22 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test_comb_space_point">
+  <component name="RunManager" selected="Python.test_minicolumn">
+    <configuration name="Nosetests in test_point.py" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/unittest" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="redozubov" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/unittest/test_point.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+    </configuration>
     <configuration name="test_comb_space_cluster" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -242,7 +213,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="redozubov" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/unittest/test_comb_space_cluster.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/unittest/test_cluster.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -259,7 +230,24 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="redozubov" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/unittest/test_comb_space_point.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/unittest/test_point.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration name="test_minicolumn" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/unittest" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="redozubov" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -281,16 +269,20 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <list size="3">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.test_comb_space_cluster" />
       <item index="1" class="java.lang.String" itemvalue="Python.test_comb_space_point" />
       <item index="2" class="java.lang.String" itemvalue="Python.tmp" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Nosetests in test_point.py" />
+      <item index="4" class="java.lang.String" itemvalue="Python.test_minicolumn" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python.test_comb_space_point" />
-        <item index="1" class="java.lang.String" itemvalue="Python.test_comb_space_cluster" />
-        <item index="2" class="java.lang.String" itemvalue="Python.tmp" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.test_minicolumn" />
+        <item index="1" class="java.lang.String" itemvalue="Python.test_comb_space_point" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test_comb_space_cluster" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Nosetests in test_point.py" />
+        <item index="4" class="java.lang.String" itemvalue="Python.tmp" />
       </list>
     </recent_temporary>
   </component>
@@ -311,12 +303,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Nosetests_for_test_comb_space_cluster_Test_comb_space_cluster_test_modify_threshold_modify_false_modify_lr - 2017.12.27 at 00h 40m 31s.xml">
-      <configuration name="Nosetests for test_comb_space_cluster.Test_comb_space_cluster.test_modify_threshold_modify_false_modify_lr" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Nosetests_for_test_comb_space_point_Test_comb_space_cluster_test_predict_back_not_activate - 2017.12.27 at 02h 08m 04s.xml">
-      <configuration name="Nosetests for test_comb_space_point.Test_comb_space_cluster.test_predict_back_not_activate" configurationId="tests" />
-    </history-entry>
     <history-entry file="Nosetests_for_test_comb_space_point_Test_comb_space_cluster_test_predict_back_not_activate - 2017.12.27 at 02h 08m 13s.xml">
       <configuration name="Nosetests for test_comb_space_point.Test_comb_space_cluster.test_predict_back_not_activate" configurationId="tests" />
     </history-entry>
@@ -341,6 +327,12 @@
     <history-entry file="Nosetests_for_test_comb_space_point_Test_comb_space_cluster_test_predict_front_not_activate - 2017.12.27 at 01h 59m 11s.xml">
       <configuration name="Nosetests for test_comb_space_point.Test_comb_space_cluster.test_predict_front_not_activate" configurationId="tests" />
     </history-entry>
+    <history-entry file="Nosetests_in_test_point_py - 2017.12.30 at 15h 49m 17s.xml">
+      <configuration name="Nosetests in test_point.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_test_point_py - 2017.12.30 at 15h 50m 04s.xml">
+      <configuration name="Nosetests in test_point.py" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-151" y="138" width="1537" height="912" extended-state="6" />
@@ -351,10 +343,10 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38838708" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38838708" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22709678" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29348555" sideWeight="0.49444443" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29751512" sideWeight="0.49444443" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Log Manager" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25166446" sideWeight="0.50555557" order="2" side_tool="true" content_ui="tabs" />
@@ -375,14 +367,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/unittest/test_comb_space_point.py</url>
-          <line>624</line>
-          <option name="timeStamp" value="206" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="207" />
+      <option name="time" value="208" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="tests">
@@ -401,24 +386,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster_mock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1422">
-          <caret line="79" column="23" lean-forward="false" selection-start-line="79" selection-start-column="23" selection-end-line="79" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_comb_space_point.py" />
-    <entry file="file://$PROJECT_DIR$/test/test_comb_space_cluster.py" />
-    <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1422">
-          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/combinatorial_space/point.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2142">
@@ -436,11 +403,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster_mock.py">
+    <entry file="file://$PROJECT_DIR$/test/unittest/cluster_mock.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1080">
           <caret line="60" column="8" lean-forward="false" selection-start-line="60" selection-start-column="8" selection-end-line="60" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -474,7 +440,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_comb_space_point.py" />
     <entry file="file://$PROJECT_DIR$/test/test_comb_space_cluster.py" />
-    <entry file="file://$PROJECT_DIR$/combinatorial_space/comb_space.py">
+    <entry file="file://$PROJECT_DIR$/combinatorial_space/minicolumn.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1692">
           <caret line="96" column="7" lean-forward="true" selection-start-line="96" selection-start-column="7" selection-end-line="96" selection-end-column="7" />
@@ -588,13 +554,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/combinatorial_space/comb_space.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="18" lean-forward="false" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster_factory.py" />
     <entry file="file://$PROJECT_DIR$/tmp.py" />
     <entry file="file:///usr/lib/python3.5/contextlib.py">
@@ -635,17 +594,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_comb_space_cluster.py" />
     <entry file="file://$PROJECT_DIR$/test/test_comb_space_point.py" />
-    <entry file="file://$PROJECT_DIR$/test/unittest/test_comb_space_cluster.py">
+    <entry file="file://$PROJECT_DIR$/test/unittest/test_cluster.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="11" column="42" lean-forward="false" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="18" column="22" lean-forward="true" selection-start-line="18" selection-start-column="22" selection-end-line="23" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -658,68 +610,121 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/unittest/cluster_mock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="443">
+          <caret line="96" column="16" lean-forward="true" selection-start-line="96" selection-start-column="16" selection-end-line="96" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/combinatorial_space/minicolumn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="38" column="55" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="346" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2106">
+          <caret line="117" column="15" lean-forward="false" selection-start-line="117" selection-start-column="15" selection-end-line="117" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/combinatorial_space/point.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="184" column="0" lean-forward="false" selection-start-line="184" selection-start-column="0" selection-end-line="184" selection-end-column="0" />
+        <state relative-caret-position="3024">
+          <caret line="170" column="15" lean-forward="false" selection-start-line="170" selection-start-column="15" selection-end-line="170" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster_mock.py">
+    <entry file="file://$PROJECT_DIR$/test/unittest/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unittest/test_comb_space_point.py">
+    <entry file="file://$PROJECT_DIR$/test/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="609" column="0" lean-forward="true" selection-start-line="609" selection-start-column="0" selection-end-line="609" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unittest/test_point.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-774">
+          <caret line="5" column="5" lean-forward="false" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
           <folding>
-            <element signature="e#212#9763#0" expanded="false" />
-            <element signature="e#250#639#0" expanded="false" />
-            <element signature="e#686#2149#0" expanded="false" />
-            <element signature="e#2198#3661#0" expanded="false" />
-            <element signature="e#3705#4432#0" expanded="false" />
-            <element signature="e#4474#5937#0" expanded="false" />
-            <element signature="e#5984#7447#0" expanded="false" />
-            <element signature="e#7485#8213#0" expanded="false" />
-            <element signature="e#8265#8994#0" expanded="false" />
-            <element signature="e#9037#9763#0" expanded="false" />
-            <element signature="e#13325#15915#0" expanded="false" />
-            <element signature="e#13362#13444#0" expanded="false" />
-            <element signature="e#13486#13567#0" expanded="false" />
-            <element signature="e#13615#13708#0" expanded="false" />
-            <element signature="e#13755#13847#0" expanded="false" />
-            <element signature="e#13897#13991#0" expanded="false" />
-            <element signature="e#14040#14133#0" expanded="false" />
-            <element signature="e#14189#14259#0" expanded="false" />
-            <element signature="e#14308#14394#0" expanded="false" />
-            <element signature="e#14449#14518#0" expanded="false" />
-            <element signature="e#14566#14651#0" expanded="false" />
-            <element signature="e#14697#14861#0" expanded="false" />
-            <element signature="e#14908#15073#0" expanded="false" />
-            <element signature="e#15131#15291#0" expanded="false" />
-            <element signature="e#15350#15511#0" expanded="false" />
-            <element signature="e#15552#15714#0" expanded="false" />
-            <element signature="e#15754#15915#0" expanded="false" />
-            <element signature="e#16001#16089#0" expanded="false" />
-            <element signature="e#16136#16225#0" expanded="false" />
-            <element signature="e#16281#16369#0" expanded="false" />
-            <element signature="e#16426#16515#0" expanded="false" />
-            <element signature="e#16572#16889#0" expanded="false" />
-            <element signature="e#16947#17267#0" expanded="false" />
-            <element signature="e#17330#17636#0" expanded="false" />
-            <element signature="e#17700#18009#0" expanded="false" />
-            <element signature="e#18079#19020#0" expanded="false" />
-            <element signature="e#19091#20049#0" expanded="false" />
-            <element signature="e#20125#21078#0" expanded="false" />
-            <element signature="e#21155#22101#0" expanded="false" />
-            <element signature="e#22156#22900#0" expanded="false" />
-            <element signature="e#22956#23703#0" expanded="false" />
+            <element signature="e#195#9746#0" expanded="false" />
+            <element signature="e#233#622#0" expanded="false" />
+            <element signature="e#669#2132#0" expanded="false" />
+            <element signature="e#2181#3644#0" expanded="false" />
+            <element signature="e#3688#4415#0" expanded="false" />
+            <element signature="e#4457#5920#0" expanded="false" />
+            <element signature="e#5967#7430#0" expanded="false" />
+            <element signature="e#7468#8196#0" expanded="false" />
+            <element signature="e#8248#8977#0" expanded="false" />
+            <element signature="e#9020#9746#0" expanded="false" />
+            <element signature="e#13308#15898#0" expanded="false" />
+            <element signature="e#13345#13427#0" expanded="false" />
+            <element signature="e#13469#13550#0" expanded="false" />
+            <element signature="e#13598#13691#0" expanded="false" />
+            <element signature="e#13738#13830#0" expanded="false" />
+            <element signature="e#13880#13974#0" expanded="false" />
+            <element signature="e#14023#14116#0" expanded="false" />
+            <element signature="e#14172#14242#0" expanded="false" />
+            <element signature="e#14291#14377#0" expanded="false" />
+            <element signature="e#14432#14501#0" expanded="false" />
+            <element signature="e#14549#14634#0" expanded="false" />
+            <element signature="e#14680#14844#0" expanded="false" />
+            <element signature="e#14891#15056#0" expanded="false" />
+            <element signature="e#15114#15274#0" expanded="false" />
+            <element signature="e#15333#15494#0" expanded="false" />
+            <element signature="e#15535#15697#0" expanded="false" />
+            <element signature="e#15737#15898#0" expanded="false" />
+            <element signature="e#15984#16072#0" expanded="false" />
+            <element signature="e#16119#16208#0" expanded="false" />
+            <element signature="e#16264#16352#0" expanded="false" />
+            <element signature="e#16409#16498#0" expanded="false" />
+            <element signature="e#16555#16872#0" expanded="false" />
+            <element signature="e#16930#17250#0" expanded="false" />
+            <element signature="e#17313#17619#0" expanded="false" />
+            <element signature="e#17683#17992#0" expanded="false" />
+            <element signature="e#18062#19003#0" expanded="false" />
+            <element signature="e#19074#20032#0" expanded="false" />
+            <element signature="e#20108#21061#0" expanded="false" />
+            <element signature="e#21138#22084#0" expanded="false" />
+            <element signature="e#22139#22883#0" expanded="false" />
+            <element signature="e#22939#23686#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unittest/point_mock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="3" column="19" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unittest/test_minicolumn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="78" column="15" lean-forward="false" selection-start-line="78" selection-start-column="15" selection-end-line="87" selection-end-column="15" />
+          <folding>
+            <element signature="e#27#42#0" expanded="true" />
+            <element signature="e#299#1420#0" expanded="false" />
+            <element signature="e#1483#2603#0" expanded="false" />
           </folding>
         </state>
       </provider>
