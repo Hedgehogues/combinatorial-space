@@ -63,6 +63,22 @@ class Point:
         self.max_cluster_per_point = max_cluster_per_point
         self.cluster_class = cluster_class
 
+    def none_exeption(self, obj):
+        if obj is None:
+            raise ValueError("Значение аргумента недопустимо")
+
+    def len_exeption(self, obj_len, target_len):
+        assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
+
+    def type_code_exeption(self, type_code):
+        if not (type_code == -1 or type_code == 0):
+            raise ValueError("Неверное значение type_code")
+
+    def code_value_exeption(self, code):
+        # Значения выходного вектора могут быть равны 0 или 1
+        if np.sum(np.uint8(np.logical_not(np.array(code) != 0) ^ (np.array(code) != 1))) > 0:
+            raise ValueError("Значение аргумента может принимать значение 0 или 1")
+
     """
         Осуществление выбора оптимального кластера при прямом предсказании 
 
@@ -71,14 +87,11 @@ class Point:
 
         Возвращается оптимальный выходной вектор
     """
-
     def predict_front(self, in_code, type_code=-1):
-        assert len(in_code) == self.count_in_demensions, "Не совпадает заданная размерность с поданой"
-        if not (type_code == -1 or type_code == 0):
-            raise ValueError("Неверное значение type_code")
-        # Значения выходного вектора могут быть равны 0 или 1
-        if np.sum(np.uint8(np.logical_not(np.array(in_code) != 0) ^ (np.array(in_code) != 1))) > 0:
-            raise ValueError("Значение аргумента недопустимо")
+        self.none_exeption(in_code)
+        self.len_exeption(len(in_code), self.count_in_demensions)
+        self.type_code_exeption(type_code)
+        self.code_value_exeption(in_code)
 
         in_x = np.array(in_code)[self.in_coords]
         is_active = np.sum(in_x) > self.in_threshold_activate
@@ -113,12 +126,11 @@ class Point:
     """
 
     def predict_back(self, out_code, type_code=-1):
-        assert len(out_code) == self.count_out_demensions, "Не совпадает заданная размерность с поданой"
-        if not (type_code == -1 or type_code == 0):
-            raise ValueError("Неверное значение type_code")
-        # Значения выходного вектора могут быть равны 0 или 1
-        if np.sum(np.uint8(np.logical_not(np.array(out_code) != 0) ^ (np.array(out_code) != 1))) > 0:
-            raise ValueError("Значение аргумента недопустимо")
+        self.none_exeption(out_code)
+        self.len_exeption(len(out_code), self.count_out_demensions)
+        self.type_code_exeption(type_code)
+        self.code_value_exeption(out_code)
+
         out_x = np.array(out_code)[self.out_coords]
         is_active = np.sum(out_x) > self.out_threshold_activate
         opt_dot = -np.inf
@@ -151,7 +163,18 @@ class Point:
         (True - добавлен, False - не добавлен)
     """
 
-    def add(self, in_code, out_code=None):
+    def add(self, in_code, out_code):
+        # Значения выходного вектора могут быть равны 0 или 1
+        if out_code is None or \
+           np.sum(np.uint8(np.logical_not(np.array(out_code) != 0) ^ (np.array(out_code) != 1))) > 0:
+            raise ValueError("Значение аргумента out_code недопустимо")
+        if in_code is None or \
+           np.sum(np.uint8(np.logical_not(np.array(in_code) != 0) ^ (np.array(in_code) != 1))) > 0:
+            raise ValueError("Значение аргумента in_code недопустимо")
+        assert len(out_code) == self.count_out_demensions, "Не совпадает заданная размерность с поданой"
+        assert len(in_code) == self.count_in_demensions, "Не совпадает заданная размерность с поданой"
+
+
         in_x = np.array(in_code)[self.in_coords]
         out_x = np.array(out_code)[self.out_coords]
         count_modify = 0

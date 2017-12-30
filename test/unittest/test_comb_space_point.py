@@ -7,7 +7,7 @@ import numpy as np
 
 
 class TestPoint__init__(unittest.TestCase):
-    def test__init__cluster_class(self):
+    def test_cluster_class(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=0,
             threshold_bin=1,
@@ -18,7 +18,7 @@ class TestPoint__init__(unittest.TestCase):
             cluster_class=None
         )
 
-    def test__init__threshold_modify(self):
+    def test_threshold_modify(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=-1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=0,
             threshold_bin=1,
@@ -52,7 +52,7 @@ class TestPoint__init__(unittest.TestCase):
             max_cluster_per_point=1
         )
 
-    def test__init__threshold_activate(self):
+    def test_threshold_activate(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=-1, out_threshold_activate=0,
             threshold_bin=1,
@@ -86,7 +86,7 @@ class TestPoint__init__(unittest.TestCase):
             max_cluster_per_point=1
         )
 
-    def test__init__threshold_bin(self):
+    def test_threshold_bin(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=1,
             threshold_bin=-1,
@@ -104,7 +104,7 @@ class TestPoint__init__(unittest.TestCase):
             max_cluster_per_point=1
         )
 
-    def test__init__in_out_size(self):
+    def test_in_out_size(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=1,
             threshold_bin=1,
@@ -138,7 +138,7 @@ class TestPoint__init__(unittest.TestCase):
             max_cluster_per_point=1
         )
 
-    def test__init__count_demensions(self):
+    def test_count_demensions(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=1,
             threshold_bin=1,
@@ -172,7 +172,7 @@ class TestPoint__init__(unittest.TestCase):
             max_cluster_per_point=1
         )
 
-    def test__init__base_lr(self):
+    def test_base_lr(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=1,
             threshold_bin=1,
@@ -190,8 +190,7 @@ class TestPoint__init__(unittest.TestCase):
             max_cluster_per_point=1
         )
 
-    def test__init__max_cluster_per_point(self):
-
+    def test_max_cluster_per_point(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=1,
             threshold_bin=1,
@@ -209,8 +208,7 @@ class TestPoint__init__(unittest.TestCase):
             max_cluster_per_point=-1
         )
 
-    def test__init__is_modify_lr(self):
-
+    def test_is_modify_lr(self):
         self.assertRaises(ValueError, Point, in_threshold_modify=1, out_threshold_modify=1,
             in_threshold_activate=0, out_threshold_activate=1,
             threshold_bin=1,
@@ -266,71 +264,79 @@ class TestPointBase(unittest.TestCase):
 
 
 class TestPointException(TestPointBase):
-    def test_less_0_predict_front(self):
+    def test_less_0_front(self):
         self.assertRaises(ValueError, self.base_point_c.predict_front, [-1] * 1 + [0] * 3)
 
-    def test_less_0_predict_back(self):
+    def test_less_0_back(self):
         self.assertRaises(ValueError, self.base_point_c.predict_back, [-1] * 1 + [0] * 3)
 
-    def test_not_0_not_1_predict_front(self):
+    def test_not_0_not_1_front(self):
         self.assertRaises(ValueError, self.base_point_c.predict_front, [1] * 1 + [0.2] * 1 + [0] * 2)
 
-    def test_not_0_not_1_predict_back(self):
+    def test_not_0_not_1_back(self):
         self.assertRaises(ValueError, self.base_point_c.predict_back, [1] * 1 + [0] * 1 + [0.2] * 2)
 
-    def test_not_0_not_1_predict_front_2(self):
+    def test_not_0_not_1_front_2(self):
         self.assertRaises(ValueError, self.base_point_c.predict_front, [-1] * 1 + [0.2] * 1 + [0] * 2)
 
-    def test_not_0_not_1_predict_back_2(self):
+    def test_not_0_not_1_back_2(self):
         self.assertRaises(ValueError, self.base_point_c.predict_back, [-1] * 1 + [0] * 1 + [0.2] * 2)
 
-    def test_predict_front_type_code_not_valid(self):
+    def test_front_type_code_not_valid(self):
         self.assertRaises(ValueError, self.base_point_a.predict_front, [1], 1)
 
-    def test_predict_front_not_activate(self):
+    def test_front_not_activate(self):
         self.assertRaises(AssertionError, self.base_point_a.predict_front, [-1] * 1 + [0] * 9)
 
-    def test_predict_back_type_code_not_valid(self):
+    def test_back_type_code_not_valid(self):
         self.assertRaises(ValueError, self.base_point_a.predict_back, [1], 1)
 
-    def test_predict_back_not_activate(self):
+    def test_back_not_activate(self):
         self.assertRaises(AssertionError, self.base_point_a.predict_back, [-1] * 1 + [0] * 9)
 
-    def test_predict_back_dot_less_0(self):
+    def test_back_dot_less_0(self):
         self.base_point_b.clusters.append(cluster_mock.ClusterMockMinusNone(0, 0, 0, 0, 0, 0, 0))
         self.assertRaises(ValueError, self.base_point_b.predict_back, [1])
 
-    def test_predict_front_dot_less_0(self):
+    def test_front_dot_less_0(self):
         self.base_point_b.clusters.append(cluster_mock.ClusterMockMinusNone(0, 0, 0, 0, 0, 0, 0))
         self.assertRaises(ValueError, self.base_point_b.predict_front, [1])
 
-    def test_predict_back_dot_more_0_out_is_none(self):
+    def test_back_dot_more_0_out_is_none(self):
         self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
         self.assertRaises(ValueError, self.base_point_b.predict_back, [1])
 
-    def test_predict_front_dot_more_0_out_is_none(self):
+    def test_front_dot_more_0_out_is_none(self):
         self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
         self.assertRaises(ValueError, self.base_point_b.predict_front, [1])
+
+    def test_front_none(self):
+        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
+        self.assertRaises(ValueError, self.base_point_b.predict_front, None)
+
+    def test_back_none(self):
+        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
+        self.assertRaises(ValueError, self.base_point_b.predict_back, None)
 
 
 class TestPointPredict(TestPointBase):
-    def test_predict_back_not_active(self):
+    def test_back_not_active(self):
         opt_in_code = self.base_point_a.predict_back([1])
         self.assertIsNone(opt_in_code)
 
-    def test_predict_front_not_active(self):
+    def test_front_not_active(self):
         opt_in_code = self.base_point_a.predict_front([1])
         self.assertIsNone(opt_in_code)
 
-    def test_predict_back_active_empty_cluster(self):
+    def test_back_active_empty_cluster(self):
         opt_in_code = self.base_point_b.predict_back([1])
         self.assertIsNone(opt_in_code)
 
-    def test_predict_front_active_empty_cluster(self):
+    def test_front_active_empty_cluster(self):
         opt_in_code = self.base_point_b.predict_front([1])
         self.assertIsNone(opt_in_code)
 
-    def test_predict_back_1_cluster_type_code_0(self):
+    def test_back_1_cluster_type_code_0(self):
         self.base_point_c.clusters.append(
             cluster_mock.ClusterMock1CustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0)
@@ -338,7 +344,7 @@ class TestPointPredict(TestPointBase):
         opt_in_code = self.base_point_c.predict_back([1, 0, 0, 0], type_code=0)
         np.testing.assert_array_equal([1, 1, 0, 0], opt_in_code)
 
-    def test_predict_front_1_cluster_type_code_0(self):
+    def test_front_1_cluster_type_code_0(self):
         self.base_point_c.clusters.append(
             cluster_mock.ClusterMock1CustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0)
@@ -346,7 +352,7 @@ class TestPointPredict(TestPointBase):
         opt_out_code = self.base_point_c.predict_front([1, 0, 0, 0], type_code=0)
         np.testing.assert_array_equal([1, 1, 0, 0], opt_out_code)
 
-    def test_predict_back_1_cluster_type_code_minus_1(self):
+    def test_back_1_cluster_type_code_minus_1(self):
         self.base_point_c.clusters.append(
             cluster_mock.ClusterMock1CustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0)
@@ -354,7 +360,7 @@ class TestPointPredict(TestPointBase):
         opt_in_code = self.base_point_c.predict_back([1, 0, 0, 0])
         np.testing.assert_array_equal([1, 1, -1, -1], opt_in_code)
 
-    def test_predict_front_1_cluster_type_code_minus_1(self):
+    def test_front_1_cluster_type_code_minus_1(self):
         self.base_point_c.clusters.append(
             cluster_mock.ClusterMock1CustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0)
@@ -362,7 +368,7 @@ class TestPointPredict(TestPointBase):
         opt_out_code = self.base_point_c.predict_front([1, 0, 0, 0])
         np.testing.assert_array_equal([1, 1, -1, -1], opt_out_code)
 
-    def test_predict_back_1_cluster_type_code_0_get_opt_code(self):
+    def test_back_1_cluster_type_code_0_get_opt_code(self):
         for _ in np.arange(0, 100):
             base_point_d = Point(
                 in_threshold_modify=1, out_threshold_modify=1,
@@ -383,7 +389,7 @@ class TestPointPredict(TestPointBase):
             target[base_point_d.in_coords] = np.array([1, 1, 1, -1])[base_point_d.in_coords]
             np.testing.assert_array_equal(target, opt_in_code)
 
-    def test_predict_front_1_cluster_type_code_0_get_opt_code(self):
+    def test_front_1_cluster_type_code_0_get_opt_code(self):
         for _ in np.arange(0, 100):
             base_point_d = Point(
                 in_threshold_modify=1, out_threshold_modify=1,
@@ -404,7 +410,7 @@ class TestPointPredict(TestPointBase):
             target[base_point_d.out_coords] = np.array([1, 1, 1, 0])[base_point_d.out_coords]
             np.testing.assert_array_equal(target, opt_out_code)
 
-    def test_predict_back_1_cluster_type_code_minus_1_get_opt_code(self):
+    def test_back_1_cluster_type_code_minus_1_get_opt_code(self):
         for _ in np.arange(0, 100):
             base_point_d = Point(
                 in_threshold_modify=1, out_threshold_modify=1,
@@ -425,7 +431,7 @@ class TestPointPredict(TestPointBase):
             target[base_point_d.in_coords] = np.array([1, 1, 1, 0])[base_point_d.in_coords]
             np.testing.assert_array_equal(target, opt_in_code)
 
-    def test_predict_front_1_cluster_type_code_minus_1_get_opt_code(self):
+    def test_front_1_cluster_type_code_minus_1_get_opt_code(self):
         for _ in np.arange(0, 100):
             base_point_d = Point(
                 in_threshold_modify=1, out_threshold_modify=1,
@@ -446,7 +452,7 @@ class TestPointPredict(TestPointBase):
             target[base_point_d.out_coords] = np.array([1, 1, 1, -1])[base_point_d.out_coords]
             np.testing.assert_array_equal(target, opt_out_code)
 
-    def test_predict_back_get_max_dot_for_opt_1(self):
+    def test_back_get_max_dot_for_opt(self):
         self.base_point_c.clusters = [
             cluster_mock.ClusterMockGetDotCustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0),
@@ -461,7 +467,7 @@ class TestPointPredict(TestPointBase):
         target = np.array([1, 1, 1, 1])
         np.testing.assert_array_equal(target, opt_in_code)
 
-    def test_predict_front__get_max_dot_for_opt(self):
+    def test_front_get_max_dot_for_opt(self):
         self.base_point_c.clusters = [
             cluster_mock.ClusterMockGetDotCustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0),
@@ -478,7 +484,14 @@ class TestPointPredict(TestPointBase):
 
 
 class TestPointAdd(TestPointBase):
-    pass
+
+    def test_add_in_none(self):
+        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
+        self.assertRaises(ValueError, self.base_point_b.add, None, [])
+
+    def test_add_out_none(self):
+        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
+        self.assertRaises(ValueError, self.base_point_b.add, [], None)
 
 
 if __name__ == '__main__':

@@ -39,6 +39,14 @@ class Cluster:
         self.is_modify_lr = is_modify_lr
         self.count_modifing = 0
 
+    def code_value_exeption(self, code):
+        # Значения выходного вектора могут быть равны 0 или 1
+        if np.sum(np.uint8(np.logical_not(np.array(code) != 0) ^ (np.array(code) != 1))) > 0:
+            raise ValueError("Значение аргумента может принимать значение 0 или 1")
+
+    def len_exeption(self, obj_len, target_len):
+        assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
+
     """
         Предсказание вперёд, т.е. предсказание входа по выходу
 
@@ -47,12 +55,9 @@ class Cluster:
         Возвращается значение похожести (корелляция), предсказанный подвектор соответствующего размера. Если похожесть
         кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """
-
     def predict_front(self, in_x):
-        # Значения входного вектора могут быть равны 0 или 1
-        if np.sum(np.uint8(np.logical_not(np.array(in_x) != 0) ^ (np.array(in_x) != 1))) > 0:
-            raise ValueError("Значение аргумента недопустимо")
-        assert len(in_x) == len(self.in_w), "Не совпадает заданная размерность с поданой"
+        self.code_value_exeption(in_x)
+        self.len_exeption(len(in_x), len(self.in_w))
         dot = np.dot(in_x, self.in_w)
         if np.abs(dot) > self.in_threshold_modify:
             return dot, np.uint8(self.out_w > self.threshold_bin)
@@ -69,10 +74,8 @@ class Cluster:
     """
 
     def predict_back(self, out_x):
-        # Значения выходного вектора могут быть равны 0 или 1
-        if np.sum(np.uint8(np.logical_not(np.array(out_x) != 0) ^ (np.array(out_x) != 1))) > 0:
-            raise ValueError("Значение аргумента недопустимо")
-        assert len(out_x) == len(self.out_w), "Не совпадает заданная размерность с поданой"
+        self.code_value_exeption(out_x)
+        self.len_exeption(len(out_x), len(self.out_w))
         dot = np.dot(out_x, self.out_w)
         if np.abs(dot) > self.out_threshold_modify:
             return dot, np.uint8(self.in_w > self.threshold_bin)
@@ -109,8 +112,11 @@ class Cluster:
         возвращается 0
     """
     def modify(self, in_x, out_x):
-        if np.sum(np.uint8(np.array(in_x) < 0)) or np.sum(np.uint8(np.array(out_x) < 0)):
-            raise ValueError("Значение переменной меньше 0")
+        self.code_value_exeption(out_x)
+        self.code_value_exeption(in_x)
+        self.len_exeption(len(out_x), len(self.out_w))
+        self.len_exeption(len(in_x), len(self.in_w))
+
         in_dot = np.dot(in_x, self.in_w)
         out_dot = np.dot(out_x, self.out_w)
 
