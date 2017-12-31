@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 
 import unittest
-import test.unittest.cluster_mock as cluster_mock
+import numpy as np
 from combinatorial_space.minicolumn import Minicolumn
-from test.unittest.point_mock import PointMockNone
+from test.unittest.point_mock import PointMockNone, PointMockOddEven
 
 
 class TestMinicolumn__init__(unittest.TestCase):
@@ -78,18 +78,53 @@ class TestMinicolumn__init__(unittest.TestCase):
         self.assertRaises(ValueError, Minicolumn, out_random_bits=11, count_out_demensions=10)
 
 
-class TestPointBase(unittest.TestCase):
+class TestPointPredict(unittest.TestCase):
     def setUp(self):
-        self.base_point_a = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=1, out_threshold_activate=1,
-            threshold_bin=1,
-            in_size=1, out_size=1,
-            count_in_demensions=1, count_out_demensions=1,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1,
-            cluster_class=cluster_mock.ClusterMock0None
+        self.minicolumn_none = Minicolumn(
+            in_random_bits=1,
+            out_random_bits=1,
+            count_in_demensions=1,
+            count_out_demensions=1,
+            class_point=PointMockNone
         )
+        self.minicolumn = Minicolumn(
+            space_size=20,
+            in_random_bits=10,
+            out_random_bits=10,
+            count_in_demensions=10,
+            count_out_demensions=10,
+            seed=41,
+            threshold_bits_controversy=0.05,
+            class_point=PointMockOddEven
+        )
+
+    def test_front_assert_not_active_point(self):
+        self.assertRaises(AssertionError, self.minicolumn_none.front_predict, [1])
+
+    def test_back_assert_not_active_point(self):
+        self.assertRaises(AssertionError, self.minicolumn_none.back_predict, [1])
+
+    def test_front_assert_active_point(self):
+        controversy, code = self.minicolumn.front_predict([1] * 10)
+        np.testing.assert_array_equal(np.array([1, 0, 1, 0, 1, 0, 0, 1, 1, 0]), code)
+        self.assertEqual(2, controversy)
+
+    def test_back_assert_active_point(self):
+        controversy, code = self.minicolumn.back_predict([1] * 10)
+        np.testing.assert_array_equal(np.array([1, 0, 1, 0, 1, 0, 0, 1, 1, 0]), code)
+        self.assertEqual(2, controversy)
+
+
+class TestPointSleep(unittest.TestCase):
+    def setUp(self):
+        self.minicolumn = Minicolumn(
+            in_random_bits=1,
+            out_random_bits=1,
+            count_in_demensions=1,
+            count_out_demensions=1,
+            class_point=PointMockNone
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,7 +1,6 @@
 from copy import deepcopy
 import Levenshtein
 import numpy as np
-
 from combinatorial_space.point import Point
 
 
@@ -76,122 +75,149 @@ class Minicolumn:
         self.count_in_demensions, self.count_out_demensions = count_in_demensions, count_out_demensions
         self.threshold_bits_controversy = threshold_bits_controversy
         self.out_non_zero_bits = out_non_zero_bits
+
+        self.__threshold_active = None
+        self.__threshold_in_len = None
+        self.__threshold_out_len = None
+        self.__clusters_of_points = None
+        self.__active_clusters = None
         
         np.random.seed(seed)
         
     """
-    Получение выходного кода по входному. Прямое предсказание в каждой точке комбинаторного пространства
-    
-    in_code - входной код
-    
-    Возвращаемые значения: непротиворечивость, выходной код. В случае отсутствия хотя бы одной активной точки,
-    возвращается бесконечное значение противоречивости
+        Получение выходного кода по входному. Прямое предсказание в каждой точке комбинаторного пространства
+        
+        in_code - входной код
+        
+        Возвращаемые значения: непротиворечивость, выходной код. В случае отсутствия хотя бы одной активной точки,
+        возвращается бесконечное значение противоречивости
     """
     def front_predict(self, in_code):
         out_code = [0] * self.count_out_demensions
         count = np.array([0] * self.count_out_demensions)
         for point in self.space:
-            __out_code = point.predict_front(in_code, -1)
+            out_code_local = point.predict_front(in_code, -1)
             
             # Неактивная точка
-            if __out_code is None:
+            if out_code_local is None:
                 continue
-                
-            __count = np.uint8(__out_code != 0)
-            count += __count
-            out_code += __out_code
-        if np.sum(count == 0) > 0:
-            raise ValueError("Не все биты входного вектора учитываются")
-            controversy = np.sum(np.abs(np.divide(out_code, count)) < self.threshold_controversy)
-            out_code[out_code <= 0] = 0
-            out_code[out_code > 0] = 1
-            return controversy, out_code
-        else:
-            return np.inf, out_code
+
+            count += np.uint8(out_code_local != 0)
+            out_code += out_code_local
+
+        # TODO: возможно, assert стоит заменить на
+        # TODO: return np.inf, out_code
+        assert np.sum(np.uint8(np.array(count) == 0)) == 0, "Не все биты входного вектора учитываются. Следует пересоздать миниколонку"
+
+        controversy = np.sum(np.uint8(np.abs(np.divide(out_code, count)) < self.threshold_bits_controversy))
+        out_code[out_code <= 0] = 0
+        out_code[out_code > 0] = 1
+        return controversy, out_code
     
     """
-    Получение входного кода по выходному. Обратное предсказание в каждой точке комбинаторного пространства
-    
-    out_code - выходной код
-    
-    Возвращаемые значения: непротиворечивость, входной код
+        Получение входного кода по выходному. Обратное предсказание в каждой точке комбинаторного пространства
+        
+        out_code - выходной код
+        
+        Возвращаемые значения: непротиворечивость, входной код
     """
     def back_predict(self, out_code):
         in_code = [0] * self.count_in_demensions
         count = [0] * self.count_in_demensions
         for point in self.space:
-            __in_code = point.predict_back(out_code, -1)
+            in_code_local = point.predict_back(out_code, -1)
             
             # Неактивная точка
-            if __in_code is None:
+            if in_code_local is None:
                 continue
             
-            __count = np.uint8(__in_code != 0)
+            __count = np.uint8(in_code_local != 0)
             count += __count
-            in_code += __in_code
-        if np.sum(count == np.nan):
-            raise ValueError("Не все биты выходного вектора учитываются")
-        controversy = np.sum(np.abs(in_code / count) < self.threshold_controversy)
+            in_code += in_code_local
+
+        # TODO: возможно, стоит заменить на
+        # TODO: return np.inf, out_code
+        assert np.sum(np.uint8(np.array(count) == 0)) == 0, "Не все биты входного вектора учитываются. Следует пересоздать миниколонку"
+
+        controversy = np.sum(np.uint8(np.abs(in_code / count) < self.threshold_bits_controversy))
         in_code[in_code <= 0] = 0
         in_code[in_code > 0] = 1
         return controversy, in_code
-        
+
+    def __sleep_process_clusters(self, point):
+
+        for cluster_ind, cluster in enumerate(point.clusters):
+            in_active_mask = np.abs(cluster.in_w) > self.__threshold_active
+            out_active_mask = np.abs(cluster.out_w) > self.__threshold_active
+
+            if len(cluster.in_w[in_active_mask]) > self.__threshold_in_len and \
+                            len(cluster.out_w[out_active_mask]) > self.__threshold_out_len:
+
+                # Подрезаем кластер
+                cluster.base_in_subvector[~in_active_mask] = 0
+                cluster.base_out_subvector[~out_active_mask] = 0
+
+                self.__active_clusters.append(cluster)
+                self.__clusters_of_points[-1].append(cluster_ind)
+            else:
+                self.count_clusters -= 1
+
+    def __sleep_remove_the_same_clusters(self, point):
+
+        # Удаляем одинаковые кластеры (те кластеры, у которых одинаковые базовые векторы)
+        the_same_clusters = 0
+        point.clusters = []
+        for cluster_i in range(len(self.__active_clusters)):
+            is_exist_the_same = False
+            for cluster_j in range(cluster_i + 1, len(self.__active_clusters)):
+                if np.sum(np.uint8(self.__active_clusters[cluster_i].base_in_subvector == \
+                   self.__active_clusters[cluster_j].base_in_subvector)) \
+                        and \
+                   np.sum(np.uint8(self.__active_clusters[cluster_i].base_out_subvector == \
+                   self.__active_clusters[cluster_j].base_out_subvector)):
+                    is_exist_the_same = True
+                    continue
+            if not is_exist_the_same:
+                point.clusters.append(self.__active_clusters[cluster_i])
+            else:
+                the_same_clusters += 1
+                self.count_clusters -= 1
+        return the_same_clusters
+
     """
-    Этап сна
-    
-    threshold_active - порог активности бита внутри кластера (вес в преобразовании к первой главной компоненте), 
-    выше которого активность остаётся
-    threshold_in_len, threshold_out_len - порог количества ненулевых битов
+        Этап сна
+        
+        threshold_active - порог активности бита внутри кластера (вес в преобразовании к первой главной компоненте), 
+        выше которого активность остаётся
+        threshold_in_len, threshold_out_len - порог количества ненулевых битов
     """    
     def sleep(self, threshold_active=0.75, threshold_in_len=4, threshold_out_len=0):
-        clusters_of_points = []
         the_same_clusters = 0
+
+        self.__threshold_active = threshold_active
+        self.__threshold_in_len = threshold_in_len
+        self.__threshold_out_len = threshold_out_len
+        self.__clusters_of_points = []
+
         for point_ind, point in enumerate(self.space):
-            clusters_of_points.append([])
-            active_clusters = []
-            for cluster_ind, cluster in enumerate(point.clusters):
-                in_active_mask = np.abs(cluster.in_w) > threshold_active
-                out_active_mask = np.abs(cluster.out_w) > threshold_active
-                
-                if len(cluster.in_w[in_active_mask]) > threshold_in_len and \
-                    len(cluster.out_w[out_active_mask]) > threshold_out_len:
-                        
-                    # Подрезаем кластер
-                    cluster.base_in_subvector[~in_active_mask] = 0
-                    cluster.base_out_subvector[~out_active_mask] = 0
-                    
-                    active_clusters.append(cluster)
-                    clusters_of_points[-1].append(cluster_ind)
-                else:
-                    self.count_clusters -= 1
+            self.__clusters_of_points.append([])
+            self.__active_clusters = []
+
+            # Отбор наиболее информативных кластеров
+            self.__sleep_process_clusters(point)
                     
             # Удаляем одинаковые кластеры (те кластеры, у которых одинаковые базовые векторы)
-            point.clusters = []
-            for cluster_i in range(len(active_clusters)):
-                is_exist_the_same = False
-                for cluster_j in range(cluster_i+1, len(active_clusters)):
-                    if np.sum(np.uint8(active_clusters[cluster_i].base_in_subvector == \
-                        active_clusters[cluster_j].base_in_subvector)) \
-                        and \
-                        np.sum(np.uint8(active_clusters[cluster_i].base_out_subvector == \
-                        active_clusters[cluster_j].base_out_subvector)):
-                            is_exist_the_same = True
-                            continue
-                if not is_exist_the_same:
-                    point.clusters.append(active_clusters[cluster_i])
-                else:
-                    the_same_clusters += 1
-                    self.count_clusters -= 1
+            the_same_clusters = self.__sleep_remove_the_same_clusters(point)
             
-        return clusters_of_points, the_same_clusters
+        return self.__clusters_of_points, the_same_clusters
         
     """
-    Проверям: пора ли спать
+        Проверям: пора ли спать
     """
     def is_sleep(self):
         return self.count_clusters > self.max_count_clusters
     
-    def code_alignment(self, code):
+    def __code_alignment(self, code):
         if self.count_active_bits > self.out_non_zero_bits:
             active_bits = np.where(code == 1)
             count_active_bits = active_bits.shape[0]
@@ -215,21 +241,21 @@ class Minicolumn:
         
     
     """
-    Этап обучения без учителя
-    
-    Делается предсказание для всех переданных кодов и выбирается самый непротиворечивый из них, 
-    либо констатируется, что такого нет.
-    
-    Для каждой активной точки выбирается наиболее подходящий кластер. Его предсказание учитывается в качестве
-    ответа. Для конкретной точки все остальные кластеры учтены не будут.
-    
-    В качестве результата непротиворечивости берём среднее значение по ответам делёное на число активных точек.
-    
-    in_codes - входные коды в разных контекстах
-    threshold_controversy_in, threshold_controversy_out - порого противоречивости для кодов
-    
-    Возвращается оптимальный код, порядковый номер контекста-победителя, 
-    количество фэйлов во входном и выходном векторах
+        Этап обучения без учителя
+        
+        Делается предсказание для всех переданных кодов и выбирается самый непротиворечивый из них, 
+        либо констатируется, что такого нет.
+        
+        Для каждой активной точки выбирается наиболее подходящий кластер. Его предсказание учитывается в качестве
+        ответа. Для конкретной точки все остальные кластеры учтены не будут.
+        
+        В качестве результата непротиворечивости берём среднее значение по ответам делёное на число активных точек.
+        
+        in_codes - входные коды в разных контекстах
+        threshold_controversy_in, threshold_controversy_out - порого противоречивости для кодов
+        
+        Возвращается оптимальный код, порядковый номер контекста-победителя, 
+        количество фэйлов во входном и выходном векторах
     """
     def unsupervised_learning(self, in_codes, threshold_controversy_in, threshold_controversy_out):
                        
@@ -251,7 +277,7 @@ class Minicolumn:
                 continue
                 
             # Удаляем или добавляем единицы (если их мало или много)
-            out_code = self.code_alignment(out_code)
+            out_code = self.__code_alignment(out_code)
             
             controversy_in, in_code = self.back_predict(out_code)
             
@@ -269,20 +295,20 @@ class Minicolumn:
         return min_out_code, min_ind_hamming, in_fail, out_fail
     
     """
-    Этап обучения без учителя
-    
-    Делается предсказание для всех переданных кодов и выбирается самый непротиворечивый из них, 
-    либо констатируется, что такого нет.
-    
-    Для каждой активной точки выбирается наиболее подходящий кластер. Его предсказание учитывается в качестве
-    ответа. Для конкретной точки все остальные кластеры учтены не будут.
-    
-    В качестве результата непротиворечивости берём среднее значение по ответам делёное на число активных точек.
-    
-    codes - входные коды в разных контекстах
-    threshold_controversy_in, threshold_controversy_out - порого противоречивости для кодов
-    
-    Возвращается ...
+        Этап обучения без учителя
+        
+        Делается предсказание для всех переданных кодов и выбирается самый непротиворечивый из них, 
+        либо констатируется, что такого нет.
+        
+        Для каждой активной точки выбирается наиболее подходящий кластер. Его предсказание учитывается в качестве
+        ответа. Для конкретной точки все остальные кластеры учтены не будут.
+        
+        В качестве результата непротиворечивости берём среднее значение по ответам делёное на число активных точек.
+        
+        codes - входные коды в разных контекстах
+        threshold_controversy_in, threshold_controversy_out - порого противоречивости для кодов
+        
+        Возвращается ...
     """
     def supervised_learning(self, in_codes, out_codes, threshold_controversy_out):
                        
@@ -313,15 +339,15 @@ class Minicolumn:
     
     
     """
-    Этап обучения с учителем
-    
-    Создание и модификация кластеров на основе пары кодов: входной и выходной
-    
-    in_code, out_code - входной и выходной коды
-    threshold_controversy_in, threshold_controversy_out - пороги противоречивости на входной и выходной коды
-    
-    Возвращается количество точек, которые оказались неактивными; количество модификаций кластеров;
-    количество новых кластеров
+        Этап обучения с учителем
+        
+        Создание и модификация кластеров на основе пары кодов: входной и выходной
+        
+        in_code, out_code - входной и выходной коды
+        threshold_controversy_in, threshold_controversy_out - пороги противоречивости на входной и выходной коды
+        
+        Возвращается количество точек, которые оказались неактивными; количество модификаций кластеров;
+        количество новых кластеров
     """
     def learn(self, in_codes, out_codes=None, threshold_controversy_in=20, threshold_controversy_out=6):
         if self.is_sleep():
