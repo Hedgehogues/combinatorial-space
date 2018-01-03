@@ -175,10 +175,10 @@ class Minicolumn:
             is_exist_the_same = False
             for cluster_j in range(cluster_i + 1, len(self.__active_clusters)):
                 if np.sum(np.uint8(self.__active_clusters[cluster_i].in_w == \
-                   self.__active_clusters[cluster_j].in_w)) \
+                   self.__active_clusters[cluster_j].in_w)) == len(self.__active_clusters[cluster_i].in_w) \
                         and \
                    np.sum(np.uint8(self.__active_clusters[cluster_i].out_w == \
-                   self.__active_clusters[cluster_j].out_w)):
+                   self.__active_clusters[cluster_j].out_w)) == len(self.__active_clusters[cluster_i].out_w):
                     is_exist_the_same = True
                     continue
             if not is_exist_the_same:

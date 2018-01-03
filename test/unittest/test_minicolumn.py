@@ -212,9 +212,29 @@ class TestPointSleep(unittest.TestCase):
             np.testing.assert_array_equal([1, 1, 1, 0, 0], point.clusters[0].in_w)
             np.testing.assert_array_equal([1, 1, 1, 0, 0], point.clusters[0].out_w)
 
-    @unittest.skip('Не реализован')
-    def test_active_in_mask_less_threshold(self):
-        pass
+    def test_active_mask_more_threshold_not_all_cluster_active(self):
+        self.minicolumn_activate.count_clusters = 5 * 5
+        for point in self.minicolumn_activate.space:
+            for i in range(5):
+                point.clusters.append(ClusterMockForPointWeight(
+                    np.array([1] * i + [0] * (5 - i)),
+                    np.array([1] * i + [0] * (5 - i))
+                ))
+
+        points, the_same_clusters = self.minicolumn_activate.sleep(threshold_in_len=2, threshold_out_len=2)
+
+        for clusters_number in points:
+            np.testing.assert_array_equal([3, 4], clusters_number)
+
+        self.assertEqual(10, sum([len(point.clusters) for point in self.minicolumn_activate.space]))
+        self.assertEqual(0, the_same_clusters)
+
+        for point in self.minicolumn_activate.space:
+            self.assertEqual(2, len(point.clusters))
+            np.testing.assert_array_equal([1, 1, 1, 0, 0], point.clusters[0].in_w)
+            np.testing.assert_array_equal([1, 1, 1, 1, 0], point.clusters[1].in_w)
+            np.testing.assert_array_equal([1, 1, 1, 0, 0], point.clusters[0].out_w)
+            np.testing.assert_array_equal([1, 1, 1, 1, 0], point.clusters[1].out_w)
 
 
 if __name__ == '__main__':
