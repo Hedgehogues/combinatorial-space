@@ -1,17 +1,18 @@
 from random import randint
 import numpy as np
 from combinatorial_space.cluster import Cluster
+from test.unittest.cluster_mock import ClusterMockForPointWeight
 
 
 class PointMockOddEven:
     def __init__(self,
-                 in_threshold_modify, out_threshold_modify,
-                 in_threshold_activate, out_threshold_activate,
-                 threshold_bin,
-                 in_size, out_size,
-                 count_in_demensions, count_out_demensions,
-                 base_lr, is_modify_lr,
-                 max_cluster_per_point,
+                 in_threshold_modify=5, out_threshold_modify=0,
+                 in_threshold_activate=5, out_threshold_activate=0,
+                 threshold_bin=0.1,
+                 in_random_bits=24, out_random_bits=10,
+                 count_in_demensions=256, count_out_demensions=16,
+                 base_lr=0.01, is_modify_lr=True,
+                 max_cluster_per_point=100,
                  cluster_class=Cluster):
         self.clusters = []
         self.count_in_demensions = count_in_demensions
@@ -35,13 +36,35 @@ class PointMockOddEven:
 
 class PointMockNone:
     def __init__(self,
-                 in_threshold_modify, out_threshold_modify,
-                 in_threshold_activate, out_threshold_activate,
-                 threshold_bin,
-                 in_size, out_size,
-                 count_in_demensions, count_out_demensions,
-                 base_lr, is_modify_lr,
-                 max_cluster_per_point,
+                 in_threshold_modify=5, out_threshold_modify=0,
+                 in_threshold_activate=5, out_threshold_activate=0,
+                 threshold_bin=0.1,
+                 in_random_bits=24, out_random_bits=10,
+                 count_in_demensions=256, count_out_demensions=16,
+                 base_lr=0.01, is_modify_lr=True,
+                 max_cluster_per_point=100,
+                 cluster_class=Cluster):
+        self.clusters = []
+
+    def predict_front(self, in_code, type_code=-1):
+        return None
+
+    def predict_back(self, out_code, type_code=-1):
+        return None
+
+    def add(self, in_code, out_code):
+        return 0, 0, False
+
+
+class PointMock5Clusters:
+    def __init__(self,
+                 in_threshold_modify=5, out_threshold_modify=0,
+                 in_threshold_activate=5, out_threshold_activate=0,
+                 threshold_bin=0.1,
+                 in_random_bits=24, out_random_bits=10,
+                 count_in_demensions=256, count_out_demensions=16,
+                 base_lr=0.01, is_modify_lr=True,
+                 max_cluster_per_point=100,
                  cluster_class=Cluster):
         self.clusters = []
 

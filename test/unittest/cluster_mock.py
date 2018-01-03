@@ -95,3 +95,22 @@ class ClusterMockGetDotCustomBase:
 
     def modify(self, in_x, out_x):
         return 1
+
+
+class ClusterMockForPointWeight:
+    def __init__(self,
+                 base_in, base_out,
+                 in_threshold_modify=5, out_threshold_modify=0,
+                 threshold_bin=0.1,
+                 base_lr=0.01,
+                 is_modify_lr=True):
+        self.in_w, self.out_w = base_in, base_out
+
+    def predict_front(self, in_x):
+        return self.in_w
+
+    def predict_back(self, out_x):
+        return self.out_w
+
+    def modify(self, in_x, out_x):
+        return 1

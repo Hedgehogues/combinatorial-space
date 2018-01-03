@@ -3,7 +3,8 @@
 import unittest
 import numpy as np
 from combinatorial_space.minicolumn import Minicolumn
-from test.unittest.point_mock import PointMockNone, PointMockOddEven
+from test.unittest.cluster_mock import ClusterMockForPointWeight
+from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMock5Clusters
 
 
 class TestMinicolumn__init__(unittest.TestCase):
@@ -81,6 +82,7 @@ class TestMinicolumn__init__(unittest.TestCase):
 class TestPointPredict(unittest.TestCase):
     def setUp(self):
         self.minicolumn_none = Minicolumn(
+            space_size=100,
             in_random_bits=1,
             out_random_bits=1,
             count_in_demensions=1,
@@ -97,6 +99,32 @@ class TestPointPredict(unittest.TestCase):
             threshold_bits_controversy=0.05,
             class_point=PointMockOddEven
         )
+        self.minicolumn_front = Minicolumn(
+            space_size=20,
+            in_random_bits=10,
+            out_random_bits=2,
+            count_in_demensions=10,
+            count_out_demensions=2,
+            seed=41,
+            threshold_bits_controversy=0.05,
+            class_point=PointMockOddEven
+        )
+        self.minicolumn_back = Minicolumn(
+            space_size=20,
+            in_random_bits=2,
+            out_random_bits=10,
+            count_in_demensions=2,
+            count_out_demensions=10,
+            seed=41,
+            threshold_bits_controversy=0.05,
+            class_point=PointMockOddEven
+        )
+
+    def test_front_assert_not_valid_dem(self):
+        self.assertRaises(AssertionError, self.minicolumn_front.front_predict, [1])
+
+    def test_back_assert_not_valid_dem(self):
+        self.assertRaises(AssertionError, self.minicolumn_back.back_predict, [1])
 
     def test_front_assert_not_active_point(self):
         self.assertRaises(AssertionError, self.minicolumn_none.front_predict, [1])
@@ -118,12 +146,75 @@ class TestPointPredict(unittest.TestCase):
 class TestPointSleep(unittest.TestCase):
     def setUp(self):
         self.minicolumn = Minicolumn(
+            space_size=5,
             in_random_bits=1,
             out_random_bits=1,
             count_in_demensions=1,
             count_out_demensions=1,
-            class_point=PointMockNone
+            class_point=PointMock5Clusters
         )
+        self.minicolumn_activate = Minicolumn(
+            space_size=5,
+            in_random_bits=1,
+            out_random_bits=1,
+            in_threshold_activate=2,
+            out_threshold_activate=2,
+            count_in_demensions=1,
+            count_out_demensions=1,
+            class_point=PointMock5Clusters
+        )
+
+    def test_assert_input_params(self):
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_active=2)
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_active=-1)
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_in_len=-1)
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_out_len=-1)
+
+    def test_no_clusters(self):
+        clusters, the_same_clusters = self.minicolumn.sleep()
+        self.assertEqual(0, sum([len(cluster) for cluster in clusters]))
+        self.assertEqual(0, the_same_clusters)
+
+    def __init_active_mask_less_threshold(self, in_vec, out_vec):
+        self.minicolumn_activate.count_clusters = 5 * 5
+        for point in self.minicolumn_activate.space:
+            for _ in range(5):
+                point.clusters.append(ClusterMockForPointWeight(in_vec, out_vec))
+
+    def test_active_out_mask_less_threshold(self):
+        self.__init_active_mask_less_threshold(np.array([0, 0, 0, 0, 0]), np.array([1, 1, 1, 1, 1]))
+        clusters, the_same_clusters = self.minicolumn_activate.sleep()
+        self.assertEqual(0, sum([len(cluster) for cluster in clusters]))
+        self.assertEqual(0, the_same_clusters)
+
+    def test_active_in_mask_less_threshold(self):
+        self.__init_active_mask_less_threshold(np.array([1, 1, 1, 1, 1]), np.array([0, 0, 0, 0, 0]))
+        clusters, the_same_clusters = self.minicolumn_activate.sleep()
+        self.assertEqual(0, sum([len(cluster) for cluster in clusters]))
+        self.assertEqual(0, the_same_clusters)
+
+    def test_active_mask_more_threshold_all_cluster_active(self):
+        self.__init_active_mask_less_threshold(
+            np.array([1, 1, 1, 0, 0]),
+            np.array([1, 1, 1, 0, 0])
+        )
+
+        points, the_same_clusters = self.minicolumn_activate.sleep(threshold_in_len=2, threshold_out_len=2)
+
+        for clusters_number in points:
+            np.testing.assert_array_equal([0, 1, 2, 3, 4], clusters_number)
+
+        self.assertEqual(5, sum([len(point.clusters) for point in self.minicolumn_activate.space]))
+        self.assertEqual(20, the_same_clusters)
+
+        for point in self.minicolumn_activate.space:
+            self.assertEqual(1, len(point.clusters))
+            np.testing.assert_array_equal([1, 1, 1, 0, 0], point.clusters[0].in_w)
+            np.testing.assert_array_equal([1, 1, 1, 0, 0], point.clusters[0].out_w)
+
+    @unittest.skip('Не реализован')
+    def test_active_in_mask_less_threshold(self):
+        pass
 
 
 if __name__ == '__main__':

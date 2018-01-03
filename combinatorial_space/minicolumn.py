@@ -93,6 +93,8 @@ class Minicolumn:
         возвращается бесконечное значение противоречивости
     """
     def front_predict(self, in_code):
+        assert len(in_code) == self.count_in_demensions
+
         out_code = [0] * self.count_out_demensions
         count = np.array([0] * self.count_out_demensions)
         for point in self.space:
@@ -122,6 +124,8 @@ class Minicolumn:
         Возвращаемые значения: непротиворечивость, входной код
     """
     def back_predict(self, out_code):
+        assert len(out_code) == self.count_out_demensions
+
         in_code = [0] * self.count_in_demensions
         count = [0] * self.count_in_demensions
         for point in self.space:
@@ -154,8 +158,8 @@ class Minicolumn:
                             len(cluster.out_w[out_active_mask]) > self.__threshold_out_len:
 
                 # Подрезаем кластер
-                cluster.base_in_subvector[~in_active_mask] = 0
-                cluster.base_out_subvector[~out_active_mask] = 0
+                cluster.in_w[~in_active_mask] = 0
+                cluster.out_w[~out_active_mask] = 0
 
                 self.__active_clusters.append(cluster)
                 self.__clusters_of_points[-1].append(cluster_ind)
@@ -170,11 +174,11 @@ class Minicolumn:
         for cluster_i in range(len(self.__active_clusters)):
             is_exist_the_same = False
             for cluster_j in range(cluster_i + 1, len(self.__active_clusters)):
-                if np.sum(np.uint8(self.__active_clusters[cluster_i].base_in_subvector == \
-                   self.__active_clusters[cluster_j].base_in_subvector)) \
+                if np.sum(np.uint8(self.__active_clusters[cluster_i].in_w == \
+                   self.__active_clusters[cluster_j].in_w)) \
                         and \
-                   np.sum(np.uint8(self.__active_clusters[cluster_i].base_out_subvector == \
-                   self.__active_clusters[cluster_j].base_out_subvector)):
+                   np.sum(np.uint8(self.__active_clusters[cluster_i].out_w == \
+                   self.__active_clusters[cluster_j].out_w)):
                     is_exist_the_same = True
                     continue
             if not is_exist_the_same:
@@ -190,8 +194,17 @@ class Minicolumn:
         threshold_active - порог активности бита внутри кластера (вес в преобразовании к первой главной компоненте), 
         выше которого активность остаётся
         threshold_in_len, threshold_out_len - порог количества ненулевых битов
+        
+        Возвращается количество одинаковых кластеров
     """    
     def sleep(self, threshold_active=0.75, threshold_in_len=4, threshold_out_len=0):
+        if threshold_active < 0 or threshold_active > 1:
+            raise ValueError("Неожиданное значение переменной")
+        if threshold_in_len < 0:
+            raise ValueError("Неожиданное значение переменной")
+        if threshold_out_len < 0:
+            raise ValueError("Неожиданное значение переменной")
+
         the_same_clusters = 0
 
         self.__threshold_active = threshold_active
@@ -207,7 +220,7 @@ class Minicolumn:
             self.__sleep_process_clusters(point)
                     
             # Удаляем одинаковые кластеры (те кластеры, у которых одинаковые базовые векторы)
-            the_same_clusters = self.__sleep_remove_the_same_clusters(point)
+            the_same_clusters += self.__sleep_remove_the_same_clusters(point)
             
         return self.__clusters_of_points, the_same_clusters
         
