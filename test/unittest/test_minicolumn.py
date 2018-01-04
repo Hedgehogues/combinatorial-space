@@ -2,7 +2,7 @@
 
 import unittest
 import numpy as np
-from combinatorial_space.minicolumn import Minicolumn
+from combinatorial_space.minicolumn import Minicolumn, PREDICT_ENUM
 from test.unittest.cluster_mock import ClusterMockForPointWeight
 from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMock5Clusters
 
@@ -78,6 +78,10 @@ class TestMinicolumn__init__(unittest.TestCase):
         self.assertRaises(ValueError, Minicolumn, in_random_bits=11, count_in_demensions=10)
         self.assertRaises(ValueError, Minicolumn, out_random_bits=11, count_out_demensions=10)
 
+    def test_count_active_point(self):
+        self.assertRaises(ValueError, Minicolumn, count_active_point=-1)
+        self.assertRaises(ValueError, Minicolumn, count_active_point=None)
+
 
 class TestPointPredict(unittest.TestCase):
     def setUp(self):
@@ -124,11 +128,13 @@ class TestPointPredict(unittest.TestCase):
         self.assertRaises(ValueError, self.minicolumn_front.front_predict, [-1] * 10)
         self.assertRaises(ValueError, self.minicolumn_front.front_predict, [2] * 10)
         self.assertRaises(ValueError, self.minicolumn_front.front_predict, [0.8] * 10)
+        self.assertRaises(ValueError, self.minicolumn_front.front_predict, None)
 
     def test_back_assert_not_valid_value(self):
         self.assertRaises(ValueError, self.minicolumn_back.back_predict, [-1] * 10)
         self.assertRaises(ValueError, self.minicolumn_back.back_predict, [2] * 10)
         self.assertRaises(ValueError, self.minicolumn_back.back_predict, [0.8] * 10)
+        self.assertRaises(ValueError, self.minicolumn_back.back_predict, None)
 
     def test_front_assert_not_valid_dem(self):
         self.assertRaises(AssertionError, self.minicolumn_front.front_predict, [1])
@@ -137,20 +143,40 @@ class TestPointPredict(unittest.TestCase):
         self.assertRaises(AssertionError, self.minicolumn_back.back_predict, [1])
 
     def test_front_assert_not_active_point(self):
-        self.assertRaises(AssertionError, self.minicolumn_none.front_predict, [1])
+        controversy, code, accept = self.minicolumn_none.front_predict([1])
+        self.assertEqual(None, code)
+        self.assertEqual(None, controversy)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS, accept)
 
     def test_back_assert_not_active_point(self):
-        self.assertRaises(AssertionError, self.minicolumn_none.back_predict, [1])
+        controversy, code, accept = self.minicolumn_none.back_predict([1])
+        self.assertEqual(None, code)
+        self.assertEqual(None, controversy)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS, accept)
 
-    def test_front_assert_active_point(self):
-        controversy, code = self.minicolumn.front_predict([1] * 10)
+    def test_front_assert_there_are(self):
+        controversy, code, accept = self.minicolumn_none.front_predict([1])
+        self.assertEqual(None, code)
+        self.assertEqual(None, controversy)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS, accept)
+
+    def test_back_assert_there_are_non_acrive_points(self):
+        self.assertEqual(False, True)
+
+    def test_front_assert_there_are_non_acrive_points(self):
+        self.assertEqual(False, True)
+
+    def test_front_active_point(self):
+        controversy, code, accept = self.minicolumn.front_predict([1] * 10)
         np.testing.assert_array_equal(np.array([1, 0, 1, 0, 1, 0, 0, 1, 1, 0]), code)
         self.assertEqual(2, controversy)
+        self.assertEqual(PREDICT_ENUM.ACCEPT, accept)
 
-    def test_back_assert_active_point(self):
-        controversy, code = self.minicolumn.back_predict([1] * 10)
+    def test_back_active_point(self):
+        controversy, code, accept = self.minicolumn.back_predict([1] * 10)
         np.testing.assert_array_equal(np.array([1, 0, 1, 0, 1, 0, 0, 1, 1, 0]), code)
         self.assertEqual(2, controversy)
+        self.assertEqual(PREDICT_ENUM.ACCEPT, accept)
 
 
 class TestPointSleep(unittest.TestCase):
@@ -179,6 +205,9 @@ class TestPointSleep(unittest.TestCase):
         self.assertRaises(ValueError, self.minicolumn.sleep, threshold_active=-1)
         self.assertRaises(ValueError, self.minicolumn.sleep, threshold_in_len=-1)
         self.assertRaises(ValueError, self.minicolumn.sleep, threshold_out_len=-1)
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_out_len=None)
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_active=None)
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_in_len=None)
 
     def test_no_clusters(self):
         clusters, the_same_clusters = self.minicolumn.sleep()
@@ -247,7 +276,7 @@ class TestPointSleep(unittest.TestCase):
             np.testing.assert_array_equal([1, 1, 1, 1, 0], point.clusters[1].out_w)
 
 
-class TestPointUnsupervisedLearning(unittest.TestCase):
+class TestPointUnsupervisedLearningException(unittest.TestCase):
     def setUp(self):
         self.minicolumn = Minicolumn(
             space_size=5,
@@ -258,12 +287,25 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             class_point=PointMock5Clusters
         )
 
-    @unittest.skip('Не реализован тест')
-    def test_assert_input_params(self):
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([0, ]))
-        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_active=-1)
-        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_in_len=-1)
-        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_out_len=-1)
+    def test_in_codes(self):
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=None)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([-1]))
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([2]))
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([0.5]))
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([2.5]))
+        self.assertRaises(AssertionError, self.minicolumn.unsupervised_learning, in_codes=np.array([1] * 2))
+
+    def test_threshold_controversy_out(self):
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([1]),
+                          threshold_controversy_out=None)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([1]),
+                          threshold_controversy_out=-1)
+
+    def test_threshold_controversy_in(self):
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([1]),
+                          threshold_controversy_in=None)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([1]),
+                          threshold_controversy_in=-1)
 
 
 if __name__ == '__main__':

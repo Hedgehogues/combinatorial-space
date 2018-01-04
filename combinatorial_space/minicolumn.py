@@ -1,7 +1,15 @@
 from copy import deepcopy
+from enum import Enum
+
 import Levenshtein
 import numpy as np
 from combinatorial_space.point import Point
+
+
+class PREDICT_ENUM(Enum):
+    THERE_ARE_NOT_ACTIVE_POINTS = 0
+    THERE_ARE_NON_ACTIVE_POINTS = 1
+    ACCEPT = 2
 
 
 """
@@ -35,7 +43,7 @@ class Minicolumn:
                  base_lr=0.01, is_modify_lr=True,
                  count_in_demensions=256, count_out_demensions=16,
                  threshold_bits_controversy=0.1,
-                 out_non_zero_bits=6, class_point=Point):
+                 out_non_zero_bits=6, count_active_point=30, class_point=Point):
 
         if seed is None or \
             space_size is None or in_threshold_modify is None or out_threshold_modify is None or \
@@ -46,6 +54,7 @@ class Minicolumn:
             count_in_demensions is None or count_out_demensions is None or \
             max_count_clusters is None or threshold_bits_controversy is None or \
             out_non_zero_bits is None or class_point is None or \
+            count_active_point is None or count_active_point < 0 or \
             max_count_clusters <= 0 or space_size <= 0 or \
             in_random_bits > count_in_demensions or out_random_bits > count_out_demensions or \
             max_cluster_per_point < 0 or \
@@ -75,6 +84,7 @@ class Minicolumn:
         self.count_in_demensions, self.count_out_demensions = count_in_demensions, count_out_demensions
         self.threshold_bits_controversy = threshold_bits_controversy
         self.out_non_zero_bits = out_non_zero_bits
+        self.count_active_point = count_active_point
 
         self.__threshold_active = None
         self.__threshold_in_len = None
@@ -83,6 +93,10 @@ class Minicolumn:
         self.__active_clusters = None
         
         np.random.seed(seed)
+
+    def __none_exeption(self, obj):
+        if obj is None:
+            raise ValueError("Значение аргумента недопустимо")
 
     def __code_value_exeption(self, code):
         # Значения выходного вектора могут быть равны 0 или 1
@@ -101,6 +115,7 @@ class Minicolumn:
         возвращается бесконечное значение противоречивости
     """
     def front_predict(self, in_code):
+        self.__none_exeption(in_code)
         self.__len_exeption(len(in_code), self.count_in_demensions)
         self.__code_value_exeption(in_code)
 
@@ -119,12 +134,18 @@ class Minicolumn:
         # TODO: возможно, assert стоит заменить на
         # TODO: return np.inf, out_code
         # TODO: необходимо создавать новый кластер в обучении без учителя (а что делать в обучении с учителем?)
-        assert np.sum(np.uint8(np.array(count) == 0)) == 0, "Не все биты входного вектора учитываются. Следует пересоздать миниколонку"
+        non_zeros = np.sum(np.uint8(np.array(count) == 0))
+        if non_zeros != 0:
+            if non_zeros == self.count_out_demensions:
+                return None, None, PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS
+            else:
+                return None, None, PREDICT_ENUM.THERE_ARE_NON_ACTIVE_POINTS
+
 
         controversy = np.sum(np.uint8(np.abs(np.divide(out_code, count)) < self.threshold_bits_controversy))
         out_code[out_code <= 0] = 0
         out_code[out_code > 0] = 1
-        return controversy, out_code
+        return controversy, out_code, PREDICT_ENUM.ACCEPT
     
     """
         Получение входного кода по выходному. Обратное предсказание в каждой точке комбинаторного пространства
@@ -134,6 +155,7 @@ class Minicolumn:
         Возвращаемые значения: непротиворечивость, входной код
     """
     def back_predict(self, out_code):
+        self.__none_exeption(out_code)
         self.__len_exeption(len(out_code), self.count_out_demensions)
         self.__code_value_exeption(out_code)
 
@@ -150,16 +172,20 @@ class Minicolumn:
             count += __count
             in_code += in_code_local
 
-
         # TODO: возможно, assert стоит заменить на
         # TODO: return np.inf, out_code
         # TODO: необходимо создавать новый кластер в обучении без учителя (а что делать в обучении с учителем?)
-        assert np.sum(np.uint8(np.array(count) == 0)) == 0, "Не все биты входного вектора учитываются. Следует пересоздать миниколонку"
+        non_zeros = np.sum(np.uint8(np.array(count) == 0))
+        if non_zeros != 0:
+            if non_zeros == self.count_in_demensions:
+                return None, None, PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS
+            else:
+                return None, None, PREDICT_ENUM.THERE_ARE_NON_ACTIVE_POINTS
 
         controversy = np.sum(np.uint8(np.abs(in_code / count) < self.threshold_bits_controversy))
         in_code[in_code <= 0] = 0
         in_code[in_code > 0] = 1
-        return controversy, in_code
+        return controversy, in_code, PREDICT_ENUM.ACCEPT
 
     def __sleep_process_clusters(self, point):
 
@@ -211,6 +237,9 @@ class Minicolumn:
         Возвращается количество одинаковых кластеров
     """    
     def sleep(self, threshold_active=0.75, threshold_in_len=4, threshold_out_len=0):
+        self.__none_exeption(threshold_active)
+        self.__none_exeption(threshold_in_len)
+        self.__none_exeption(threshold_out_len)
         if threshold_active < 0 or threshold_active > 1:
             raise ValueError("Неожиданное значение переменной")
         if threshold_in_len < 0:
@@ -267,8 +296,7 @@ class Minicolumn:
         else:
             code_mod = deepcopy(code)
         return code_mod
-        
-    
+
     """
         Этап обучения без учителя
         
@@ -287,7 +315,19 @@ class Minicolumn:
         количество фэйлов во входном и выходном векторах
     """
     def unsupervised_learning(self, in_codes, threshold_controversy_in=3, threshold_controversy_out=3):
-                       
+
+        self.__none_exeption(in_codes)
+        self.__none_exeption(threshold_controversy_in)
+        self.__none_exeption(threshold_controversy_out)
+
+        self.__code_value_exeption(in_codes)
+        if threshold_controversy_out < 0:
+            raise ValueError("Неожиданное значение переменной")
+        if threshold_controversy_in < 0:
+            raise ValueError("Неожиданное значение переменной")
+        self.__len_exeption(len(in_codes), self.count_in_demensions)
+        self.__code_value_exeption(in_codes)
+
         min_hamming = np.inf
         min_ind_hamming = -1
         min_out_code = None
