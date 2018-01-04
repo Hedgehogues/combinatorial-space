@@ -83,7 +83,15 @@ class Minicolumn:
         self.__active_clusters = None
         
         np.random.seed(seed)
-        
+
+    def __code_value_exeption(self, code):
+        # Значения выходного вектора могут быть равны 0 или 1
+        if np.sum(np.uint8(np.logical_not(np.array(code) != 0) ^ (np.array(code) != 1))) > 0:
+            raise ValueError("Значение аргумента может принимать значение 0 или 1")
+
+    def __len_exeption(self, obj_len, target_len):
+        assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
+
     """
         Получение выходного кода по входному. Прямое предсказание в каждой точке комбинаторного пространства
         
@@ -93,7 +101,8 @@ class Minicolumn:
         возвращается бесконечное значение противоречивости
     """
     def front_predict(self, in_code):
-        assert len(in_code) == self.count_in_demensions
+        self.__len_exeption(len(in_code), self.count_in_demensions)
+        self.__code_value_exeption(in_code)
 
         out_code = [0] * self.count_out_demensions
         count = np.array([0] * self.count_out_demensions)
@@ -109,6 +118,7 @@ class Minicolumn:
 
         # TODO: возможно, assert стоит заменить на
         # TODO: return np.inf, out_code
+        # TODO: необходимо создавать новый кластер в обучении без учителя (а что делать в обучении с учителем?)
         assert np.sum(np.uint8(np.array(count) == 0)) == 0, "Не все биты входного вектора учитываются. Следует пересоздать миниколонку"
 
         controversy = np.sum(np.uint8(np.abs(np.divide(out_code, count)) < self.threshold_bits_controversy))
@@ -124,7 +134,8 @@ class Minicolumn:
         Возвращаемые значения: непротиворечивость, входной код
     """
     def back_predict(self, out_code):
-        assert len(out_code) == self.count_out_demensions
+        self.__len_exeption(len(out_code), self.count_out_demensions)
+        self.__code_value_exeption(out_code)
 
         in_code = [0] * self.count_in_demensions
         count = [0] * self.count_in_demensions
@@ -139,8 +150,10 @@ class Minicolumn:
             count += __count
             in_code += in_code_local
 
-        # TODO: возможно, стоит заменить на
+
+        # TODO: возможно, assert стоит заменить на
         # TODO: return np.inf, out_code
+        # TODO: необходимо создавать новый кластер в обучении без учителя (а что делать в обучении с учителем?)
         assert np.sum(np.uint8(np.array(count) == 0)) == 0, "Не все биты входного вектора учитываются. Следует пересоздать миниколонку"
 
         controversy = np.sum(np.uint8(np.abs(in_code / count) < self.threshold_bits_controversy))
@@ -231,7 +244,8 @@ class Minicolumn:
         return self.count_clusters > self.max_count_clusters
     
     def __code_alignment(self, code):
-        if self.count_active_bits > self.out_non_zero_bits:
+        count_active_bits = np.sum(code)
+        if count_active_bits > self.out_non_zero_bits:
             active_bits = np.where(code == 1)
             count_active_bits = active_bits.shape[0]
             stay_numbers = np.random.choice(
@@ -240,7 +254,7 @@ class Minicolumn:
             active_bits = active_bits[stay_numbers]
             code_mod = np.zeros(code.shape[0])
             code_mod[active_bits] = 1
-        elif self.count_active_bits < self.out_non_zero_bits:
+        elif count_active_bits < self.out_non_zero_bits:
             non_active_bits = np.where(code == 0)
             count_non_active_bits = non_active_bits.shape[0]
             count_active_bits = code.shape[0] - count_non_active_bits
@@ -250,6 +264,8 @@ class Minicolumn:
             non_active_bits = non_active_bits[stay_numbers]
             code_mod = deepcopy(code)
             code_mod[non_active_bits] = 1
+        else:
+            code_mod = deepcopy(code)
         return code_mod
         
     
@@ -270,7 +286,7 @@ class Minicolumn:
         Возвращается оптимальный код, порядковый номер контекста-победителя, 
         количество фэйлов во входном и выходном векторах
     """
-    def unsupervised_learning(self, in_codes, threshold_controversy_in, threshold_controversy_out):
+    def unsupervised_learning(self, in_codes, threshold_controversy_in=3, threshold_controversy_out=3):
                        
         min_hamming = np.inf
         min_ind_hamming = -1
@@ -283,8 +299,10 @@ class Minicolumn:
             if np.sum(in_codes[index]) == 0:
                 continue
 
+            # TODO: холодный старт. С чего начинать?
             controversy_out, out_code = self.front_predict(in_codes[index])
-            
+
+            # TODO: что если все коды противоречивые? как быть?
             if controversy_out > threshold_controversy_out:
                 out_fail += 1
                 continue
@@ -329,13 +347,13 @@ class Minicolumn:
         min_ind_hamming = -1
         min_out_code = None
         out_fail = 0
-        in_fail = 0
         for index in range(len(in_codes)):
 
             # Не обрабатываются полностью нулевые коды
             if np.sum(in_codes[index]) == 0:
                 continue
-            
+
+            # TODO: холодный старт. С чего начинать?
             controversy_out, out_code = self.front_predict(in_codes[index])
             
             if controversy_out > threshold_controversy_out:
@@ -348,7 +366,7 @@ class Minicolumn:
                 min_ind_hamming = index
                 min_out_code = out_code
             
-        return min_out_code, min_ind_hamming, in_fail, out_fail
+        return min_out_code, min_ind_hamming, out_fail
     
     
     """

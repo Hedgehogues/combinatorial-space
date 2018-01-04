@@ -120,6 +120,12 @@ class TestPointPredict(unittest.TestCase):
             class_point=PointMockOddEven
         )
 
+    def test_front_assert_not_valid_value(self):
+        self.assertRaises(ValueError, self.minicolumn_front.front_predict, [-1] * 10)
+
+    def test_back_assert_not_valid_value(self):
+        self.assertRaises(ValueError, self.minicolumn_back.back_predict, [-1] * 10)
+
     def test_front_assert_not_valid_dem(self):
         self.assertRaises(AssertionError, self.minicolumn_front.front_predict, [1])
 
@@ -235,6 +241,25 @@ class TestPointSleep(unittest.TestCase):
             np.testing.assert_array_equal([1, 1, 1, 1, 0], point.clusters[1].in_w)
             np.testing.assert_array_equal([1, 1, 1, 0, 0], point.clusters[0].out_w)
             np.testing.assert_array_equal([1, 1, 1, 1, 0], point.clusters[1].out_w)
+
+
+class TestPointUnsupervisedLearning(unittest.TestCase):
+    def setUp(self):
+        self.minicolumn = Minicolumn(
+            space_size=5,
+            in_random_bits=1,
+            out_random_bits=1,
+            count_in_demensions=1,
+            count_out_demensions=1,
+            class_point=PointMock5Clusters
+        )
+
+    @unittest.skip('Не реализован тест')
+    def test_assert_input_params(self):
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([0, ]))
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_active=-1)
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_in_len=-1)
+        self.assertRaises(ValueError, self.minicolumn.sleep, threshold_out_len=-1)
 
 
 if __name__ == '__main__':
