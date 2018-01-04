@@ -122,9 +122,13 @@ class TestPointPredict(unittest.TestCase):
 
     def test_front_assert_not_valid_value(self):
         self.assertRaises(ValueError, self.minicolumn_front.front_predict, [-1] * 10)
+        self.assertRaises(ValueError, self.minicolumn_front.front_predict, [2] * 10)
+        self.assertRaises(ValueError, self.minicolumn_front.front_predict, [0.8] * 10)
 
     def test_back_assert_not_valid_value(self):
         self.assertRaises(ValueError, self.minicolumn_back.back_predict, [-1] * 10)
+        self.assertRaises(ValueError, self.minicolumn_back.back_predict, [2] * 10)
+        self.assertRaises(ValueError, self.minicolumn_back.back_predict, [0.8] * 10)
 
     def test_front_assert_not_valid_dem(self):
         self.assertRaises(AssertionError, self.minicolumn_front.front_predict, [1])
