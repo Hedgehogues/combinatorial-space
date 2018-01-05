@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 from combinatorial_space.minicolumn import Minicolumn, PREDICT_ENUM
 from test.unittest.cluster_mock import ClusterMockForPointWeight
-from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMock5Clusters
+from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMock5Clusters, PointMockInOutCode
 
 
 class TestMinicolumn__init__(unittest.TestCase):
@@ -123,6 +123,26 @@ class TestPointPredict(unittest.TestCase):
             threshold_bits_controversy=0.05,
             class_point=PointMockOddEven
         )
+        self.minicolumn_out_code = Minicolumn(
+            space_size=20,
+            in_random_bits=10,
+            out_random_bits=2,
+            count_in_demensions=10,
+            count_out_demensions=2,
+            seed=41,
+            threshold_bits_controversy=0.05,
+            class_point=PointMockInOutCode
+        )
+        self.minicolumn_in_code = Minicolumn(
+            space_size=20,
+            in_random_bits=2,
+            out_random_bits=10,
+            count_in_demensions=2,
+            count_out_demensions=10,
+            seed=41,
+            threshold_bits_controversy=0.05,
+            class_point=PointMockInOutCode
+        )
 
     def test_front_assert_not_valid_value(self):
         self.assertRaises(ValueError, self.minicolumn_front.front_predict, [-1] * 10)
@@ -161,10 +181,20 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS, accept)
 
     def test_back_assert_there_are_non_acrive_points(self):
-        self.assertEqual(False, True)
+        out_code = [0] + [1] + [1] * 4 + [0] * 4
+        controversy, code, accept = self.minicolumn_in_code.back_predict(out_code)
+
+        self.assertEqual(None, code)
+        self.assertEqual(None, controversy)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS, accept)
 
     def test_front_assert_there_are_non_acrive_points(self):
-        self.assertEqual(False, True)
+        in_code = [0] + [1] + [1] * 4 + [0] * 4
+        controversy, code, accept = self.minicolumn_out_code.front_predict(in_code)
+
+        self.assertEqual(None, code)
+        self.assertEqual(None, controversy)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS, accept)
 
     def test_front_active_point(self):
         controversy, code, accept = self.minicolumn.front_predict([1] * 10)

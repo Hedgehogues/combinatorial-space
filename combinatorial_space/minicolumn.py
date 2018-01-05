@@ -8,7 +8,7 @@ from combinatorial_space.point import Point
 
 class PREDICT_ENUM(Enum):
     THERE_ARE_NOT_ACTIVE_POINTS = 0
-    THERE_ARE_NON_ACTIVE_POINTS = 1
+    THERE_ARE_NONACTIVE_POINTS = 1
     ACCEPT = 2
 
 
@@ -139,7 +139,7 @@ class Minicolumn:
             if non_zeros == self.count_out_demensions:
                 return None, None, PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS
             else:
-                return None, None, PREDICT_ENUM.THERE_ARE_NON_ACTIVE_POINTS
+                return None, None, PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS
 
 
         controversy = np.sum(np.uint8(np.abs(np.divide(out_code, count)) < self.threshold_bits_controversy))
@@ -167,9 +167,8 @@ class Minicolumn:
             # Неактивная точка
             if in_code_local is None:
                 continue
-            
-            __count = np.uint8(in_code_local != 0)
-            count += __count
+
+            count += np.uint8(in_code_local != 0)
             in_code += in_code_local
 
         # TODO: возможно, assert стоит заменить на
@@ -180,7 +179,7 @@ class Minicolumn:
             if non_zeros == self.count_in_demensions:
                 return None, None, PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS
             else:
-                return None, None, PREDICT_ENUM.THERE_ARE_NON_ACTIVE_POINTS
+                return None, None, PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS
 
         controversy = np.sum(np.uint8(np.abs(in_code / count) < self.threshold_bits_controversy))
         in_code[in_code <= 0] = 0
