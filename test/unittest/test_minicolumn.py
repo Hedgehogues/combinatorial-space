@@ -4,7 +4,8 @@ import unittest
 import numpy as np
 from combinatorial_space.minicolumn import Minicolumn, PREDICT_ENUM
 from test.unittest.cluster_mock import ClusterMockForPointWeight
-from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMockInOutCode, PointMockZeros
+from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMockInOutCode, PointMockZeros, \
+    PointMockDoubleIdentical
 
 
 class TestMinicolumn__init__(unittest.TestCase):
@@ -359,6 +360,17 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             seed=42,
             class_point=PointMockZeros
         )
+        self.minicolumn_controversy_out = Minicolumn(
+            space_size=5,
+            in_random_bits=4,
+            out_random_bits=8,
+            count_in_demensions=4,
+            count_out_demensions=8,
+            out_non_zero_bits=2,
+            seed=42,
+            threshold_bits_controversy=2,
+            class_point=PointMockDoubleIdentical
+        )
 
     def test_continue_zeros_codes(self):
         in_codes = np.array([[0]] * 3)
@@ -381,6 +393,17 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, out_fail)
         self.assertEqual(0, in_not_detected)
         self.assertEqual(3, out_not_detected)
+
+    def test_controversy_out(self):
+        in_codes = np.array([[1, 0, 1, 0], [0, 1, 1, 0], [1, 1, 0, 0]])
+        min_out_code, min_ind_hamming = self.minicolumn_controversy_out.unsupervised_learning(in_codes=in_codes)
+        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_out.get_stat()
+        self.assertIsNone(None, min_out_code)
+        self.assertIsNone(None, min_ind_hamming)
+        self.assertEqual(0, in_fail)
+        self.assertEqual(3, out_fail)
+        self.assertEqual(0, in_not_detected)
+        self.assertEqual(0, out_not_detected)
 
 
 
