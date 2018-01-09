@@ -91,6 +91,11 @@ class Minicolumn:
         self.__threshold_out_len = None
         self.__clusters_of_points = None
         self.__active_clusters = None
+
+        self.out_fail = None
+        self.in_fail = None
+        self.in_not_detected = None
+        self.out_not_detected = None
         
         np.random.seed(seed)
 
@@ -105,6 +110,13 @@ class Minicolumn:
 
     def __len_exeption(self, obj_len, target_len):
         assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
+
+    def __predict_prepare_code(self, code, count):
+        controversy = np.sum(np.uint8(np.abs(np.divide(code[count != 0], count[count != 0])) < self.threshold_bits_controversy))
+        code[code <= 0] = 0
+        code[code > 0] = 1
+
+        return controversy
 
     """
         Получение выходного кода по входному. Прямое предсказание в каждой точке комбинаторного пространства
@@ -131,20 +143,15 @@ class Minicolumn:
             count += np.uint8(out_code_local != 0)
             out_code += out_code_local
 
-        # TODO: возможно, assert стоит заменить на
-        # TODO: return np.inf, out_code
-        # TODO: необходимо создавать новый кластер в обучении без учителя (а что делать в обучении с учителем?)
         non_zeros = np.sum(np.uint8(np.array(count) == 0))
         if non_zeros != 0:
             if non_zeros == self.count_out_demensions:
                 return None, None, PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS
             else:
-                return None, None, PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS
+                controversy = self.__predict_prepare_code(out_code, count)
+                return controversy, out_code, PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS
 
-
-        controversy = np.sum(np.uint8(np.abs(np.divide(out_code, count)) < self.threshold_bits_controversy))
-        out_code[out_code <= 0] = 0
-        out_code[out_code > 0] = 1
+        controversy = self.__predict_prepare_code(out_code, count)
         return controversy, out_code, PREDICT_ENUM.ACCEPT
     
     """
@@ -171,19 +178,15 @@ class Minicolumn:
             count += np.uint8(in_code_local != 0)
             in_code += in_code_local
 
-        # TODO: возможно, assert стоит заменить на
-        # TODO: return np.inf, out_code
-        # TODO: необходимо создавать новый кластер в обучении без учителя (а что делать в обучении с учителем?)
         non_zeros = np.sum(np.uint8(np.array(count) == 0))
         if non_zeros != 0:
             if non_zeros == self.count_in_demensions:
                 return None, None, PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS
             else:
-                return None, None, PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS
+                controversy = self.__predict_prepare_code(in_code, count)
+                return controversy, in_code, PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS
 
-        controversy = np.sum(np.uint8(np.abs(in_code / count) < self.threshold_bits_controversy))
-        in_code[in_code <= 0] = 0
-        in_code[in_code > 0] = 1
+        controversy = self.__predict_prepare_code(in_code, count)
         return controversy, in_code, PREDICT_ENUM.ACCEPT
 
     def __sleep_process_clusters(self, point):
@@ -274,7 +277,7 @@ class Minicolumn:
     def __code_alignment(self, code):
         count_active_bits = np.sum(code)
         if count_active_bits > self.out_non_zero_bits:
-            active_bits = np.where(code == 1)
+            active_bits = np.where(code == 1)[0]
             count_active_bits = active_bits.shape[0]
             stay_numbers = np.random.choice(
                 count_active_bits, self.out_non_zero_bits, replace=False
@@ -283,7 +286,7 @@ class Minicolumn:
             code_mod = np.zeros(code.shape[0])
             code_mod[active_bits] = 1
         elif count_active_bits < self.out_non_zero_bits:
-            non_active_bits = np.where(code == 0)
+            non_active_bits = np.where(code == 0)[0]
             count_non_active_bits = non_active_bits.shape[0]
             count_active_bits = code.shape[0] - count_non_active_bits
             stay_numbers = np.random.choice(
@@ -297,6 +300,15 @@ class Minicolumn:
         return code_mod
 
     """
+        Статистика по обработке последней группы кодов
+        
+        Количество противоречивых выходных и входных кодов;
+        количество входных и выходных кодов, которых нет в памяти  
+    """
+    def get_stat(self):
+        return self.out_fail, self.in_fail, self.in_not_detected, self.out_not_detected
+
+    """
         Этап обучения без учителя
         
         Делается предсказание для всех переданных кодов и выбирается самый непротиворечивый из них, 
@@ -307,6 +319,9 @@ class Minicolumn:
         
         В качестве результата непротиворечивости берём среднее значение по ответам делёное на число активных точек.
         
+        Замечание: в случае, если кода нет в памяти, то генерируется случайный код. В таком случае,
+                   вызов данной функции будет не воспроизводимым.  
+        
         in_codes - входные коды в разных контекстах
         threshold_controversy_in, threshold_controversy_out - порого противоречивости для кодов
         
@@ -316,22 +331,26 @@ class Minicolumn:
     def unsupervised_learning(self, in_codes, threshold_controversy_in=3, threshold_controversy_out=3):
 
         self.__none_exeption(in_codes)
+        for code in in_codes:
+            self.__none_exeption(code)
+            self.__code_value_exeption(code)
+            self.__len_exeption(len(code), self.count_in_demensions)
+            self.__code_value_exeption(code)
         self.__none_exeption(threshold_controversy_in)
         self.__none_exeption(threshold_controversy_out)
 
-        self.__code_value_exeption(in_codes)
         if threshold_controversy_out < 0:
             raise ValueError("Неожиданное значение переменной")
         if threshold_controversy_in < 0:
             raise ValueError("Неожиданное значение переменной")
-        self.__len_exeption(len(in_codes), self.count_in_demensions)
-        self.__code_value_exeption(in_codes)
 
         min_hamming = np.inf
         min_ind_hamming = -1
         min_out_code = None
-        out_fail = 0
-        in_fail = 0
+        self.out_fail = 0
+        self.in_fail = 0
+        self.in_not_detected = 0
+        self.out_not_detected = 0
         for index in range(len(in_codes)):
 
             # Не обрабатываются полностью нулевые коды
@@ -339,30 +358,54 @@ class Minicolumn:
                 continue
 
             # TODO: холодный старт. С чего начинать?
-            controversy_out, out_code = self.front_predict(in_codes[index])
+            # TODO: если ни один код не распознан (accept всегда принимает значения не равные ACCEPT),
+            # TODO: то создаём случайный выходной вектор для первого кода из всех входных
+            #############
+            # TODO: что делать, если в одном из контекстов мы не можем распознать ничего, а в других можем?
+            # TODO: на данном этапе забиваем на такие коды
+            #############
+            controversy_out, out_code, accept = self.front_predict(in_codes[index])
+            if accept is not PREDICT_ENUM.ACCEPT:
+                self.out_not_detected += 1
+                continue
 
             # TODO: что если все коды противоречивые? как быть?
+            # TODO: на данном этапе такой код не добавляем
+            ############
             if controversy_out > threshold_controversy_out:
-                out_fail += 1
+                self.out_fail += 1
                 continue
                 
             # Удаляем или добавляем единицы (если их мало или много)
             out_code = self.__code_alignment(out_code)
             
-            controversy_in, in_code = self.back_predict(out_code)
+            controversy_in, in_code, accept = self.back_predict(out_code)
+            # TODO: при обратном предсказании не распознано, а при прямом -- распознано
+            # TODO: на данном этапе забиваем на такие коды
+            ############
+            if accept is not PREDICT_ENUM.ACCEPT:
+                self.in_not_detected += 1
+                continue
             
             if controversy_in > threshold_controversy_in:
-                in_fail += 1
+                self.in_fail += 1
                 continue
-                
-            
+
             hamming_dist = Levenshtein.hamming(''.join(map(str, in_code)), ''.join(map(str, in_codes[index])))
             if min_hamming < hamming_dist:
                 min_hamming = hamming_dist
                 min_ind_hamming = index
                 min_out_code = out_code
-            
-        return min_out_code, min_ind_hamming, in_fail, out_fail
+
+        if self.in_not_detected == len(in_codes) or self.out_not_detected == len(in_codes):
+            min_ind_hamming = 0
+            # Генерируем случайный код
+            min_out_code = self.__code_alignment(np.array([0] * self.count_out_demensions))
+
+        if min_out_code is not None:
+            return min_out_code, min_ind_hamming
+        else:
+            return None, None
     
     """
         Этап обучения без учителя

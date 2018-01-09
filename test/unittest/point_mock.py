@@ -80,7 +80,7 @@ class PointMockNone:
         return 0, 0, False
 
 
-class PointMock5Clusters:
+class PointMockZeros:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -93,10 +93,10 @@ class PointMock5Clusters:
         self.clusters = []
 
     def predict_front(self, in_code, type_code=-1):
-        return None
+        return np.array([0] * len(in_code))
 
     def predict_back(self, out_code, type_code=-1):
-        return None
+        return np.array([0] * len(out_code))
 
     def add(self, in_code, out_code):
         return 0, 0, False

@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 from combinatorial_space.minicolumn import Minicolumn, PREDICT_ENUM
 from test.unittest.cluster_mock import ClusterMockForPointWeight
-from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMock5Clusters, PointMockInOutCode
+from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMockInOutCode, PointMockZeros
 
 
 class TestMinicolumn__init__(unittest.TestCase):
@@ -184,16 +184,16 @@ class TestPointPredict(unittest.TestCase):
         out_code = [0] + [1] + [1] * 4 + [0] * 4
         controversy, code, accept = self.minicolumn_in_code.back_predict(out_code)
 
-        self.assertEqual(None, code)
-        self.assertEqual(None, controversy)
+        np.testing.assert_array_equal(np.array([0, 1]), code)
+        self.assertEqual(0, controversy)
         self.assertEqual(PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS, accept)
 
     def test_front_assert_there_are_non_acrive_points(self):
         in_code = [0] + [1] + [1] * 4 + [0] * 4
         controversy, code, accept = self.minicolumn_out_code.front_predict(in_code)
 
-        self.assertEqual(None, code)
-        self.assertEqual(None, controversy)
+        np.testing.assert_array_equal(np.array([0, 1]), code)
+        self.assertEqual(0, controversy)
         self.assertEqual(PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS, accept)
 
     def test_front_active_point(self):
@@ -217,7 +217,7 @@ class TestPointSleep(unittest.TestCase):
             out_random_bits=1,
             count_in_demensions=1,
             count_out_demensions=1,
-            class_point=PointMock5Clusters
+            class_point=PointMockNone
         )
         self.minicolumn_activate = Minicolumn(
             space_size=5,
@@ -227,7 +227,7 @@ class TestPointSleep(unittest.TestCase):
             out_threshold_activate=2,
             count_in_demensions=1,
             count_out_demensions=1,
-            class_point=PointMock5Clusters
+            class_point=PointMockNone
         )
 
     def test_assert_input_params(self):
@@ -314,28 +314,75 @@ class TestPointUnsupervisedLearningException(unittest.TestCase):
             out_random_bits=1,
             count_in_demensions=1,
             count_out_demensions=1,
-            class_point=PointMock5Clusters
+            class_point=PointMockNone
         )
 
     def test_in_codes(self):
         self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=None)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([-1]))
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([2]))
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([0.5]))
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([2.5]))
-        self.assertRaises(AssertionError, self.minicolumn.unsupervised_learning, in_codes=np.array([1] * 2))
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[0, None, -1, 1, 1]] * 3))
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[0, -1, -1, 1, 1]] * 3))
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[0, 1, 2]] * 3))
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1, 0, 0.5, 1]] * 3))
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[0, 1, 0, 2.5, 1]] * 3))
+        self.assertRaises(AssertionError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1] * 2] * 3))
 
     def test_threshold_controversy_out(self):
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([1]),
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1]]),
                           threshold_controversy_out=None)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([1]),
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1]]),
                           threshold_controversy_out=-1)
 
     def test_threshold_controversy_in(self):
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([1]),
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1]]),
                           threshold_controversy_in=None)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([1]),
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1]]),
                           threshold_controversy_in=-1)
+
+
+class TestPointUnsupervisedLearning(unittest.TestCase):
+    def setUp(self):
+        self.minicolumn = Minicolumn(
+            space_size=5,
+            in_random_bits=1,
+            out_random_bits=1,
+            count_in_demensions=1,
+            count_out_demensions=1,
+            class_point=PointMockNone
+        )
+        self.minicolumn_zeros = Minicolumn(
+            space_size=5,
+            in_random_bits=3,
+            out_random_bits=3,
+            count_in_demensions=3,
+            count_out_demensions=3,
+            out_non_zero_bits=2,
+            seed=42,
+            class_point=PointMockZeros
+        )
+
+    def test_continue_zeros_codes(self):
+        in_codes = np.array([[0]] * 3)
+        min_out_code, min_ind_hamming = self.minicolumn.unsupervised_learning(in_codes=in_codes)
+        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn.get_stat()
+        self.assertIsNone(None, min_out_code)
+        self.assertIsNone(None, min_ind_hamming)
+        self.assertEqual(0, in_fail)
+        self.assertEqual(0, out_fail)
+        self.assertEqual(0, in_not_detected)
+        self.assertEqual(0, out_not_detected)
+
+    def test_out_not_detected(self):
+        in_codes = np.array([[1, 0, 1], [0, 1, 1], [1, 1, 0]])
+        min_out_code, min_ind_hamming = self.minicolumn_zeros.unsupervised_learning(in_codes=in_codes)
+        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_zeros.get_stat()
+        np.testing.assert_array_equal([1, 1, 0], min_out_code)
+        self.assertEqual(0, min_ind_hamming)
+        self.assertEqual(0, in_fail)
+        self.assertEqual(0, out_fail)
+        self.assertEqual(0, in_not_detected)
+        self.assertEqual(3, out_not_detected)
+
+
 
 
 if __name__ == '__main__':
