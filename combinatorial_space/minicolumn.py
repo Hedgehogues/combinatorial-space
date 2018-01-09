@@ -29,8 +29,8 @@ class PREDICT_ENUM(Enum):
     base_lr - начальное значение скорости обучения
     is_modify_lr - модификация скорости обучения пропорционально номер шага
     count_in_demensions, count_out_demensions - размер входного и выходного векторов
-    threshold_bits_controversy - порог противоречия для битов кодов
-    out_non_zero_bits - число ненулевых бит в выходном векторе
+    threshold_controversy - порог противоречия для битов кодов
+    code_aligment_threshold - число ненулевых бит в выходном векторе
 """
 class Minicolumn:
     
@@ -42,8 +42,8 @@ class Minicolumn:
                  in_random_bits=24, out_random_bits=10,
                  base_lr=0.01, is_modify_lr=True,
                  count_in_demensions=256, count_out_demensions=16,
-                 threshold_bits_controversy=0.1,
-                 out_non_zero_bits=6, count_active_point=30, class_point=Point):
+                 threshold_controversy=0.1,
+                 code_aligment_threshold=6, count_active_point=30, class_point=Point):
 
         if seed is None or \
             space_size is None or in_threshold_modify is None or out_threshold_modify is None or \
@@ -52,8 +52,8 @@ class Minicolumn:
             threshold_bin is None or is_modify_lr is None or \
             base_lr is None or max_cluster_per_point is None or \
             count_in_demensions is None or count_out_demensions is None or \
-            max_count_clusters is None or threshold_bits_controversy is None or \
-            out_non_zero_bits is None or class_point is None or \
+            max_count_clusters is None or threshold_controversy is None or \
+            code_aligment_threshold is None or class_point is None or \
             count_active_point is None or count_active_point < 0 or \
             max_count_clusters <= 0 or space_size <= 0 or \
             in_random_bits > count_in_demensions or out_random_bits > count_out_demensions or \
@@ -63,7 +63,7 @@ class Minicolumn:
             in_threshold_activate < 0 or out_threshold_activate < 0 or \
             count_in_demensions < 0 or count_out_demensions < 0 or \
             threshold_bin < 0 or type(is_modify_lr) is not bool or \
-            threshold_bits_controversy < 0 or out_non_zero_bits < 0:
+            threshold_controversy < 0 or code_aligment_threshold < 0:
                 raise ValueError("Неожиданное значение переменной")
 
         self.space = np.array(
@@ -82,8 +82,8 @@ class Minicolumn:
         self.count_clusters = 0
         self.max_count_clusters = max_count_clusters
         self.count_in_demensions, self.count_out_demensions = count_in_demensions, count_out_demensions
-        self.threshold_bits_controversy = threshold_bits_controversy
-        self.out_non_zero_bits = out_non_zero_bits
+        self.threshold_controversy = threshold_controversy
+        self.code_aligment_threshold = code_aligment_threshold
         self.count_active_point = count_active_point
 
         self.__threshold_active = None
@@ -112,7 +112,7 @@ class Minicolumn:
         assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
 
     def __predict_prepare_code(self, code, count):
-        controversy = np.sum(np.uint8(np.abs(np.divide(code[count != 0], count[count != 0])) < self.threshold_bits_controversy))
+        controversy = np.sum(np.uint8(np.abs(np.divide(code[count != 0], count[count != 0])) < self.threshold_controversy))
         code[code <= 0] = 0
         code[code > 0] = 1
 
@@ -276,21 +276,21 @@ class Minicolumn:
     
     def __code_alignment(self, code):
         count_active_bits = np.sum(code)
-        if count_active_bits > self.out_non_zero_bits:
+        if count_active_bits > self.code_aligment_threshold:
             active_bits = np.where(code == 1)[0]
             count_active_bits = active_bits.shape[0]
             stay_numbers = np.random.choice(
-                count_active_bits, self.out_non_zero_bits, replace=False
+                count_active_bits, self.code_aligment_threshold, replace=False
             )
             active_bits = active_bits[stay_numbers]
             code_mod = np.zeros(code.shape[0])
             code_mod[active_bits] = 1
-        elif count_active_bits < self.out_non_zero_bits:
+        elif count_active_bits < self.code_aligment_threshold:
             non_active_bits = np.where(code == 0)[0]
             count_non_active_bits = non_active_bits.shape[0]
             count_active_bits = code.shape[0] - count_non_active_bits
             stay_numbers = np.random.choice(
-                count_non_active_bits, self.out_non_zero_bits - count_active_bits, replace=False
+                count_non_active_bits, self.code_aligment_threshold - count_active_bits, replace=False
             )
             non_active_bits = non_active_bits[stay_numbers]
             code_mod = deepcopy(code)

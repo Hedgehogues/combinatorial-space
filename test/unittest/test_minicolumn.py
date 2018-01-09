@@ -5,7 +5,7 @@ import numpy as np
 from combinatorial_space.minicolumn import Minicolumn, PREDICT_ENUM
 from test.unittest.cluster_mock import ClusterMockForPointWeight
 from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMockInOutCode, PointMockZeros, \
-    PointMockDoubleIdentical
+    PointMockDoubleIdentical, PointMockCodeAligmentMore
 
 
 class TestMinicolumn__init__(unittest.TestCase):
@@ -59,13 +59,13 @@ class TestMinicolumn__init__(unittest.TestCase):
         self.assertRaises(ValueError, Minicolumn, count_in_demensions=None)
         self.assertRaises(ValueError, Minicolumn, count_out_demensions=None)
 
-    def test_threshold_bits_controversy(self):
-        self.assertRaises(ValueError, Minicolumn, threshold_bits_controversy=-5)
-        self.assertRaises(ValueError, Minicolumn, threshold_bits_controversy=None)
+    def test_threshold_controversy(self):
+        self.assertRaises(ValueError, Minicolumn, threshold_controversy=-5)
+        self.assertRaises(ValueError, Minicolumn, threshold_controversy=None)
 
-    def test_out_non_zero_bits(self):
-        self.assertRaises(ValueError, Minicolumn, out_non_zero_bits=-5)
-        self.assertRaises(ValueError, Minicolumn, out_non_zero_bits=None)
+    def test_code_aligment_threshold(self):
+        self.assertRaises(ValueError, Minicolumn, code_aligment_threshold=-5)
+        self.assertRaises(ValueError, Minicolumn, code_aligment_threshold=None)
 
     def test_class_point(self):
         self.assertRaises(ValueError, Minicolumn, class_point=None)
@@ -101,7 +101,7 @@ class TestPointPredict(unittest.TestCase):
             count_in_demensions=10,
             count_out_demensions=10,
             seed=41,
-            threshold_bits_controversy=0.05,
+            threshold_controversy=0.05,
             class_point=PointMockOddEven
         )
         self.minicolumn_front = Minicolumn(
@@ -111,7 +111,7 @@ class TestPointPredict(unittest.TestCase):
             count_in_demensions=10,
             count_out_demensions=2,
             seed=41,
-            threshold_bits_controversy=0.05,
+            threshold_controversy=0.05,
             class_point=PointMockOddEven
         )
         self.minicolumn_back = Minicolumn(
@@ -121,7 +121,7 @@ class TestPointPredict(unittest.TestCase):
             count_in_demensions=2,
             count_out_demensions=10,
             seed=41,
-            threshold_bits_controversy=0.05,
+            threshold_controversy=0.05,
             class_point=PointMockOddEven
         )
         self.minicolumn_out_code = Minicolumn(
@@ -131,7 +131,7 @@ class TestPointPredict(unittest.TestCase):
             count_in_demensions=10,
             count_out_demensions=2,
             seed=41,
-            threshold_bits_controversy=0.05,
+            threshold_controversy=0.05,
             class_point=PointMockInOutCode
         )
         self.minicolumn_in_code = Minicolumn(
@@ -141,7 +141,7 @@ class TestPointPredict(unittest.TestCase):
             count_in_demensions=2,
             count_out_demensions=10,
             seed=41,
-            threshold_bits_controversy=0.05,
+            threshold_controversy=0.05,
             class_point=PointMockInOutCode
         )
 
@@ -356,7 +356,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             out_random_bits=3,
             count_in_demensions=3,
             count_out_demensions=3,
-            out_non_zero_bits=2,
+            code_aligment_threshold=2,
             seed=42,
             class_point=PointMockZeros
         )
@@ -366,10 +366,22 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             out_random_bits=8,
             count_in_demensions=4,
             count_out_demensions=8,
-            out_non_zero_bits=2,
+            code_aligment_threshold=2,
             seed=42,
-            threshold_bits_controversy=2,
+            threshold_controversy=2,
             class_point=PointMockDoubleIdentical
+        )
+        self.minicolumn_code_aligment = Minicolumn(
+            space_size=5,
+            in_random_bits=4,
+            out_random_bits=8,
+            count_in_demensions=4,
+            count_out_demensions=8,
+            code_aligment_threshold=4,
+            seed=42,
+            threshold_controversy=0.1,
+
+            class_point=PointMockCodeAligmentMore
         )
 
     def test_continue_zeros_codes(self):
@@ -405,7 +417,41 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, in_not_detected)
         self.assertEqual(0, out_not_detected)
 
+    def test_code_aligment_more(self):
+        in_codes = np.array([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
+        min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes=in_codes)
+        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_code_aligment.get_stat()
+        np.testing.assert_array_equal(np.array([0, 0, 1, 0, 0, 1, 1, 1]), min_out_code)
+        self.assertEqual(0, min_ind_hamming)
+        self.assertEqual(0, in_fail)
+        self.assertEqual(0, out_fail)
+        self.assertEqual(3, in_not_detected)
+        self.assertEqual(0, out_not_detected)
+        self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
 
+    def test_code_aligment_less(self):
+        in_codes = np.array([[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]])
+        min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes=in_codes)
+        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_code_aligment.get_stat()
+        np.testing.assert_array_equal(np.array([1, 1, 0, 1, 0, 0, 1, 0]), min_out_code)
+        self.assertEqual(0, min_ind_hamming)
+        self.assertEqual(0, in_fail)
+        self.assertEqual(0, out_fail)
+        self.assertEqual(3, in_not_detected)
+        self.assertEqual(0, out_not_detected)
+        self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
+
+    def test_code_aligment_eq(self):
+        in_codes = np.array([[1, 1, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0]])
+        min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes=in_codes)
+        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_code_aligment.get_stat()
+        np.testing.assert_array_equal(np.array([1, 1, 0, 0, 0, 1, 0, 1]), min_out_code)
+        self.assertEqual(0, min_ind_hamming)
+        self.assertEqual(0, in_fail)
+        self.assertEqual(0, out_fail)
+        self.assertEqual(3, in_not_detected)
+        self.assertEqual(0, out_not_detected)
+        self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
 
 
 if __name__ == '__main__':
