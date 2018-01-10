@@ -137,41 +137,55 @@ class TestClusterException(TestClusterBase):
 
 class TestClusterPredict(TestClusterBase):
     def test_front_not_threshold_modify(self):
-        dot, out_sub_code = self.base_cluster_a.predict_front([1] * 1 + [0] * 9)
+        code = [1] * 1 + [0] * 9
+        dot, out_sub_code = self.base_cluster_a.predict_front(code)
+        self.assertEqual([1] * 1 + [0] * 9, code)
         self.assertEqual(dot, 0)
         self.assertIsNone(out_sub_code)
 
     def test_back_not_threshold_modify(self):
-        dot, in_sub_code = self.base_cluster_a.predict_back([1] * 1 + [0] * 5)
+        code = [1] * 1 + [0] * 5
+        dot, in_sub_code = self.base_cluster_a.predict_back(code)
+        self.assertEqual([1] * 1 + [0] * 5, code)
         self.assertEqual(dot, 0)
         self.assertIsNone(in_sub_code)
 
     def test_front_modify_not_more_threshold_bin(self):
-        dot, out_sub_code = self.base_cluster_b.predict_front(np.array([1] * 1 + [0] * 9))
+        code = [1] * 1 + [0] * 9
+        dot, out_sub_code = self.base_cluster_b.predict_front(code)
+        self.assertEqual([1] * 1 + [0] * 9, code)
         self.assertAlmostEqual(dot, 0.2, places=5)
         np.testing.assert_array_equal(out_sub_code, [0] * 6)
 
     def test_back_modify_not_more_threshold_bin(self):
-        dot, in_sub_code = self.base_cluster_d.predict_back(np.array([1] * 1 + [0] * 5))
+        code = [1] * 1 + [0] * 5
+        dot, in_sub_code = self.base_cluster_d.predict_back(code)
+        self.assertEqual([1] * 1 + [0] * 5, code)
         self.assertAlmostEqual(dot, 0.2, places=5)
         np.testing.assert_array_equal(in_sub_code, [1] * 5 + [0] * 5)
 
     def test_front_modify_more_threshold_bin(self):
-        dot, out_sub_code = self.base_cluster_c.predict_front(np.array([0] * 1 + [1] * 9))
+        code = [0] * 1 + [1] * 9
+        dot, out_sub_code = self.base_cluster_c.predict_front(code)
+        self.assertEqual([0] * 1 + [1] * 9, code)
         self.assertAlmostEqual(dot, 1.4, places=5)
         np.testing.assert_array_equal(out_sub_code, [1] * 6)
 
     def test_back_modify_more_threshold_bin(self):
-        dot, in_sub_code = self.base_cluster_e.predict_back(np.array([0] * 1 + [1] * 5))
+        code = [0] * 1 + [1] * 5
+        dot, in_sub_code = self.base_cluster_e.predict_back(code)
+        self.assertEqual([0] * 1 + [1] * 5, code)
         self.assertAlmostEqual(dot, 0.6, places=5)
         np.testing.assert_array_equal(in_sub_code, [1] * 5 + [0] * 5)
 
 
 class TestClusterModify(TestClusterBase):
     def test_modify_not_threshold_modify(self):
-        in_x = np.array([1] * 1 + [0] * 9)
-        out_x = np.array([1] * 1 + [0] * 5)
+        in_x = [1] * 1 + [0] * 9
+        out_x = [1] * 1 + [0] * 5
         is_modify = self.base_cluster_a.modify(in_x, out_x)
+        self.assertEqual([1] * 1 + [0] * 9, in_x)
+        self.assertEqual([1] * 1 + [0] * 5, out_x)
         self.assertEqual(is_modify, 0)
         self.assertEqual(self.base_cluster_a.count_modifing, 0)
         np.testing.assert_array_almost_equal(
@@ -186,9 +200,11 @@ class TestClusterModify(TestClusterBase):
         )
 
     def test_modify_false_in_true_out_threshold_modify(self):
-        in_x = np.array([0] * 9 + [1] * 1)
-        out_x = np.array([1] * 5 + [0] * 1)
+        in_x = [0] * 9 + [1] * 1
+        out_x = [1] * 5 + [0] * 1
         is_modify = self.base_cluster_b.modify(in_x, out_x)
+        self.assertEqual([0] * 9 + [1] * 1, in_x)
+        self.assertEqual([1] * 5 + [0] * 1, out_x)
         self.assertEqual(is_modify, 0)
         self.assertEqual(self.base_cluster_b.count_modifing, 0)
         np.testing.assert_array_almost_equal(
@@ -203,9 +219,11 @@ class TestClusterModify(TestClusterBase):
         )
 
     def test_modify_true_in_false_out_threshold_modify(self):
-        in_x = np.array([1] * 9 + [0] * 1)
-        out_x = np.array([0] * 5 + [1] * 1)
+        in_x = [1] * 9 + [0] * 1
+        out_x = [0] * 5 + [1] * 1
         is_modify = self.base_cluster_b.modify(in_x, out_x)
+        self.assertEqual([1] * 9 + [0] * 1, in_x)
+        self.assertEqual([0] * 5 + [1] * 1, out_x)
         self.assertEqual(is_modify, 0)
         self.assertEqual(self.base_cluster_b.count_modifing, 0)
         np.testing.assert_array_almost_equal(
@@ -220,9 +238,11 @@ class TestClusterModify(TestClusterBase):
         )
 
     def test_modify_threshold_modify_true_modify_lr(self):
-        in_x = np.array([1] * 9 + [0] * 1)
-        out_x = np.array([1] * 5 + [0] * 1)
+        in_x = [1] * 9 + [0] * 1
+        out_x = [1] * 5 + [0] * 1
         is_modify = self.base_cluster_b.modify(in_x, out_x)
+        self.assertEqual([1] * 9 + [0] * 1, in_x)
+        self.assertEqual([1] * 5 + [0] * 1, out_x)
         self.assertEqual(is_modify, 1)
         self.assertEqual(self.base_cluster_b.count_modifing, 1)
         np.testing.assert_array_almost_equal(
@@ -238,9 +258,11 @@ class TestClusterModify(TestClusterBase):
         )
 
     def test_modify_threshold_modify_false_modify_lr(self):
-        in_x = np.array([1] * 9 + [0] * 1)
-        out_x = np.array([1] * 5 + [0] * 1)
+        in_x = [1] * 9 + [0] * 1
+        out_x = [1] * 5 + [0] * 1
         is_modify = self.base_cluster_c.modify(in_x, out_x)
+        self.assertEqual([1] * 9 + [0] * 1, in_x)
+        self.assertEqual([1] * 5 + [0] * 1, out_x)
         self.assertEqual(is_modify, 1)
         self.assertEqual(self.base_cluster_c.count_modifing, 1)
         np.testing.assert_array_almost_equal(

@@ -367,7 +367,7 @@ class Minicolumn:
             # TODO: что делать, если в одном из контекстов мы не можем распознать ничего, а в других можем?
             # TODO: на данном этапе забиваем на такие коды
             #############
-            controversy_out, out_code, accept = self.front_predict(in_codes[index])
+            controversy_out, out_code, accept = self.front_predict(np.array(in_codes[index]))
             if accept is not PREDICT_ENUM.ACCEPT:
                 self.out_not_detected += 1
                 continue
@@ -395,7 +395,7 @@ class Minicolumn:
                 continue
 
             hamming_dist = Levenshtein.hamming(''.join(map(str, in_code)), ''.join(map(str, in_codes[index])))
-            if min_hamming < hamming_dist:
+            if min_hamming > hamming_dist:
                 min_hamming = hamming_dist
                 min_ind_hamming = index
                 min_out_code = out_code

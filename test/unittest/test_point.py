@@ -200,19 +200,26 @@ class TestPointException(TestPointBase):
 
 class TestPointPredict(TestPointBase):
     def test_back_not_active(self):
-        opt_in_code = self.base_point_a.predict_back([1])
+        code = [1]
+        opt_in_code = self.base_point_a.predict_back(code)
+        self.assertEqual([1], code)
         self.assertIsNone(opt_in_code)
 
     def test_front_not_active(self):
-        opt_in_code = self.base_point_a.predict_front([1])
+        code = [1]
+        opt_in_code = self.base_point_a.predict_front(code)
+        self.assertEqual([1], code)
         self.assertIsNone(opt_in_code)
 
     def test_back_active_empty_cluster(self):
-        opt_in_code = self.base_point_b.predict_back([1])
+        code = [1]
+        opt_in_code = self.base_point_b.predict_back(code)
         self.assertIsNone(opt_in_code)
 
     def test_front_active_empty_cluster(self):
+        code = [1]
         opt_in_code = self.base_point_b.predict_front([1])
+        self.assertEqual([1], code)
         self.assertIsNone(opt_in_code)
 
     def test_back_1_cluster_type_code_0(self):
@@ -220,7 +227,9 @@ class TestPointPredict(TestPointBase):
             cluster_mock.ClusterMock1CustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0)
         )
-        opt_in_code = self.base_point_c.predict_back([1, 0, 0, 0], type_code=0)
+        code = [1, 0, 0, 0]
+        opt_in_code = self.base_point_c.predict_back(code, type_code=0)
+        self.assertEqual([1, 0, 0, 0], code)
         np.testing.assert_array_equal([1, 1, 0, 0], opt_in_code)
 
     def test_front_1_cluster_type_code_0(self):
@@ -228,7 +237,9 @@ class TestPointPredict(TestPointBase):
             cluster_mock.ClusterMock1CustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0)
         )
-        opt_out_code = self.base_point_c.predict_front([1, 0, 0, 0], type_code=0)
+        code = [1, 0, 0, 0]
+        opt_out_code = self.base_point_c.predict_front(code, type_code=0)
+        self.assertEqual([1, 0, 0, 0], code)
         np.testing.assert_array_equal([1, 1, 0, 0], opt_out_code)
 
     def test_back_1_cluster_type_code_minus_1(self):
@@ -236,7 +247,9 @@ class TestPointPredict(TestPointBase):
             cluster_mock.ClusterMock1CustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0)
         )
-        opt_in_code = self.base_point_c.predict_back([1, 0, 0, 0])
+        code = [1, 0, 0, 0]
+        opt_in_code = self.base_point_c.predict_back(code)
+        self.assertEqual([1, 0, 0, 0], code)
         np.testing.assert_array_equal([1, 1, -1, -1], opt_in_code)
 
     def test_front_1_cluster_type_code_minus_1(self):
@@ -244,7 +257,9 @@ class TestPointPredict(TestPointBase):
             cluster_mock.ClusterMock1CustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0)
         )
-        opt_out_code = self.base_point_c.predict_front([1, 0, 0, 0])
+        code = [1, 0, 0, 0]
+        opt_out_code = self.base_point_c.predict_front(code)
+        self.assertEqual([1, 0, 0, 0], code)
         np.testing.assert_array_equal([1, 1, -1, -1], opt_out_code)
 
     def test_back_1_cluster_type_code_0_get_opt_code(self):
@@ -263,7 +278,9 @@ class TestPointPredict(TestPointBase):
                 cluster_mock.ClusterMock1CustomBase(
                     np.array([1, 1, 1, 0]), np.array([1, 1, 1, 0]), 0, 0, 0, 0, 0)
             ]
-            opt_in_code = base_point_d.predict_back([1, 1, 0, 0])
+            code = [1, 1, 0, 0]
+            opt_in_code = base_point_d.predict_back(code)
+            self.assertEqual([1, 1, 0, 0], code)
             target = np.array([0, 0, 0, 0])
             target[base_point_d.in_coords] = np.array([1, 1, 1, -1])[base_point_d.in_coords]
             np.testing.assert_array_equal(target, opt_in_code)
@@ -284,7 +301,9 @@ class TestPointPredict(TestPointBase):
                 cluster_mock.ClusterMock1CustomBase(
                     np.array([1, 1, 1, 0]), np.array([1, 1, 1, 0]), 0, 0, 0, 0, 0)
             ]
-            opt_out_code = base_point_d.predict_front([1, 1, 0, 0], type_code=0)
+            code = [1, 1, 0, 0]
+            opt_out_code = base_point_d.predict_front(code, type_code=0)
+            self.assertEqual([1, 1, 0, 0], code)
             target = np.array([0, 0, 0, 0])
             target[base_point_d.out_coords] = np.array([1, 1, 1, 0])[base_point_d.out_coords]
             np.testing.assert_array_equal(target, opt_out_code)
@@ -305,7 +324,9 @@ class TestPointPredict(TestPointBase):
                 cluster_mock.ClusterMock1CustomBase(
                     np.array([1, 1, 1, 0]), np.array([1, 1, 1, 0]), 0, 0, 0, 0, 0)
             ]
-            opt_in_code = base_point_d.predict_back([1, 1, 0, 0], type_code=0)
+            code = [1, 1, 0, 0]
+            opt_in_code = base_point_d.predict_back(code, type_code=0)
+            self.assertEqual([1, 1, 0, 0], code)
             target = np.array([0, 0, 0, 0])
             target[base_point_d.in_coords] = np.array([1, 1, 1, 0])[base_point_d.in_coords]
             np.testing.assert_array_equal(target, opt_in_code)
@@ -326,7 +347,9 @@ class TestPointPredict(TestPointBase):
                 cluster_mock.ClusterMock1CustomBase(
                     np.array([1, 1, 1, 0]), np.array([1, 1, 1, 0]), 0, 0, 0, 0, 0)
             ]
-            opt_out_code = base_point_d.predict_front([1, 1, 0, 0])
+            code = [1, 1, 0, 0]
+            opt_out_code = base_point_d.predict_front(code)
+            self.assertEqual([1, 1, 0, 0], code)
             target = np.array([0, 0, 0, 0])
             target[base_point_d.out_coords] = np.array([1, 1, 1, -1])[base_point_d.out_coords]
             np.testing.assert_array_equal(target, opt_out_code)
@@ -342,7 +365,9 @@ class TestPointPredict(TestPointBase):
             cluster_mock.ClusterMockGetDotCustomBase(
                 np.array([1, 1, 0, 1]), np.array([1, 1, 0, 1]), 0, 0, 0, 0, 0)
         ]
-        opt_in_code = self.base_point_c.predict_back([1, 1, 1, 1], 0)
+        code = [1, 1, 1, 1]
+        opt_in_code = self.base_point_c.predict_back(code, 0)
+        self.assertEqual([1, 1, 1, 1], code)
         target = np.array([1, 1, 1, 1])
         np.testing.assert_array_equal(target, opt_in_code)
 
@@ -357,7 +382,9 @@ class TestPointPredict(TestPointBase):
             cluster_mock.ClusterMockGetDotCustomBase(
                 np.array([1, 1, 0, 1]), np.array([1, 1, 0, 1]), 0, 0, 0, 0, 0)
         ]
-        opt_out_code = self.base_point_c.predict_front([1, 1, 1, 1], 0)
+        code = [1, 1, 1, 1]
+        opt_out_code = self.base_point_c.predict_front(code, 0)
+        self.assertEqual([1, 1, 1, 1], code)
         target = np.array([1, 1, 1, 1])
         np.testing.assert_array_equal(target, opt_out_code)
 
@@ -394,7 +421,11 @@ class TestPointAdd(TestPointBase):
         self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
         self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
         self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
-        count_fails, count_modify, is_add = self.base_point_b.add(np.array([1]), np.array([1]))
+        in_ = np.array([1])
+        out_ = np.array([1])
+        count_fails, count_modify, is_add = self.base_point_b.add(in_, out_)
+        np.testing.assert_array_equal([1], in_)
+        np.testing.assert_array_equal([1], out_)
         self.assertEqual(0, count_fails)
         self.assertEqual(0, count_modify)
         self.assertEqual(False, is_add)
@@ -406,7 +437,11 @@ class TestPointAdd(TestPointBase):
         self.base_point_d0.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
         self.base_point_d0.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
         self.base_point_d0.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
-        count_fails, count_modify, is_add = self.base_point_d0.add(np.array([1, 0, 0]), np.array([1, 0, 0]))
+        in_ = np.array([1, 0, 0])
+        out_ = np.array([1, 0, 0])
+        count_fails, count_modify, is_add = self.base_point_d0.add(in_, out_)
+        np.testing.assert_array_equal([1, 0, 0], in_)
+        np.testing.assert_array_equal([1, 0, 0], out_)
         self.assertEqual(0, count_fails)
         self.assertEqual(0, count_modify)
         self.assertEqual(True, is_add)
@@ -416,7 +451,11 @@ class TestPointAdd(TestPointBase):
         self.base_point_d2.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
         self.base_point_d2.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
         self.base_point_d2.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
-        count_fails, count_modify, is_add = self.base_point_d2.add(np.array([1, 0, 0]), np.array([1, 0, 0]))
+        in_ = np.array([1, 0, 0])
+        out_ = np.array([1, 0, 0])
+        count_fails, count_modify, is_add = self.base_point_d2.add(in_, out_)
+        np.testing.assert_array_equal([1, 0, 0], in_)
+        np.testing.assert_array_equal([1, 0, 0], out_)
         self.assertEqual(0, count_fails)
         self.assertEqual(0, count_modify)
         self.assertEqual(True, is_add)
@@ -426,7 +465,11 @@ class TestPointAdd(TestPointBase):
         self.base_point_d1.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
         self.base_point_d1.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
         self.base_point_d1.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
-        count_fails, count_modify, is_add = self.base_point_d1.add(np.array([1, 0, 0]), np.array([1, 0, 0]))
+        in_ = np.array([1, 0, 0])
+        out_ = np.array([1, 0, 0])
+        count_fails, count_modify, is_add = self.base_point_d1.add(in_, out_)
+        np.testing.assert_array_equal([1, 0, 0], in_)
+        np.testing.assert_array_equal([1, 0, 0], out_)
         self.assertEqual(0, count_fails)
         self.assertEqual(0, count_modify)
         self.assertEqual(True, is_add)
@@ -436,7 +479,11 @@ class TestPointAdd(TestPointBase):
         self.base_point_e.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
         self.base_point_e.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
         self.base_point_e.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
-        count_fails, count_modify, is_add = self.base_point_e.add(np.array([1, 0, 0]), np.array([1, 0, 0]))
+        in_ = np.array([1, 0, 0])
+        out_ = np.array([1, 0, 0])
+        count_fails, count_modify, is_add = self.base_point_e.add(in_, out_)
+        np.testing.assert_array_equal([1, 0, 0], in_)
+        np.testing.assert_array_equal([1, 0, 0], out_)
         self.assertEqual(0, count_fails)
         self.assertEqual(3, count_modify)
         self.assertEqual(False, is_add)
@@ -446,7 +493,11 @@ class TestPointAdd(TestPointBase):
         self.base_point_f.clusters.append(cluster_mock.ClusterMock0None(0, 0, 0, 0, 0, 0, 0))
         self.base_point_f.clusters.append(cluster_mock.ClusterMock0None(0, 0, 0, 0, 0, 0, 0))
         self.base_point_f.clusters.append(cluster_mock.ClusterMock0None(0, 0, 0, 0, 0, 0, 0))
-        count_fails, count_modify, is_add = self.base_point_f.add(np.array([1, 0, 0]), np.array([1, 0, 0]))
+        in_ = np.array([1, 0, 0])
+        out_ = np.array([1, 0, 0])
+        count_fails, count_modify, is_add = self.base_point_f.add(in_, out_)
+        np.testing.assert_array_equal([1, 0, 0], in_)
+        np.testing.assert_array_equal([1, 0, 0], out_)
         self.assertEqual(3, count_fails)
         self.assertEqual(0, count_modify)
         self.assertEqual(False, is_add)

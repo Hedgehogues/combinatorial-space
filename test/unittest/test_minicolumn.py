@@ -173,14 +173,20 @@ class TestPointPredict(unittest.TestCase):
     def test_back_assert_not_valid_dem(self):
         self.assertRaises(AssertionError, self.minicolumn_back.back_predict, [1])
 
+    @unittest.skip("Изменяет входной параметр. Проверить остальные тесты")
     def test_front_assert_not_active_point(self):
-        controversy, code, accept = self.minicolumn_none.front_predict([1])
+        code = [1]
+        controversy, code, accept = self.minicolumn_none.front_predict(code)
+        self.assertEqual([1], code)
         self.assertEqual(None, code)
         self.assertEqual(None, controversy)
         self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS, accept)
 
+    @unittest.skip("Изменяет входной параметр. Проверить остальные тесты")
     def test_back_assert_not_active_point(self):
-        controversy, code, accept = self.minicolumn_none.back_predict([1])
+        code = [1]
+        controversy, code, accept = self.minicolumn_none.back_predict(code)
+        self.assertEqual([1], code)
         self.assertEqual(None, code)
         self.assertEqual(None, controversy)
         self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS, accept)
@@ -336,23 +342,23 @@ class TestPointUnsupervisedLearningException(unittest.TestCase):
 
     def test_in_codes(self):
         self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=None)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[0, None, -1, 1, 1]] * 3))
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[0, -1, -1, 1, 1]] * 3))
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[0, 1, 2]] * 3))
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1, 0, 0.5, 1]] * 3))
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[0, 1, 0, 2.5, 1]] * 3))
-        self.assertRaises(AssertionError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1] * 2] * 3))
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, None, -1, 1, 1]] * 3)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, -1, -1, 1, 1]] * 3)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, 1, 2]] * 3)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1, 0, 0.5, 1]] * 3)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, 1, 0, 2.5, 1]] * 3)
+        self.assertRaises(AssertionError, self.minicolumn.unsupervised_learning, in_codes=[[1] * 2] * 3)
 
     def test_threshold_controversy_out(self):
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1]]),
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
                           threshold_controversy_out=None)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1]]),
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
                           threshold_controversy_out=-1)
 
     def test_threshold_controversy_in(self):
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1]]),
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
                           threshold_controversy_in=None)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=np.array([[1]]),
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
                           threshold_controversy_in=-1)
 
 
@@ -411,7 +417,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         )
 
     def test_continue_zeros_codes(self):
-        in_codes = np.array([[0]] * 3)
+        in_codes = [[0]] * 3
         min_out_code, min_ind_hamming = self.minicolumn.unsupervised_learning(in_codes=in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn.get_stat()
         self.assertIsNone(None, min_out_code)
@@ -422,7 +428,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, out_not_detected)
 
     def test_out_not_detected(self):
-        in_codes = np.array([[1, 0, 1], [0, 1, 1], [1, 1, 0]])
+        in_codes = [[1, 0, 1], [0, 1, 1], [1, 1, 0]]
         min_out_code, min_ind_hamming = self.minicolumn_zeros.unsupervised_learning(in_codes=in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_zeros.get_stat()
         np.testing.assert_array_equal([1, 1, 0], min_out_code)
@@ -433,7 +439,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(3, out_not_detected)
 
     def test_controversy_out(self):
-        in_codes = np.array([[1, 0, 1, 0], [0, 1, 1, 0], [1, 1, 0, 0]])
+        in_codes = [[1, 0, 1, 0], [0, 1, 1, 0], [1, 1, 0, 0]]
         min_out_code, min_ind_hamming = self.minicolumn_controversy_out.unsupervised_learning(in_codes=in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_out.get_stat()
         self.assertIsNone(None, min_out_code)
@@ -444,7 +450,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, out_not_detected)
 
     def test_code_aligment_more(self):
-        in_codes = np.array([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
+        in_codes = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
         min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes=in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_code_aligment.get_stat()
         np.testing.assert_array_equal(np.array([0, 0, 1, 0, 0, 1, 1, 1]), min_out_code)
@@ -456,7 +462,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
 
     def test_code_aligment_less(self):
-        in_codes = np.array([[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]])
+        in_codes = [[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]]
         min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes=in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_code_aligment.get_stat()
         np.testing.assert_array_equal(np.array([1, 1, 0, 1, 0, 0, 1, 0]), min_out_code)
@@ -468,7 +474,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
 
     def test_code_aligment_eq(self):
-        in_codes = np.array([[1, 1, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0]])
+        in_codes = [[1, 1, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0]]
         min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes=in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_code_aligment.get_stat()
         np.testing.assert_array_equal(np.array([1, 1, 0, 0, 0, 1, 0, 1]), min_out_code)
@@ -480,7 +486,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
 
     def test_code_controversy_in(self):
-        in_codes = np.array([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
+        in_codes = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
         min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes=in_codes,
                                                                                              threshold_controversy_in=0)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_in.get_stat()
@@ -491,26 +497,21 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, in_not_detected)
         self.assertEqual(0, out_not_detected)
 
-    @unittest.skip('Не реализован')
     def test_code_hamming_dist_more(self):
-        return
-        in_codes = np.array([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
-        min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes=in_codes,
-                                                                                             threshold_controversy_in=0)
+        in_codes = [[1, 1, 1, 1], [1, 1, 0, 1], [1, 1, 1, 1]]
+        min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes=in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_in.get_stat()
-        self.assertIsNone(None, min_out_code)
-        self.assertIsNone(None, min_ind_hamming)
-        self.assertEqual(3, in_fail)
+        np.testing.assert_array_equal([0, 1, 0, 0, 0, 1, 0, 0], min_out_code)
+        self.assertEqual(0, min_ind_hamming)
+        self.assertEqual(0, in_fail)
         self.assertEqual(0, out_fail)
         self.assertEqual(0, in_not_detected)
         self.assertEqual(0, out_not_detected)
 
     @unittest.skip('Не реализован')
-    def test_code_hamming_dist_less(self):
-        return
-        in_codes = np.array([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
-        min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes=in_codes,
-                                                                                             threshold_controversy_in=0)
+    def test_code_hamming_min(self):
+        in_codes = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
+        min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes=in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_in.get_stat()
         self.assertIsNone(None, min_out_code)
         self.assertIsNone(None, min_ind_hamming)

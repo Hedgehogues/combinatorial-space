@@ -1,5 +1,7 @@
 from random import randint
 import numpy as np
+from copy import deepcopy
+
 from combinatorial_space.cluster import Cluster
 from test.unittest.cluster_mock import ClusterMockForPointWeight
 
@@ -143,8 +145,9 @@ class PointMockDoubleIdentical:
         return np.array(np.concatenate((in_code, in_code)))
 
     def predict_back(self, out_code, type_code=-1):
-        out_code[out_code == 0] = -1
-        return out_code[:4]
+        out_local = deepcopy(out_code)
+        out_local[out_local == 0] = -1
+        return out_local[:4]
 
     def add(self, in_code, out_code):
         return 0, 0, False
@@ -186,16 +189,18 @@ class PointMockControversyIn:
         self.clusters = []
 
     def predict_front(self, in_code, type_code=-1):
-        in_code[in_code == 0] = -1
-        return np.array(np.concatenate((in_code, in_code)))
+        in_local = deepcopy(in_code)
+        in_local[in_local == 0] = -1
+        return np.array(np.concatenate((in_local, in_local)))
 
     def predict_back(self, out_code, type_code=-1):
-        out_code[out_code == 0] = -1
+        out_local = deepcopy(out_code)
+        out_local[out_local == 0] = -1
         if np.random.rand() > 0.5:
-            out_code[0] = -1
+            out_local[0] = -1
         else:
-            out_code[0] = 1
-        return out_code[:4]
+            out_local[0] = 1
+        return out_local[:4]
 
     def add(self, in_code, out_code):
         return 0, 0, False

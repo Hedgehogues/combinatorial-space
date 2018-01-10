@@ -90,14 +90,14 @@ class Cluster:
         in_y = np.dot(in_x, self.in_w)
         out_y = np.dot(out_x, self.out_w)
         if self.is_modify_lr:
-            delta_in = np.array((self.base_lr / self.count_modifing) * in_y * in_x)
-            delta_out = np.array((self.base_lr / self.count_modifing) * out_y * out_x)
+            delta_in = np.array((self.base_lr / self.count_modifing) * in_y * np.array(in_x))
+            delta_out = np.array((self.base_lr / self.count_modifing) * out_y * np.array(out_x))
             # Правило Ойо почему-то расходится
             #                   self.in_w = self.in_w + (self.base_lr/self.count_modifing)*in_y*(in_x - in_y*self.in_w)
             #                   self.out_w = self.out_w + (self.base_lr/self.count_modifing)*out_y*(out_x - out_y*self.out_w)
         else:
-            delta_in = np.array(self.base_lr * in_y * in_x)
-            delta_out = np.array(self.base_lr * out_y * out_x)
+            delta_in = np.array(self.base_lr * in_y * np.array(in_x))
+            delta_out = np.array(self.base_lr * out_y * np.array(out_x))
             # Правило Ойо почему-то расходится
             #                   self.in_w = self.in_w + (self.base_lr*in_y*(in_x - in_y*self.in_w)
             #                   self.out_w = self.out_w + (self.base_lr*out_y*(out_x - out_y*self.out_w)
