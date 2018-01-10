@@ -58,6 +58,30 @@ class PointMockOddEven:
         return 0, 0, False
 
 
+class PointMockAssertDem2:
+    def __init__(self,
+                 in_threshold_modify=5, out_threshold_modify=0,
+                 in_threshold_activate=5, out_threshold_activate=0,
+                 threshold_bin=0.1,
+                 in_random_bits=24, out_random_bits=10,
+                 count_in_demensions=256, count_out_demensions=16,
+                 base_lr=0.01, is_modify_lr=True,
+                 max_cluster_per_point=100,
+                 cluster_class=Cluster):
+        self.clusters = []
+        self.count_in_demensions = count_in_demensions
+        self.count_out_demensions = count_out_demensions
+
+    def predict_front(self, in_code, type_code=-1):
+        return [1] * 100
+
+    def predict_back(self, out_code, type_code=-1):
+        return [1] * 100
+
+    def add(self, in_code, out_code):
+        return 0, 0, False
+
+
 class PointMockNone:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
@@ -120,13 +144,13 @@ class PointMockDoubleIdentical:
 
     def predict_back(self, out_code, type_code=-1):
         out_code[out_code == 0] = -1
-        return np.array(np.concatenate((out_code, out_code)))
+        return out_code[:4]
 
     def add(self, in_code, out_code):
         return 0, 0, False
 
 
-class PointMockCodeAligmentMore:
+class PointMockCodeAligment:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -149,7 +173,7 @@ class PointMockCodeAligmentMore:
         return 0, 0, False
 
 
-class PointMockCodeAligmentLess:
+class PointMockControversyIn:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -167,7 +191,11 @@ class PointMockCodeAligmentLess:
 
     def predict_back(self, out_code, type_code=-1):
         out_code[out_code == 0] = -1
-        return np.array(np.concatenate((out_code, out_code)))
+        if np.random.rand() > 0.5:
+            out_code[0] = -1
+        else:
+            out_code[0] = 1
+        return out_code[:4]
 
     def add(self, in_code, out_code):
         return 0, 0, False

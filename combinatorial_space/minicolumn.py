@@ -140,6 +140,8 @@ class Minicolumn:
             if out_code_local is None:
                 continue
 
+            self.__len_exeption(len(out_code_local), self.count_out_demensions)
+
             count += np.uint8(out_code_local != 0)
             out_code += out_code_local
 
@@ -174,6 +176,8 @@ class Minicolumn:
             # Неактивная точка
             if in_code_local is None:
                 continue
+
+            self.__len_exeption(len(in_code_local), self.count_in_demensions)
 
             count += np.uint8(in_code_local != 0)
             in_code += in_code_local
@@ -297,7 +301,7 @@ class Minicolumn:
             code_mod[non_active_bits] = 1
         else:
             code_mod = deepcopy(code)
-        return code_mod
+        return np.int8(code_mod)
 
     """
         Статистика по обработке последней группы кодов
@@ -325,8 +329,7 @@ class Minicolumn:
         in_codes - входные коды в разных контекстах
         threshold_controversy_in, threshold_controversy_out - порого противоречивости для кодов
         
-        Возвращается оптимальный код, порядковый номер контекста-победителя, 
-        количество фэйлов во входном и выходном векторах
+        Возвращается оптимальный код, порядковый номер контекста-победителя
     """
     def unsupervised_learning(self, in_codes, threshold_controversy_in=3, threshold_controversy_out=3):
 
@@ -452,7 +455,7 @@ class Minicolumn:
     
     
     """
-        Этап обучения с учителем
+        Этап обучения
         
         Создание и модификация кластеров на основе пары кодов: входной и выходной
         
