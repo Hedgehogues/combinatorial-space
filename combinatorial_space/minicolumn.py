@@ -34,7 +34,7 @@ class PREDICT_ENUM(Enum):
 """
 class Minicolumn:
     
-    def __init__(self, space_size=60000, max_cluster_per_point=100,
+    def __init__(self, space_size=10000, max_cluster_per_point=100,
                  max_count_clusters=1000000, seed=42,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -96,6 +96,7 @@ class Minicolumn:
         self.in_fail = None
         self.in_not_detected = None
         self.out_not_detected = None
+        self.zeros_detected = None
         
         np.random.seed(seed)
 
@@ -321,7 +322,7 @@ class Minicolumn:
         return self.out_fail, self.in_fail, self.in_not_detected, self.out_not_detected
 
     """
-        Этап обучения без учителя
+        Этап обучения без учителя (не написан один тест. см. тесты)
         
         Делается предсказание для всех переданных кодов и выбирается самый непротиворечивый из них, 
         либо констатируется, что такого нет.
@@ -357,10 +358,12 @@ class Minicolumn:
         self.in_fail = 0
         self.in_not_detected = 0
         self.out_not_detected = 0
+        self.zeros_detected = 0
         for index in range(len(in_codes)):
 
             # Не обрабатываются полностью нулевые коды
             if np.sum(in_codes[index]) == 0:
+                self.zeros_detected += 1
                 continue
 
             # TODO: холодный старт. С чего начинать?
@@ -379,6 +382,7 @@ class Minicolumn:
             # TODO: на данном этапе такой код не добавляем
             ############
             if controversy_out > threshold_controversy_out:
+                # TODO: zeros_Detected не протестирован
                 self.out_fail += 1
                 continue
                 
@@ -403,18 +407,19 @@ class Minicolumn:
                 min_ind_hamming = index
                 min_out_code = out_code
 
-        if self.in_not_detected == len(in_codes) or self.out_not_detected == len(in_codes):
+        if self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
             min_ind_hamming = 0
             # Генерируем случайный код
             min_out_code = self.__code_alignment(np.array([0] * self.count_out_demensions))
 
         if min_out_code is not None:
-            return min_out_code, min_ind_hamming
+            # TODO: выход изменился (не такой, как в тестах)
+            return in_codes[min_ind_hamming], min_out_code, min_ind_hamming
         else:
             return None, None
     
     """
-        Этап обучения без учителя
+        Этап обучения без учителя (функция не протестирована, так как очень похожа на unsupervised_learning)
         
         Делается предсказание для всех переданных кодов и выбирается самый непротиворечивый из них, 
         либо констатируется, что такого нет.
@@ -441,15 +446,18 @@ class Minicolumn:
         self.in_fail = 0
         self.in_not_detected = 0
         self.out_not_detected = 0
+        self.zeros_detected = 0
         for index in range(len(in_codes)):
 
             # Не обрабатываются полностью нулевые коды
             if np.sum(in_codes[index]) == 0:
+                # TODO: zeros_detected не протестирован
+                self.zeros_detected += 1
                 continue
 
             # TODO: холодный старт. С чего начинать?
             # TODO: если ни один код не распознан (accept всегда принимает значения не равные ACCEPT),
-            # TODO: то создаём случайный выходной вектор для первого кода из всех входных
+            # TODO: то берём первый попавшийся код (например, нулевой по счёту)
             #############
             # TODO: что делать, если в одном из контекстов мы не можем распознать ничего, а в других можем?
             # TODO: на данном этапе забиваем на такие коды
@@ -472,17 +480,17 @@ class Minicolumn:
                 min_ind_hamming = index
 
         # Если ни один код не определился, то берём самый первый
-        if self.in_not_detected == len(in_codes) or self.out_not_detected == len(in_codes):
+        if self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
             min_ind_hamming = 0
 
         if min_ind_hamming is not None:
-            return min_ind_hamming
+            return in_codes[min_ind_hamming], out_codes[min_ind_hamming], min_ind_hamming
         else:
-            return None
+            return None, None, None
     
     
     """
-        Этап обучения
+        Этап обучения (не протестирована)
         
         Создание и модификация кластеров на основе пары кодов: входной и выходной
         
@@ -497,11 +505,10 @@ class Minicolumn:
             return None, None, None
         
         if out_codes is not None:
-            in_code, out_code = self.supervised_learning(in_codes, out_codes, threshold_controversy_out)
+            in_code, out_code, opt_ind = self.supervised_learning(in_codes, out_codes, threshold_controversy_out)
         else:
-            in_code, out_code = self.unsupervised_learning(in_codes, threshold_controversy_in, threshold_controversy_out)
-            
-        
+            in_code, out_code, opt_ind = self.unsupervised_learning(in_codes, threshold_controversy_in, threshold_controversy_out)
+
         count_fails = 0
         count_modify = 0
         count_adding = 0

@@ -525,38 +525,5 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         pass
 
 
-class TestPointSupervisedLearningException(unittest.TestCase):
-    def setUp(self):
-        self.minicolumn = Minicolumn(
-            space_size=5,
-            in_random_bits=1,
-            out_random_bits=1,
-            count_in_demensions=1,
-            count_out_demensions=1,
-            class_point=PointMockNone
-        )
-
-    def test_in_codes(self):
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=None)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, None, -1, 1, 1]] * 3)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, -1, -1, 1, 1]] * 3)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, 1, 2]] * 3)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1, 0, 0.5, 1]] * 3)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, 1, 0, 2.5, 1]] * 3)
-        self.assertRaises(AssertionError, self.minicolumn.unsupervised_learning, in_codes=[[1] * 2] * 3)
-
-    def test_threshold_controversy_out(self):
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
-                          threshold_controversy_out=None)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
-                          threshold_controversy_out=-1)
-
-    def test_threshold_controversy_in(self):
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
-                          threshold_controversy_in=None)
-        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
-                          threshold_controversy_in=-1)
-
-
 if __name__ == '__main__':
     unittest.main()

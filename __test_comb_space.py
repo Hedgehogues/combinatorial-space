@@ -20,6 +20,7 @@ for image_number in range(max_number):
         if np.sum(np.sum(image_sample)) == 0:
             continue
 
+        # Получаем коды во всех контекстах из подобласти 4х4 (нужны правки)
         codes = context_transform.get_shift_context(image_sample)
         count_fails, count_modify, count_adding = minicolumn.learn(codes)
         if count_fails is not None:
