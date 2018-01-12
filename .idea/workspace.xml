@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="228949ed-ca87-4f95-8133-28b85a7150ad" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combinatorial_space/cluster.py" afterPath="$PROJECT_DIR$/combinatorial_space/cluster.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combinatorial_space/minicolumn.py" afterPath="$PROJECT_DIR$/combinatorial_space/minicolumn.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unittest/point_mock.py" afterPath="$PROJECT_DIR$/test/unittest/point_mock.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unittest/test_cluster.py" afterPath="$PROJECT_DIR$/test/unittest/test_cluster.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unittest/test_minicolumn.py" afterPath="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unittest/test_point.py" afterPath="$PROJECT_DIR$/test/unittest/test_point.py" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,14 +19,13 @@
       <file leaf-file-name="test_minicolumn.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/unittest/test_minicolumn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="495" column="51" lean-forward="false" selection-start-line="495" selection-start-column="51" selection-end-line="495" selection-end-column="51" />
+            <state relative-caret-position="366">
+              <caret line="475" column="58" lean-forward="true" selection-start-line="475" selection-start-column="58" selection-end-line="475" selection-end-column="59" />
               <folding>
                 <element signature="e#27#42#0" expanded="true" />
                 <element signature="e#455#4001#0" expanded="false" />
                 <element signature="e#490#614#0" expanded="false" />
                 <element signature="e#666#813#0" expanded="false" />
-                <element signature="e#862#1007#0" expanded="false" />
                 <element signature="e#1042#1094#0" expanded="false" />
                 <element signature="e#1141#1434#0" expanded="false" />
                 <element signature="e#1483#1784#0" expanded="false" />
@@ -44,69 +40,9 @@
                 <element signature="e#3412#3570#0" expanded="false" />
                 <element signature="e#3634#3813#0" expanded="false" />
                 <element signature="e#3862#4001#0" expanded="false" />
-                <element signature="e#8835#9136#0" expanded="false" />
-                <element signature="e#9185#9433#0" expanded="false" />
-                <element signature="e#9481#9728#0" expanded="false" />
-                <element signature="e#9776#14237#0" expanded="false" />
-                <element signature="e#9801#10364#0" expanded="false" />
-                <element signature="e#10414#10986#0" expanded="false" />
-                <element signature="e#11028#11201#0" expanded="false" />
-                <element signature="e#11277#11490#0" expanded="false" />
-                <element signature="e#11551#11834#0" expanded="false" />
-                <element signature="e#11894#12177#0" expanded="false" />
-                <element signature="e#12253#13027#0" expanded="false" />
-                <element signature="e#13107#14237#0" expanded="false" />
-                <element signature="e#13220#13431#0" expanded="false" />
-                <element signature="e#14608#15402#0" expanded="false" />
-                <element signature="e#15458#15769#0" expanded="false" />
-                <element signature="e#15824#16133#0" expanded="false" />
-                <element signature="e#17920#18398#0" expanded="false" />
-                <element signature="e#18445#18972#0" expanded="false" />
-                <element signature="e#19018#19561#0" expanded="false" />
-                <element signature="e#19610#20289#0" expanded="false" />
-                <element signature="e#20338#21017#0" expanded="false" />
-                <element signature="e#21064#21743#0" expanded="false" />
-                <element signature="e#21793#22455#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="point_mock.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/unittest/point_mock.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2592">
-              <caret line="149" column="24" lean-forward="false" selection-start-line="149" selection-start-column="24" selection-end-line="149" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cluster_mock.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/unittest/cluster_mock.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1800">
-              <caret line="100" column="8" lean-forward="false" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="minicolumn.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/combinatorial_space/minicolumn.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="408" column="0" lean-forward="false" selection-start-line="408" selection-start-column="0" selection-end-line="408" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-                <element signature="e#5611#5953#1" expanded="false" />
-                <element signature="e#7159#7394#1" expanded="false" />
-                <element signature="e#8627#9329#0" expanded="false" />
-                <element signature="e#9395#10437#0" expanded="false" />
-                <element signature="e#10443#10781#1" expanded="false" />
-                <element signature="e#10879#12068#0" expanded="false" />
-                <element signature="e#12082#12125#1" expanded="false" />
-                <element signature="e#12158#12210#0" expanded="false" />
+                <element signature="e#4076#6234#0" expanded="false" />
+                <element signature="e#10260#14721#0" expanded="false" />
+                <element signature="e#10285#10848#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -123,7 +59,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>is_modify_lr=True</find>
       <find>o</find>
       <find>in_corr</find>
       <find>cov</find>
@@ -153,6 +88,7 @@
       <find>self.threshold_controversy</find>
       <find>threshold_controversy_in</find>
       <find>out_code</find>
+      <find>np.arr</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -186,10 +122,10 @@
         <option value="$PROJECT_DIR$/test/tmp.py" />
         <option value="$PROJECT_DIR$/test/unittest/cluster_mock.py" />
         <option value="$PROJECT_DIR$/combinatorial_space/point.py" />
-        <option value="$PROJECT_DIR$/combinatorial_space/minicolumn.py" />
         <option value="$PROJECT_DIR$/test/unittest/test_point.py" />
         <option value="$PROJECT_DIR$/combinatorial_space/cluster.py" />
         <option value="$PROJECT_DIR$/test/unittest/test_cluster.py" />
+        <option value="$PROJECT_DIR$/combinatorial_space/minicolumn.py" />
         <option value="$PROJECT_DIR$/test/unittest/point_mock.py" />
         <option value="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
       </list>
@@ -216,7 +152,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -245,6 +180,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -352,8 +288,8 @@
     <recent_temporary>
       <list size="4">
         <item index="0" class="java.lang.String" itemvalue="Python.test_minicolumn" />
-        <item index="1" class="java.lang.String" itemvalue="Python.test_comb_space_cluster" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.run unittests" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.run unittests" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test_comb_space_cluster" />
         <item index="3" class="java.lang.String" itemvalue="Python.test_comb_space_point" />
       </list>
     </recent_temporary>
@@ -375,9 +311,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="run_unittests - 2018.01.09 at 22h 54m 44s.xml">
-      <configuration name="run unittests" configurationId="tests" />
-    </history-entry>
     <history-entry file="run_unittests - 2018.01.10 at 09h 31m 37s.xml">
       <configuration name="run unittests" configurationId="tests" />
     </history-entry>
@@ -405,6 +338,9 @@
     <history-entry file="run_unittests - 2018.01.10 at 10h 28m 30s.xml">
       <configuration name="run unittests" configurationId="tests" />
     </history-entry>
+    <history-entry file="run_unittests - 2018.01.12 at 09h 26m 50s.xml">
+      <configuration name="run unittests" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-151" y="138" width="1537" height="912" extended-state="6" />
@@ -415,15 +351,14 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32258064" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32258064" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22580644" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21961048" sideWeight="0.49444443" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32904884" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22522523" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22632639" sideWeight="0.49444443" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Log Manager" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25166446" sideWeight="0.50555557" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32258064" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32258064" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27736735" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -431,6 +366,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32904884" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -441,17 +377,12 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/unittest/test_minicolumn.py</url>
-          <line>496</line>
-          <option name="timeStamp" value="619" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/combinatorial_space/point.py</url>
           <line>153</line>
           <option name="timeStamp" value="635" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="643" />
+      <option name="time" value="653" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="tests">
@@ -661,7 +592,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -669,7 +599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
           <caret line="23" column="65" lean-forward="false" selection-start-line="23" selection-start-column="65" selection-end-line="23" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -677,7 +606,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="114" column="0" lean-forward="false" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -685,15 +613,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
           <caret line="132" column="0" lean-forward="false" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/combinatorial_space/point.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="164" column="8" lean-forward="false" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -701,14 +620,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="290">
           <caret line="418" column="34" lean-forward="false" selection-start-line="418" selection-start-column="34" selection-end-line="418" selection-end-column="34" />
-          <folding>
-            <element signature="e#195#2208#0" expanded="false" />
-            <element signature="e#2280#5834#0" expanded="false" />
-            <element signature="e#5882#8472#0" expanded="false" />
-            <element signature="e#8518#17185#0" expanded="false" />
-            <element signature="e#17238#18581#0" expanded="false" />
-            <element signature="e#18623#23373#0" expanded="false" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="99" column="65" lean-forward="false" selection-start-line="99" selection-start-column="65" selection-end-line="99" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unittest/test_cluster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2">
+          <caret line="261" column="33" lean-forward="false" selection-start-line="261" selection-start-column="33" selection-end-line="261" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unittest/cluster_mock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1800">
+          <caret line="100" column="8" lean-forward="false" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -720,51 +652,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/combinatorial_space/cluster.py">
+    <entry file="file://$PROJECT_DIR$/combinatorial_space/point.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="99" column="65" lean-forward="false" selection-start-line="99" selection-start-column="65" selection-end-line="99" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/unittest/test_cluster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2">
-          <caret line="261" column="33" lean-forward="false" selection-start-line="261" selection-start-column="33" selection-end-line="261" selection-end-column="33" />
-          <folding>
-            <element signature="e#163#1681#0" expanded="false" />
-            <element signature="e#1755#3292#0" expanded="false" />
-            <element signature="e#3344#4902#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/unittest/cluster_mock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1800">
-          <caret line="100" column="8" lean-forward="false" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
+        <state relative-caret-position="165">
+          <caret line="87" column="8" lean-forward="false" selection-start-line="87" selection-start-column="8" selection-end-line="87" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/unittest/point_mock.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2592">
-          <caret line="149" column="24" lean-forward="false" selection-start-line="149" selection-start-column="24" selection-end-line="149" selection-end-column="24" />
+        <state relative-caret-position="252">
+          <caret line="198" column="15" lean-forward="false" selection-start-line="198" selection-start-column="15" selection-end-line="198" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/combinatorial_space/minicolumn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="408" column="0" lean-forward="false" selection-start-line="408" selection-start-column="0" selection-end-line="408" selection-end-column="0" />
+        <state relative-caret-position="866">
+          <caret line="150" column="0" lean-forward="false" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
             <element signature="e#5611#5953#1" expanded="false" />
             <element signature="e#7159#7394#1" expanded="false" />
-            <element signature="e#8627#9329#0" expanded="false" />
             <element signature="e#9395#10437#0" expanded="false" />
             <element signature="e#10443#10781#1" expanded="false" />
             <element signature="e#10879#12068#0" expanded="false" />
@@ -776,14 +687,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/unittest/test_minicolumn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="495" column="51" lean-forward="false" selection-start-line="495" selection-start-column="51" selection-end-line="495" selection-end-column="51" />
+        <state relative-caret-position="366">
+          <caret line="475" column="58" lean-forward="true" selection-start-line="475" selection-start-column="58" selection-end-line="475" selection-end-column="59" />
           <folding>
             <element signature="e#27#42#0" expanded="true" />
             <element signature="e#455#4001#0" expanded="false" />
             <element signature="e#490#614#0" expanded="false" />
             <element signature="e#666#813#0" expanded="false" />
-            <element signature="e#862#1007#0" expanded="false" />
             <element signature="e#1042#1094#0" expanded="false" />
             <element signature="e#1141#1434#0" expanded="false" />
             <element signature="e#1483#1784#0" expanded="false" />
@@ -798,29 +708,9 @@
             <element signature="e#3412#3570#0" expanded="false" />
             <element signature="e#3634#3813#0" expanded="false" />
             <element signature="e#3862#4001#0" expanded="false" />
-            <element signature="e#8835#9136#0" expanded="false" />
-            <element signature="e#9185#9433#0" expanded="false" />
-            <element signature="e#9481#9728#0" expanded="false" />
-            <element signature="e#9776#14237#0" expanded="false" />
-            <element signature="e#9801#10364#0" expanded="false" />
-            <element signature="e#10414#10986#0" expanded="false" />
-            <element signature="e#11028#11201#0" expanded="false" />
-            <element signature="e#11277#11490#0" expanded="false" />
-            <element signature="e#11551#11834#0" expanded="false" />
-            <element signature="e#11894#12177#0" expanded="false" />
-            <element signature="e#12253#13027#0" expanded="false" />
-            <element signature="e#13107#14237#0" expanded="false" />
-            <element signature="e#13220#13431#0" expanded="false" />
-            <element signature="e#14608#15402#0" expanded="false" />
-            <element signature="e#15458#15769#0" expanded="false" />
-            <element signature="e#15824#16133#0" expanded="false" />
-            <element signature="e#17920#18398#0" expanded="false" />
-            <element signature="e#18445#18972#0" expanded="false" />
-            <element signature="e#19018#19561#0" expanded="false" />
-            <element signature="e#19610#20289#0" expanded="false" />
-            <element signature="e#20338#21017#0" expanded="false" />
-            <element signature="e#21064#21743#0" expanded="false" />
-            <element signature="e#21793#22455#0" expanded="false" />
+            <element signature="e#4076#6234#0" expanded="false" />
+            <element signature="e#10260#14721#0" expanded="false" />
+            <element signature="e#10285#10848#0" expanded="false" />
           </folding>
         </state>
       </provider>
