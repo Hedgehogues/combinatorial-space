@@ -432,7 +432,6 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, in_not_detected)
         self.assertEqual(0, out_not_detected)
 
-    # @unittest.skip("Изменяет входной параметр. Проверить остальные тесты")
     def test_out_not_detected(self):
         in_codes = [[1, 0, 1], [0, 1, 1], [1, 1, 0]]
         min_out_code, min_ind_hamming = self.minicolumn_zeros.unsupervised_learning(in_codes=in_codes)
@@ -510,7 +509,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, out_not_detected)
 
     def test_code_hamming_dist_more(self):
-        in_codes = [[1, 1, 1, 1], [1, 1, 0, 1], [1, 1, 1, 1]]
+        in_codes = [[1, 1, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
         min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes=in_codes)
         self.assertEqual([[1, 1, 1, 1], [1, 1, 0, 1], [1, 1, 1, 1]], in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_in.get_stat()
@@ -521,18 +520,43 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, in_not_detected)
         self.assertEqual(0, out_not_detected)
 
-    @unittest.skip('Не реализован')
+    @unittest.skip('Не реализован. Выбор минимального оптимального кода')
     def test_code_hamming_min(self):
-        in_codes = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
-        min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes=in_codes)
-        self.assertEqual([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]], in_codes)
-        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_in.get_stat()
-        self.assertIsNone(None, min_out_code)
-        self.assertIsNone(None, min_ind_hamming)
-        self.assertEqual(3, in_fail)
-        self.assertEqual(0, out_fail)
-        self.assertEqual(0, in_not_detected)
-        self.assertEqual(0, out_not_detected)
+        pass
+
+
+class TestPointSupervisedLearningException(unittest.TestCase):
+    def setUp(self):
+        self.minicolumn = Minicolumn(
+            space_size=5,
+            in_random_bits=1,
+            out_random_bits=1,
+            count_in_demensions=1,
+            count_out_demensions=1,
+            class_point=PointMockNone
+        )
+
+    def test_in_codes(self):
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=None)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, None, -1, 1, 1]] * 3)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, -1, -1, 1, 1]] * 3)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, 1, 2]] * 3)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1, 0, 0.5, 1]] * 3)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[0, 1, 0, 2.5, 1]] * 3)
+        self.assertRaises(AssertionError, self.minicolumn.unsupervised_learning, in_codes=[[1] * 2] * 3)
+
+    def test_threshold_controversy_out(self):
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
+                          threshold_controversy_out=None)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
+                          threshold_controversy_out=-1)
+
+    def test_threshold_controversy_in(self):
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
+                          threshold_controversy_in=None)
+        self.assertRaises(ValueError, self.minicolumn.unsupervised_learning, in_codes=[[1]],
+                          threshold_controversy_in=-1)
+
 
 if __name__ == '__main__':
     unittest.main()

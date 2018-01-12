@@ -111,6 +111,14 @@ class Minicolumn:
     def __len_exeption(self, obj_len, target_len):
         assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
 
+    def __codes_exeption(self, codes):
+        self.__none_exeption(codes)
+        for code in codes:
+            self.__none_exeption(code)
+            self.__code_value_exeption(code)
+            self.__len_exeption(len(code), self.count_in_demensions)
+            self.__code_value_exeption(code)
+
     def __predict_prepare_code(self, code, count):
         controversy = np.sum(np.uint8(np.abs(np.divide(code[count != 0], count[count != 0])) < self.threshold_controversy))
         code[code <= 0] = 0
@@ -333,12 +341,7 @@ class Minicolumn:
     """
     def unsupervised_learning(self, in_codes, threshold_controversy_in=3, threshold_controversy_out=3):
 
-        self.__none_exeption(in_codes)
-        for code in in_codes:
-            self.__none_exeption(code)
-            self.__code_value_exeption(code)
-            self.__len_exeption(len(code), self.count_in_demensions)
-            self.__code_value_exeption(code)
+        self.__codes_exeption(in_codes)
         self.__none_exeption(threshold_controversy_in)
         self.__none_exeption(threshold_controversy_out)
 
@@ -348,7 +351,7 @@ class Minicolumn:
             raise ValueError("Неожиданное значение переменной")
 
         min_hamming = np.inf
-        min_ind_hamming = -1
+        min_ind_hamming = None
         min_out_code = None
         self.out_fail = 0
         self.in_fail = 0
@@ -424,14 +427,20 @@ class Minicolumn:
         codes - входные коды в разных контекстах
         threshold_controversy_in, threshold_controversy_out - порого противоречивости для кодов
         
-        Возвращается ...
+        Возвращается минимальный индекс предсказанного кода в смысле хемминга
     """
-    def supervised_learning(self, in_codes, out_codes, threshold_controversy_out):
-                       
+    def supervised_learning(self, in_codes, out_codes, threshold_controversy_out=3):
+
+        self.__codes_exeption(in_codes)
+        self.__codes_exeption(out_codes)
+        self.__none_exeption(threshold_controversy_out)
+
         min_hamming = np.inf
-        min_ind_hamming = -1
-        min_out_code = None
-        out_fail = 0
+        min_ind_hamming = None
+        self.out_fail = 0
+        self.in_fail = 0
+        self.in_not_detected = 0
+        self.out_not_detected = 0
         for index in range(len(in_codes)):
 
             # Не обрабатываются полностью нулевые коды
@@ -439,19 +448,37 @@ class Minicolumn:
                 continue
 
             # TODO: холодный старт. С чего начинать?
-            controversy_out, out_code = self.front_predict(in_codes[index])
-            
+            # TODO: если ни один код не распознан (accept всегда принимает значения не равные ACCEPT),
+            # TODO: то создаём случайный выходной вектор для первого кода из всех входных
+            #############
+            # TODO: что делать, если в одном из контекстов мы не можем распознать ничего, а в других можем?
+            # TODO: на данном этапе забиваем на такие коды
+            #############
+            controversy_out, out_code, accept = self.front_predict(np.array(in_codes[index]))
+            if accept is not PREDICT_ENUM.ACCEPT:
+                self.out_not_detected += 1
+                continue
+
+            # TODO: что если все коды противоречивые? как быть?
+            # TODO: на данном этапе такой код не добавляем
+            ############
             if controversy_out > threshold_controversy_out:
-                out_fail += 1
+                self.out_fail += 1
                 continue                
             
             hamming_dist = Levenshtein.hamming(''.join(map(str, out_code)), ''.join(map(str, out_codes[index])))
             if min_hamming < hamming_dist:
                 min_hamming = hamming_dist
                 min_ind_hamming = index
-                min_out_code = out_code
-            
-        return min_out_code, min_ind_hamming, out_fail
+
+        # Если ни один код не определился, то берём самый первый
+        if self.in_not_detected == len(in_codes) or self.out_not_detected == len(in_codes):
+            min_ind_hamming = 0
+
+        if min_ind_hamming is not None:
+            return min_ind_hamming
+        else:
+            return None
     
     
     """
