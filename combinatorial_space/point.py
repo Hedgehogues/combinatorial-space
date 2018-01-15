@@ -97,16 +97,18 @@ class Point:
         opt_out_code = None
         if is_active:
             for cluster in self.clusters:
+                # TODO: тест на случай, когда out_x == None, dot == None
                 dot, out_x = cluster.predict_front(in_x)
 
-                if dot < 0:
+                if dot is not None and dot < 0:
                     raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
                                      "Отрицательное значение скалярного произведения")
-                if dot != 0 and out_x is None:
+                # TODO: dot != 0 заменил на  dot is not None
+                if dot is not None and out_x is None:
                     raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
                                      "Скалярное произведение > 0. Предсказанный вектор None")
 
-                if dot > opt_dot:
+                if dot is not None and dot > opt_dot:
                     opt_dot = dot
                     opt_out_code = np.array([0] * self.count_out_demensions)
                     if type_code == -1:
@@ -136,16 +138,18 @@ class Point:
         opt_in_code = None
         if is_active:
             for cluster in self.clusters:
+                # TODO: тест на случай, когда in_x == None, dot == None
                 dot, in_x = cluster.predict_back(out_x)
 
-                if dot < 0:
+                if dot is not None and dot < 0:
                     raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
                                      "Отрицательное значение скалярного произведения")
-                if dot != 0 and in_x is None:
+                # TODO: dot != 0 заменил на  dot is not None
+                if dot is not None and out_x is None:
                     raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
                                      "Скалярное произведение > 0. Предсказанный вектор None")
 
-                if dot > opt_dot:
+                if dot is not None and dot > opt_dot:
                     opt_dot = dot
                     opt_in_code = np.array([0] * self.count_in_demensions)
                     if type_code == -1:

@@ -8,12 +8,12 @@ from combinatorial_space.minicolumn import Minicolumn
 df = pd.read_csv('data/test_image.csv', header=None)
 
 max_number = 5000
-count_subimages_for_image = 7
+count_subimages_for_image = 100
 window_size = [4, 4]
 minicolumn = Minicolumn(max_count_clusters=200000)
 for image_number in range(max_number):
     label, image = image_transformations.get_image(df, image_number)
-    for subimage_number in range(0, 7):
+    for subimage_number in range(0, count_subimages_for_image):
         x, y = np.random.random_integers(0, 27 - window_size[0], 2)
         image_sample = image[y:y + window_size[0], x:x + window_size[1]]
 

@@ -407,7 +407,8 @@ class Minicolumn:
                 min_ind_hamming = index
                 min_out_code = out_code
 
-        if self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
+        if self.zeros_detected != len(in_codes) and self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
+            # TODO: нельзя выбирать нулевой код. Нужно брать первый попавшийся не нулевой
             min_ind_hamming = 0
             # Генерируем случайный код
             min_out_code = self.__code_alignment(np.array([0] * self.count_out_demensions))
@@ -480,7 +481,7 @@ class Minicolumn:
                 min_ind_hamming = index
 
         # Если ни один код не определился, то берём самый первый
-        if self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
+        if self.zeros_detected != len(in_codes) and self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
             min_ind_hamming = 0
 
         if min_ind_hamming is not None:
@@ -503,20 +504,21 @@ class Minicolumn:
     def learn(self, in_codes, out_codes=None, threshold_controversy_in=20, threshold_controversy_out=6):
         if self.is_sleep():
             return None, None, None
-        
-        if out_codes is not None:
-            in_code, out_code, opt_ind = self.supervised_learning(in_codes, out_codes, threshold_controversy_out)
-        else:
-            in_code, out_code, opt_ind = self.unsupervised_learning(in_codes, threshold_controversy_in, threshold_controversy_out)
 
         count_fails = 0
         count_modify = 0
         count_adding = 0
-        
-        for point in self.space:
-            __count_fails, __count_modify, __count_adding = point.add(in_code, out_code)
-            count_modify += __count_modify
-            count_fails += __count_fails
-            count_adding += __count_adding
-            self.count_clusters += np.uint(__count_adding)
+
+        if out_codes is not None:
+            in_code, out_code, opt_ind = self.supervised_learning(in_codes, out_codes, threshold_controversy_out)
+        else:
+            in_code, out_code, opt_ind = self.unsupervised_learning(in_codes, threshold_controversy_in,
+                                                                    threshold_controversy_out)
+        if in_code is not None:
+            for point in self.space:
+                __count_fails, __count_modify, __count_adding = point.add(in_code, out_code)
+                count_modify += __count_modify
+                count_fails += __count_fails
+                count_adding += __count_adding
+                self.count_clusters += np.uint(__count_adding)
         return count_fails, count_modify, count_adding

@@ -62,7 +62,7 @@ class Cluster:
         if np.abs(dot) > self.in_threshold_modify:
             return dot, np.uint8(self.out_w > self.threshold_bin)
         else:
-            return 0, None
+            return None, None
 
     """
         Предсказание назад, т.е. предсказание выхода по входу
