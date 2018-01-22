@@ -2,7 +2,7 @@
 
 import unittest
 import numpy as np
-from combinatorial_space.cluster import Cluster
+from src.combinatorial_space.cluster import Cluster
 
 
 class TestCluster__init__(unittest.TestCase):
@@ -140,14 +140,14 @@ class TestClusterPredict(TestClusterBase):
         code = [1] * 1 + [0] * 9
         dot, out_sub_code = self.base_cluster_a.predict_front(code)
         self.assertEqual([1] * 1 + [0] * 9, code)
-        self.assertEqual(dot, 0)
+        self.assertEqual(dot, None)
         self.assertIsNone(out_sub_code)
 
     def test_back_not_threshold_modify(self):
         code = [1] * 1 + [0] * 5
         dot, in_sub_code = self.base_cluster_a.predict_back(code)
         self.assertEqual([1] * 1 + [0] * 5, code)
-        self.assertEqual(dot, 0)
+        self.assertEqual(dot, None)
         self.assertIsNone(in_sub_code)
 
     def test_front_modify_not_more_threshold_bin(self):

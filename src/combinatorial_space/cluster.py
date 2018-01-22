@@ -47,6 +47,15 @@ class Cluster:
     def __len_exeption(self, obj_len, target_len):
         assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
 
+    def __predict(self, x, w_0, w_1, threshold_modify):
+        self.__code_value_exeption(x)
+        self.__len_exeption(len(x), len(w_0))
+        dot = np.dot(x, w_0)
+        if np.abs(dot) > threshold_modify:
+            return dot, np.uint8(w_1 > self.threshold_bin)
+        else:
+            return None, None
+
     """
         Предсказание вперёд, т.е. предсказание входа по выходу
 
@@ -56,13 +65,7 @@ class Cluster:
         кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """
     def predict_front(self, in_x):
-        self.__code_value_exeption(in_x)
-        self.__len_exeption(len(in_x), len(self.in_w))
-        dot = np.dot(in_x, self.in_w)
-        if np.abs(dot) > self.in_threshold_modify:
-            return dot, np.uint8(self.out_w > self.threshold_bin)
-        else:
-            return None, None
+        return self.__predict(in_x, self.in_w, self.out_w, self.in_threshold_modify)
 
     """
         Предсказание назад, т.е. предсказание выхода по входу
@@ -72,15 +75,8 @@ class Cluster:
         Возвращается значение похожести (корелляция), предсказанный подвектор соответствующего размера. Если похожесть
         кластера на подвходной вектор маленькая, то возвращается нулевая корелляция и None 
     """
-
     def predict_back(self, out_x):
-        self.__code_value_exeption(out_x)
-        self.__len_exeption(len(out_x), len(self.out_w))
-        dot = np.dot(out_x, self.out_w)
-        if np.abs(dot) > self.out_threshold_modify:
-            return dot, np.uint8(self.in_w > self.threshold_bin)
-        else:
-            return 0, None
+        return self.__predict(out_x, self.out_w, self.in_w, self.out_threshold_modify)
 
     """
         Получение величин delta, используемых в обучении Хебба

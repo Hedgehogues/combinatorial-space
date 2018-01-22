@@ -1,9 +1,7 @@
-from random import randint
 import numpy as np
 from copy import deepcopy
 
-from combinatorial_space.cluster import Cluster
-from test.unittest.cluster_mock import ClusterMockForPointWeight
+from src.combinatorial_space.cluster import Cluster
 
 
 class PointMockInOutCode:

@@ -3,7 +3,7 @@ from enum import Enum
 
 import Levenshtein
 import numpy as np
-from combinatorial_space.point import Point
+from src.combinatorial_space.point import Point
 
 
 class PREDICT_ENUM(Enum):

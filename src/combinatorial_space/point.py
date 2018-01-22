@@ -1,28 +1,27 @@
 import numpy as np
 
-from combinatorial_space.cluster import Cluster
-
-"""
-    Точка комбинаторного пространства. Каждая точка содержит набор кластеров
-
-    in_threshold_modify, out_threshold_modify - порог активации кластера. Если скалярное произведение базового 
-    вектора кластера на новый вектор больше порога, то будет пересчитан веса кластера, выделяющие первую главную
-    компоненту
-    in_threshold_activate, out_threshold_activate - порог активации точки комбинаторного пространства. Если кол-во
-    активных битов больше порога, то будет инициирован процесс модификации существующих кластеров, а также будет
-    добавлен новый кластер
-    threshold_bin - порог бинаризации кода
-    count_in_demensions, count_out_demensions - размер входного и выходного векторов в точке комб. пространства
-    in_size, out_size - количество случайных битов входного/выходного вектора
-    base_lr - начальное значение скорости обучения
-    is_modify_lr - модификация скорости обучения пропорционально номер шага
-    max_cluster_per_point - максимальное количество кластеров в точке
-
-    cluster_factory - фабричный метод для создания кластеров
-"""
+from src.combinatorial_space.cluster import Cluster
 
 
 class Point:
+    """
+        Точка комбинаторного пространства. Каждая точка содержит набор кластеров
+
+        in_threshold_modify, out_threshold_modify - порог активации кластера. Если скалярное произведение базового
+        вектора кластера на новый вектор больше порога, то будет пересчитан веса кластера, выделяющие первую главную
+        компоненту
+        in_threshold_activate, out_threshold_activate - порог активации точки комбинаторного пространства. Если кол-во
+        активных битов больше порога, то будет инициирован процесс модификации существующих кластеров, а также будет
+        добавлен новый кластер
+        threshold_bin - порог бинаризации кода
+        count_in_demensions, count_out_demensions - размер входного и выходного векторов в точке комб. пространства
+        in_size, out_size - количество случайных битов входного/выходного вектора
+        base_lr - начальное значение скорости обучения
+        is_modify_lr - модификация скорости обучения пропорционально номер шага
+        max_cluster_per_point - максимальное количество кластеров в точке
+
+        cluster_factory - фабричный метод для создания кластеров
+    """
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -76,6 +75,38 @@ class Point:
         # Значения выходного вектора могут быть равны 0 или 1
         if np.sum(np.uint8(np.logical_not(np.array(code) != 0) ^ (np.array(code) != 1))) > 0:
             raise ValueError("Значение аргумента может принимать значение 0 или 1")
+
+    def __predict(self, code, type_code, count_dimensions_0, count_demensions_1, coords_0, coords_1,
+                  threshold_activate):
+        self.__none_exeption(code)
+        self.__len_exeption(len(code), count_dimensions_0)
+        self.__type_code_exeption(type_code)
+        self.__code_value_exeption(code)
+
+        in_x = np.array(code)[coords_0]
+        is_active = np.sum(in_x) > threshold_activate
+        opt_dot = -np.inf
+        opt_out_code = None
+        if is_active:
+            for cluster in self.clusters:
+                # TODO: тест на случай, когда out_x == None, dot == None
+                dot, out_x = cluster.predict_front(in_x)
+
+                if dot is not None and dot < 0:
+                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
+                                     "Отрицательное значение скалярного произведения")
+                # TODO: dot != 0 заменил на  dot is not None
+                if dot is not None and out_x is None:
+                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
+                                     "Скалярное произведение > 0. Предсказанный вектор None")
+
+                if dot is not None and dot > opt_dot:
+                    opt_dot = dot
+                    opt_out_code = np.array([0] * count_demensions_1)
+                    if type_code == -1:
+                        out_x[out_x == 0] = -1
+                    opt_out_code[coords_1] = out_x[coords_1]
+        return opt_out_code
 
     """
         Осуществление выбора оптимального кластера при прямом предсказании 
@@ -142,7 +173,7 @@ class Point:
                 dot, in_x = cluster.predict_back(out_x)
 
                 if dot is not None and dot < 0:
-                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
+                    raise ValueError("Неожиданный ответ от метода predict_back класса Cluster. "
                                      "Отрицательное значение скалярного произведения")
                 # TODO: dot != 0 заменил на  dot is not None
                 if dot is not None and out_x is None:
@@ -165,7 +196,6 @@ class Point:
         Возвращается количество произведённых модификаций внутри кластеров точки, флаг добавления кластера
         (True - добавлен, False - не добавлен)
     """
-
     def add(self, in_code, out_code):
 
         self.__none_exeption(in_code)

@@ -1,5 +1,6 @@
 from tqdm import tqdm
 
+
 def convert(imgf, labelf, outf, n, size):
     f = open(imgf, "rb")
     o = open(outf, "w")

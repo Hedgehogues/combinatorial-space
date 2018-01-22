@@ -2,7 +2,7 @@
 
 import unittest
 import numpy as np
-from combinatorial_space.minicolumn import Minicolumn, PREDICT_ENUM
+from src.combinatorial_space.minicolumn import Minicolumn, PREDICT_ENUM
 from test.unittest.cluster_mock import ClusterMockForPointWeight
 from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMockInOutCode, PointMockZeros, \
     PointMockDoubleIdentical, PointMockCodeAligment, PointMockControversyIn, PointMockAssertDem2

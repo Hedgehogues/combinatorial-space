@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-import image_transformations
+from src import image_transformations
+
 
 def show_image(image, label=None, ax=plt):
     ax.imshow(image, cmap='gray');
