@@ -83,30 +83,30 @@ class Point:
         self.__type_code_exeption(type_code)
         self.__code_value_exeption(code)
 
-        in_x = np.array(code)[coords_0]
-        is_active = np.sum(in_x) > threshold_activate
+        x = np.array(code)[coords_0]
+        is_active = np.sum(x) > threshold_activate
         opt_dot = -np.inf
-        opt_out_code = None
+        opt_code = None
         if is_active:
             for cluster in self.clusters:
                 # TODO: тест на случай, когда out_x == None, dot == None
-                dot, out_x = cluster.predict_front(in_x)
+                dot, pred_x = cluster.predict_front(x)
 
                 if dot is not None and dot < 0:
                     raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
                                      "Отрицательное значение скалярного произведения")
                 # TODO: dot != 0 заменил на  dot is not None
-                if dot is not None and out_x is None:
+                if dot is not None and pred_x is None:
                     raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
                                      "Скалярное произведение > 0. Предсказанный вектор None")
 
                 if dot is not None and dot > opt_dot:
                     opt_dot = dot
-                    opt_out_code = np.array([0] * count_demensions_1)
+                    opt_code = np.array([0] * count_demensions_1)
                     if type_code == -1:
-                        out_x[out_x == 0] = -1
-                    opt_out_code[coords_1] = out_x[coords_1]
-        return opt_out_code
+                        pred_x[pred_x == 0] = -1
+                    opt_code[coords_1] = pred_x[coords_1]
+        return opt_code
 
     """
         Осуществление выбора оптимального кластера при прямом предсказании 
@@ -117,35 +117,12 @@ class Point:
         Возвращается оптимальный выходной вектор
     """
     def predict_front(self, in_code, type_code=-1):
-        self.__none_exeption(in_code)
-        self.__len_exeption(len(in_code), self.count_in_demensions)
-        self.__type_code_exeption(type_code)
-        self.__code_value_exeption(in_code)
-
-        in_x = np.array(in_code)[self.in_coords]
-        is_active = np.sum(in_x) > self.in_threshold_activate
-        opt_dot = -np.inf
-        opt_out_code = None
-        if is_active:
-            for cluster in self.clusters:
-                # TODO: тест на случай, когда out_x == None, dot == None
-                dot, out_x = cluster.predict_front(in_x)
-
-                if dot is not None and dot < 0:
-                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
-                                     "Отрицательное значение скалярного произведения")
-                # TODO: dot != 0 заменил на  dot is not None
-                if dot is not None and out_x is None:
-                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
-                                     "Скалярное произведение > 0. Предсказанный вектор None")
-
-                if dot is not None and dot > opt_dot:
-                    opt_dot = dot
-                    opt_out_code = np.array([0] * self.count_out_demensions)
-                    if type_code == -1:
-                        out_x[out_x == 0] = -1
-                    opt_out_code[self.out_coords] = out_x[self.out_coords]
-        return opt_out_code
+        return self.__predict(
+            in_code, type_code,
+            self.count_in_demensions, self.count_out_demensions,
+            self.in_coords, self.out_coords,
+            self.in_threshold_activate
+        )
 
     """
         Осуществление выбора оптимального кластера при обратном предсказании 
@@ -157,36 +134,12 @@ class Point:
     """
 
     def predict_back(self, out_code, type_code=-1):
-
-        self.__none_exeption(out_code)
-        self.__len_exeption(len(out_code), self.count_out_demensions)
-        self.__type_code_exeption(type_code)
-        self.__code_value_exeption(out_code)
-
-        out_x = np.array(out_code)[self.out_coords]
-        is_active = np.sum(out_x) > self.out_threshold_activate
-        opt_dot = -np.inf
-        opt_in_code = None
-        if is_active:
-            for cluster in self.clusters:
-                # TODO: тест на случай, когда in_x == None, dot == None
-                dot, in_x = cluster.predict_back(out_x)
-
-                if dot is not None and dot < 0:
-                    raise ValueError("Неожиданный ответ от метода predict_back класса Cluster. "
-                                     "Отрицательное значение скалярного произведения")
-                # TODO: dot != 0 заменил на  dot is not None
-                if dot is not None and out_x is None:
-                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
-                                     "Скалярное произведение > 0. Предсказанный вектор None")
-
-                if dot is not None and dot > opt_dot:
-                    opt_dot = dot
-                    opt_in_code = np.array([0] * self.count_in_demensions)
-                    if type_code == -1:
-                        in_x[in_x == 0] = -1
-                    opt_in_code[self.in_coords] = in_x[self.in_coords]
-        return opt_in_code
+        return self.__predict(
+            out_code, type_code,
+            self.count_out_demensions, self.count_in_demensions,
+            self.out_coords, self.in_coords,
+            self.out_threshold_activate
+        )
 
     """
         Функция, производящая добавление пары кодов в каждый кластер точки комбинаторного пространства
@@ -221,16 +174,15 @@ class Point:
                         count_modify += 1
                     else:
                         count_fails += 1
-                return count_fails, count_modify, False
-            else:
-                self.clusters.append(
-                    self.cluster_class(
-                        base_in=in_x, base_out=out_x,
-                        in_threshold_modify=self.in_threshold_modify,
-                        out_threshold_modify=self.out_threshold_modify,
-                        threshold_bin=self.threshold_bin,
-                        base_lr=self.base_lr, is_modify_lr=self.is_modify_lr
+                if count_modify == 0:
+                    self.clusters.append(
+                        self.cluster_class(
+                            base_in=in_x, base_out=out_x,
+                            in_threshold_modify=self.in_threshold_modify,
+                            out_threshold_modify=self.out_threshold_modify,
+                            threshold_bin=self.threshold_bin,
+                            base_lr=self.base_lr, is_modify_lr=self.is_modify_lr
+                        )
                     )
-                )
-                return count_fails, count_modify, True
+                    return count_fails, count_modify, True
         return count_fails, count_modify, False

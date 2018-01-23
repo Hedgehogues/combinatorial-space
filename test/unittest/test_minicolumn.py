@@ -9,6 +9,33 @@ from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMockI
 
 
 class TestMinicolumn__init__(unittest.TestCase):
+    def test_code_aligment_threshold_count_dem(self):
+        self.assertRaises(
+            ValueError, Minicolumn,
+            code_aligment_threshold=3,
+            count_in_demensions=2, count_out_demensions=4,
+            in_random_bits=1, out_random_bits=1
+        )
+        self.assertRaises(
+            ValueError, Minicolumn,
+            code_aligment_threshold=3, count_in_demensions=2, count_out_demensions=3,
+            in_random_bits=1, out_random_bits=1
+        )
+        self.assertRaises(
+            ValueError, Minicolumn,
+            code_aligment_threshold=3, count_in_demensions=4, count_out_demensions=2,
+            in_random_bits=1, out_random_bits=1
+        )
+        self.assertRaises(
+            ValueError, Minicolumn,
+            code_aligment_threshold=3, count_in_demensions=3, count_out_demensions=2,
+            in_random_bits=1, out_random_bits=1
+        )
+        Minicolumn(
+            code_aligment_threshold=2, count_in_demensions=4, count_out_demensions=4,
+            in_random_bits=1, out_random_bits=1
+        )
+
     def test_space_size(self):
         self.assertRaises(ValueError, Minicolumn, space_size=-10)
         self.assertRaises(ValueError, Minicolumn, space_size=None)
@@ -92,6 +119,7 @@ class TestPointPredict(unittest.TestCase):
             out_random_bits=1,
             count_in_demensions=1,
             count_out_demensions=1,
+            code_aligment_threshold=1,
             class_point=PointMockNone
         )
         self.minicolumn = Minicolumn(
@@ -102,6 +130,7 @@ class TestPointPredict(unittest.TestCase):
             count_out_demensions=10,
             seed=41,
             threshold_controversy=0.05,
+            code_aligment_threshold=1,
             class_point=PointMockOddEven
         )
         self.minicolumn_front = Minicolumn(
@@ -112,6 +141,7 @@ class TestPointPredict(unittest.TestCase):
             count_out_demensions=2,
             seed=41,
             threshold_controversy=0.05,
+            code_aligment_threshold=1,
             class_point=PointMockOddEven
         )
         self.minicolumn_back = Minicolumn(
@@ -122,6 +152,7 @@ class TestPointPredict(unittest.TestCase):
             count_out_demensions=10,
             seed=41,
             threshold_controversy=0.05,
+            code_aligment_threshold=1,
             class_point=PointMockOddEven
         )
         self.minicolumn_out_code = Minicolumn(
@@ -132,6 +163,7 @@ class TestPointPredict(unittest.TestCase):
             count_out_demensions=2,
             seed=41,
             threshold_controversy=0.05,
+            code_aligment_threshold=1,
             class_point=PointMockInOutCode
         )
         self.minicolumn_in_code = Minicolumn(
@@ -142,6 +174,7 @@ class TestPointPredict(unittest.TestCase):
             count_out_demensions=10,
             seed=41,
             threshold_controversy=0.05,
+            code_aligment_threshold=1,
             class_point=PointMockInOutCode
         )
         self.minicolumn_assert_dem_2 = Minicolumn(
@@ -152,6 +185,7 @@ class TestPointPredict(unittest.TestCase):
             count_out_demensions=10,
             seed=41,
             threshold_controversy=0.05,
+            code_aligment_threshold=1,
             class_point=PointMockAssertDem2
         )
 
@@ -179,7 +213,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([1], code)
         self.assertEqual(None, out_code)
         self.assertEqual(None, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS, accept)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_AN_ACTIVE_POINTS, accept)
 
     def test_back_assert_not_active_point(self):
         code = [1]
@@ -187,7 +221,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([1], code)
         self.assertEqual(None, in_code)
         self.assertEqual(None, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS, accept)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_AN_ACTIVE_POINTS, accept)
 
     def test_front_assert_not_valid_dem_2(self):
         self.assertRaises(AssertionError, self.minicolumn_assert_dem_2.front_predict, [1] * 2)
@@ -201,7 +235,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([1], code)
         self.assertEqual(None, out_code)
         self.assertEqual(None, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS, accept)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_AN_ACTIVE_POINTS, accept)
 
     def test_back_assert_there_are_non_acrive_points(self):
         out_code = [0] + [1] + [1] * 4 + [0] * 4
@@ -209,7 +243,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([0] + [1] + [1] * 4 + [0] * 4, out_code)
         np.testing.assert_array_equal(np.array([0, 1]), in_code)
         self.assertEqual(0, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS, accept)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_A_NONACTIVE_POINTS, accept)
 
     def test_front_assert_there_are_non_acrive_points(self):
         in_code = [0] + [1] + [1] * 4 + [0] * 4
@@ -217,7 +251,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([0] + [1] + [1] * 4 + [0] * 4, in_code)
         np.testing.assert_array_equal(np.array([0, 1]), out_code)
         self.assertEqual(0, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS, accept)
+        self.assertEqual(PREDICT_ENUM.THERE_ARE_A_NONACTIVE_POINTS, accept)
 
     def test_front_active_point(self):
         in_code = [1] * 10
@@ -244,6 +278,7 @@ class TestPointSleep(unittest.TestCase):
             out_random_bits=1,
             count_in_demensions=1,
             count_out_demensions=1,
+            code_aligment_threshold=1,
             class_point=PointMockNone
         )
         self.minicolumn_activate = Minicolumn(
@@ -254,6 +289,7 @@ class TestPointSleep(unittest.TestCase):
             out_threshold_activate=2,
             count_in_demensions=1,
             count_out_demensions=1,
+            code_aligment_threshold=1,
             class_point=PointMockNone
         )
 
@@ -341,6 +377,7 @@ class TestPointUnsupervisedLearningException(unittest.TestCase):
             out_random_bits=1,
             count_in_demensions=1,
             count_out_demensions=1,
+            code_aligment_threshold=1,
             class_point=PointMockNone
         )
 
@@ -374,6 +411,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             out_random_bits=1,
             count_in_demensions=1,
             count_out_demensions=1,
+            code_aligment_threshold=1,
             class_point=PointMockNone
         )
         self.minicolumn_zeros = Minicolumn(
@@ -422,103 +460,136 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
 
     def test_continue_zeros_codes(self):
         in_codes = [[0]] * 3
-        min_out_code, min_ind_hamming = self.minicolumn.unsupervised_learning(in_codes=in_codes)
-        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn.get_stat()
+        min_in_code, min_out_code, min_ind_hamming = self.minicolumn.unsupervised_learning(in_codes=in_codes)
+        out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected = self.minicolumn.get_stat()
         self.assertEqual([[0]] * 3, in_codes)
         self.assertIsNone(None, min_out_code)
         self.assertIsNone(None, min_ind_hamming)
+        self.assertIsNone(None, min_in_code)
         self.assertEqual(0, in_fail)
         self.assertEqual(0, out_fail)
+        self.assertEqual(3, zeros_detected)
         self.assertEqual(0, in_not_detected)
         self.assertEqual(0, out_not_detected)
 
     def test_out_not_detected(self):
         in_codes = [[1, 0, 1], [0, 1, 1], [1, 1, 0]]
-        min_out_code, min_ind_hamming = self.minicolumn_zeros.unsupervised_learning(in_codes=in_codes)
+        min_in_code, min_out_code, min_ind_hamming = self.minicolumn_zeros.unsupervised_learning(in_codes=in_codes)
         self.assertEqual([[1, 0, 1], [0, 1, 1], [1, 1, 0]], in_codes)
-        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_zeros.get_stat()
+        out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected = self.minicolumn_zeros.get_stat()
         np.testing.assert_array_equal([1, 1, 0], min_out_code)
+        np.testing.assert_array_equal([1, 0, 1], min_in_code)
         self.assertEqual(0, min_ind_hamming)
         self.assertEqual(0, in_fail)
         self.assertEqual(0, out_fail)
+        self.assertEqual(0, zeros_detected)
         self.assertEqual(0, in_not_detected)
         self.assertEqual(3, out_not_detected)
 
     def test_controversy_out(self):
         in_codes = [[1, 0, 1, 0], [0, 1, 1, 0], [1, 1, 0, 0]]
-        min_out_code, min_ind_hamming = self.minicolumn_controversy_out.unsupervised_learning(in_codes=in_codes)
+        min_in_code, min_out_code, min_ind_hamming = self.minicolumn_controversy_out.unsupervised_learning(in_codes=in_codes)
         self.assertEqual([[1, 0, 1, 0], [0, 1, 1, 0], [1, 1, 0, 0]], in_codes)
-        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_out.get_stat()
+        out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected = \
+            self.minicolumn_controversy_out.get_stat()
         self.assertIsNone(None, min_out_code)
         self.assertIsNone(None, min_ind_hamming)
+        self.assertIsNone(None, min_in_code)
         self.assertEqual(0, in_fail)
         self.assertEqual(3, out_fail)
+        self.assertEqual(0, zeros_detected)
         self.assertEqual(0, in_not_detected)
         self.assertEqual(0, out_not_detected)
 
     def test_code_aligment_more(self):
         in_codes = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
-        min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes=in_codes)
+        min_in_code, min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes)
         self.assertEqual([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]], in_codes)
-        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_code_aligment.get_stat()
+        out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected = self.minicolumn_code_aligment.get_stat()
         np.testing.assert_array_equal(np.array([0, 0, 1, 0, 0, 1, 1, 1]), min_out_code)
+        np.testing.assert_array_equal(np.array([1, 1, 1, 1]), min_in_code)
         self.assertEqual(0, min_ind_hamming)
         self.assertEqual(0, in_fail)
         self.assertEqual(0, out_fail)
+        self.assertEqual(0, zeros_detected)
         self.assertEqual(3, in_not_detected)
         self.assertEqual(0, out_not_detected)
         self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
 
     def test_code_aligment_less(self):
         in_codes = [[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]]
-        min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes=in_codes)
+        min_in_code, min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes)
         self.assertEqual([[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]], in_codes)
-        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_code_aligment.get_stat()
+        out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected = self.minicolumn_code_aligment.get_stat()
         np.testing.assert_array_equal(np.array([1, 1, 0, 1, 0, 0, 1, 0]), min_out_code)
+        self.assertEqual([1, 0, 0, 0], min_in_code)
         self.assertEqual(0, min_ind_hamming)
         self.assertEqual(0, in_fail)
         self.assertEqual(0, out_fail)
+        self.assertEqual(0, zeros_detected)
         self.assertEqual(3, in_not_detected)
         self.assertEqual(0, out_not_detected)
         self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
 
     def test_code_aligment_eq(self):
         in_codes = [[1, 1, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0]]
-        min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes=in_codes)
+        min_in_code, min_out_code, min_ind_hamming = self.minicolumn_code_aligment.unsupervised_learning(in_codes)
         self.assertEqual([[1, 1, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0]], in_codes)
-        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_code_aligment.get_stat()
+        out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected =\
+            self.minicolumn_code_aligment.get_stat()
         np.testing.assert_array_equal(np.array([1, 1, 0, 0, 0, 1, 0, 1]), min_out_code)
+        np.testing.assert_array_equal(np.array([1, 1, 0, 0]), min_in_code)
         self.assertEqual(0, min_ind_hamming)
         self.assertEqual(0, in_fail)
         self.assertEqual(0, out_fail)
+        self.assertEqual(0, zeros_detected)
         self.assertEqual(3, in_not_detected)
         self.assertEqual(0, out_not_detected)
         self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
 
     def test_code_controversy_in(self):
         in_codes = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
-        min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes=in_codes,
-                                                                                             threshold_controversy_in=0)
+        min_in_code, min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(
+            in_codes=in_codes, threshold_controversy_in=0
+        )
         self.assertEqual([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]], in_codes)
-        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_in.get_stat()
+        out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected = self.minicolumn_controversy_in.get_stat()
         self.assertIsNone(None, min_out_code)
         self.assertIsNone(None, min_ind_hamming)
+        self.assertIsNone(None, min_in_code)
         self.assertEqual(3, in_fail)
         self.assertEqual(0, out_fail)
+        self.assertEqual(0, zeros_detected)
         self.assertEqual(0, in_not_detected)
         self.assertEqual(0, out_not_detected)
 
     def test_code_hamming_dist_more(self):
         in_codes = [[1, 1, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
-        min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes=in_codes)
-        self.assertEqual([[1, 1, 1, 1], [1, 1, 0, 1], [1, 1, 1, 1]], in_codes)
-        out_fail, in_fail, in_not_detected, out_not_detected = self.minicolumn_controversy_in.get_stat()
+        min_in_code, min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(in_codes)
+        self.assertEqual([[1, 1, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]], in_codes)
+        np.testing.assert_array_equal([1, 1, 1, 1], min_in_code)
+        out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected = self.minicolumn_controversy_in.get_stat()
         np.testing.assert_array_equal([0, 1, 0, 0, 0, 1, 0, 0], min_out_code)
         self.assertEqual(0, min_ind_hamming)
         self.assertEqual(0, in_fail)
         self.assertEqual(0, out_fail)
+        self.assertEqual(0, zeros_detected)
         self.assertEqual(0, in_not_detected)
         self.assertEqual(0, out_not_detected)
+
+    def test_code_min_ind_hamming(self):
+        in_codes = [[0], [1], [1]]
+        min_in_code, min_out_code, min_ind_hamming = self.minicolumn.unsupervised_learning(in_codes)
+        self.assertEqual([[0], [1], [1]], in_codes)
+        np.testing.assert_array_equal([1], min_in_code)
+        out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected = self.minicolumn.get_stat()
+        np.testing.assert_array_equal([1], min_out_code)
+        self.assertEqual(1, min_ind_hamming)
+        self.assertEqual(0, in_fail)
+        self.assertEqual(0, out_fail)
+        self.assertEqual(1, zeros_detected)
+        self.assertEqual(0, in_not_detected)
+        self.assertEqual(2, out_not_detected)
 
     @unittest.skip('Не реализован. Выбор минимального оптимального кода')
     def test_code_hamming_min(self):

@@ -7,33 +7,32 @@ from src.combinatorial_space.point import Point
 
 
 class PREDICT_ENUM(Enum):
-    THERE_ARE_NOT_ACTIVE_POINTS = 0
-    THERE_ARE_NONACTIVE_POINTS = 1
+    THERE_ARE_NOT_AN_ACTIVE_POINTS = 0
+    THERE_ARE_A_NONACTIVE_POINTS = 1
     ACCEPT = 2
 
 
-"""
-    Миниколонка. Миниколонка - это набор точек комбинаторного пространства
-    
-    space_size - количество точек комбинаторного пространства
-    max_cluster_per_point - максимальное количество кластеров в точке
-    max_count_clusters - максмальное суммарное количество кластеров по всем точкам комбинаторного пространства
-    in_threshold_modify, out_threshold_modify - порог активации кластера. Если скалярное произведение базового 
-    вектора кластера на новый вектор больше порога, то будет пересчитан веса кластера, выделяющие первую главную
-    компоненту
-    threshold_bin - порог бинаризации кода
-    in_threshold_activate, out_threshold_activate - порог активации точки комбинаторного пространства. Если кол-во
-    активных битов больше порога, то будет инициирован процесс модификации существующих кластеров, а также будет
-    добавлен новый кластер
-    in_random_bits, out_random_bits - количество случайных битов входного/выходного вектора
-    base_lr - начальное значение скорости обучения
-    is_modify_lr - модификация скорости обучения пропорционально номер шага
-    count_in_demensions, count_out_demensions - размер входного и выходного векторов
-    threshold_controversy - порог противоречия для битов кодов
-    code_aligment_threshold - число ненулевых бит в выходном векторе
-"""
 class Minicolumn:
-    
+    """
+        Миниколонка. Миниколонка - это набор точек комбинаторного пространства
+
+        space_size - количество точек комбинаторного пространства
+        max_cluster_per_point - максимальное количество кластеров в точке
+        max_count_clusters - максмальное суммарное количество кластеров по всем точкам комбинаторного пространства
+        in_threshold_modify, out_threshold_modify - порог активации кластера. Если скалярное произведение базового
+        вектора кластера на новый вектор больше порога, то будет пересчитан веса кластера, выделяющие первую главную
+        компоненту
+        threshold_bin - порог бинаризации кода
+        in_threshold_activate, out_threshold_activate - порог активации точки комбинаторного пространства. Если кол-во
+        активных битов больше порога, то будет инициирован процесс модификации существующих кластеров, а также будет
+        добавлен новый кластер
+        in_random_bits, out_random_bits - количество случайных битов входного/выходного вектора
+        base_lr - начальное значение скорости обучения
+        is_modify_lr - модификация скорости обучения пропорционально номер шага
+        count_in_demensions, count_out_demensions - размер входного и выходного векторов
+        threshold_controversy - порог противоречия для битов кодов
+        code_aligment_threshold - число ненулевых бит в выходном векторе
+    """
     def __init__(self, space_size=10000, max_cluster_per_point=100,
                  max_count_clusters=1000000, seed=42,
                  in_threshold_modify=5, out_threshold_modify=0,
@@ -46,25 +45,26 @@ class Minicolumn:
                  code_aligment_threshold=6, count_active_point=30, class_point=Point):
 
         if seed is None or \
-            space_size is None or in_threshold_modify is None or out_threshold_modify is None or \
-            in_threshold_activate is None or out_threshold_activate is None or \
-            in_random_bits is None or out_random_bits is None or \
-            threshold_bin is None or is_modify_lr is None or \
-            base_lr is None or max_cluster_per_point is None or \
-            count_in_demensions is None or count_out_demensions is None or \
-            max_count_clusters is None or threshold_controversy is None or \
-            code_aligment_threshold is None or class_point is None or \
-            count_active_point is None or count_active_point < 0 or \
-            max_count_clusters <= 0 or space_size <= 0 or \
-            in_random_bits > count_in_demensions or out_random_bits > count_out_demensions or \
-            max_cluster_per_point < 0 or \
-            out_random_bits < 0 or in_random_bits < 0 or \
-            in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
-            in_threshold_activate < 0 or out_threshold_activate < 0 or \
-            count_in_demensions < 0 or count_out_demensions < 0 or \
-            threshold_bin < 0 or type(is_modify_lr) is not bool or \
-            threshold_controversy < 0 or code_aligment_threshold < 0:
-                raise ValueError("Неожиданное значение переменной")
+                space_size is None or in_threshold_modify is None or out_threshold_modify is None or \
+                in_threshold_activate is None or out_threshold_activate is None or \
+                in_random_bits is None or out_random_bits is None or \
+                threshold_bin is None or is_modify_lr is None or \
+                base_lr is None or max_cluster_per_point is None or \
+                count_in_demensions is None or count_out_demensions is None or \
+                max_count_clusters is None or threshold_controversy is None or \
+                code_aligment_threshold is None or class_point is None or \
+                count_active_point is None or count_active_point < 0 or \
+                max_count_clusters <= 0 or space_size <= 0 or \
+                in_random_bits > count_in_demensions or out_random_bits > count_out_demensions or \
+                max_cluster_per_point < 0 or \
+                out_random_bits < 0 or in_random_bits < 0 or \
+                in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
+                in_threshold_activate < 0 or out_threshold_activate < 0 or \
+                count_in_demensions < 0 or count_out_demensions < 0 or \
+                threshold_bin < 0 or type(is_modify_lr) is not bool or \
+                threshold_controversy < 0 or code_aligment_threshold < 0 or \
+                code_aligment_threshold > count_out_demensions or code_aligment_threshold > count_in_demensions:
+                    raise ValueError("Неожиданное значение переменной")
 
         self.space = np.array(
             [
@@ -127,6 +127,39 @@ class Minicolumn:
 
         return controversy
 
+    def __predict(self, code, count_demensions_0, count_demensions_1, is_front):
+        self.__none_exeption(code)
+        self.__len_exeption(len(code), count_demensions_0)
+        self.__code_value_exeption(code)
+
+        pred_code = [0] * count_demensions_1
+        count = np.array([0] * count_demensions_1)
+        for point in self.space:
+            if is_front:
+                pred_code_local = point.predict_front(code, -1)
+            else:
+                pred_code_local = point.predict_back(code, -1)
+
+            # Неактивная точка
+            if pred_code_local is None:
+                continue
+
+            self.__len_exeption(len(pred_code_local), count_demensions_1)
+
+            count += np.uint8(pred_code_local != 0)
+            pred_code += pred_code_local
+
+        non_zeros = np.sum(np.uint8(np.array(count) == 0))
+        if non_zeros != 0:
+            if non_zeros == count_demensions_1:
+                return None, None, PREDICT_ENUM.THERE_ARE_NOT_AN_ACTIVE_POINTS
+            else:
+                controversy = self.__predict_prepare_code(pred_code, count)
+                return controversy, pred_code, PREDICT_ENUM.THERE_ARE_A_NONACTIVE_POINTS
+
+        controversy = self.__predict_prepare_code(pred_code, count)
+        return controversy, pred_code, PREDICT_ENUM.ACCEPT
+
     """
         Получение выходного кода по входному. Прямое предсказание в каждой точке комбинаторного пространства
         
@@ -136,34 +169,7 @@ class Minicolumn:
         возвращается бесконечное значение противоречивости
     """
     def front_predict(self, in_code):
-        self.__none_exeption(in_code)
-        self.__len_exeption(len(in_code), self.count_in_demensions)
-        self.__code_value_exeption(in_code)
-
-        out_code = [0] * self.count_out_demensions
-        count = np.array([0] * self.count_out_demensions)
-        for point in self.space:
-            out_code_local = point.predict_front(in_code, -1)
-            
-            # Неактивная точка
-            if out_code_local is None:
-                continue
-
-            self.__len_exeption(len(out_code_local), self.count_out_demensions)
-
-            count += np.uint8(out_code_local != 0)
-            out_code += out_code_local
-
-        non_zeros = np.sum(np.uint8(np.array(count) == 0))
-        if non_zeros != 0:
-            if non_zeros == self.count_out_demensions:
-                return None, None, PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS
-            else:
-                controversy = self.__predict_prepare_code(out_code, count)
-                return controversy, out_code, PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS
-
-        controversy = self.__predict_prepare_code(out_code, count)
-        return controversy, out_code, PREDICT_ENUM.ACCEPT
+        return self.__predict(in_code, self.count_in_demensions, self.count_out_demensions, True)
     
     """
         Получение входного кода по выходному. Обратное предсказание в каждой точке комбинаторного пространства
@@ -173,34 +179,7 @@ class Minicolumn:
         Возвращаемые значения: непротиворечивость, входной код
     """
     def back_predict(self, out_code):
-        self.__none_exeption(out_code)
-        self.__len_exeption(len(out_code), self.count_out_demensions)
-        self.__code_value_exeption(out_code)
-
-        in_code = [0] * self.count_in_demensions
-        count = [0] * self.count_in_demensions
-        for point in self.space:
-            in_code_local = point.predict_back(out_code, -1)
-            
-            # Неактивная точка
-            if in_code_local is None:
-                continue
-
-            self.__len_exeption(len(in_code_local), self.count_in_demensions)
-
-            count += np.uint8(in_code_local != 0)
-            in_code += in_code_local
-
-        non_zeros = np.sum(np.uint8(np.array(count) == 0))
-        if non_zeros != 0:
-            if non_zeros == self.count_in_demensions:
-                return None, None, PREDICT_ENUM.THERE_ARE_NOT_ACTIVE_POINTS
-            else:
-                controversy = self.__predict_prepare_code(in_code, count)
-                return controversy, in_code, PREDICT_ENUM.THERE_ARE_NONACTIVE_POINTS
-
-        controversy = self.__predict_prepare_code(in_code, count)
-        return controversy, in_code, PREDICT_ENUM.ACCEPT
+        return self.__predict(out_code, self.count_out_demensions, self.count_in_demensions, False)
 
     def __sleep_process_clusters(self, point):
 
@@ -319,7 +298,7 @@ class Minicolumn:
         количество входных и выходных кодов, которых нет в памяти  
     """
     def get_stat(self):
-        return self.out_fail, self.in_fail, self.in_not_detected, self.out_not_detected
+        return self.out_fail, self.in_fail, self.in_not_detected, self.out_not_detected, self.zeros_detected
 
     """
         Этап обучения без учителя (не написан один тест. см. тесты)
@@ -382,7 +361,6 @@ class Minicolumn:
             # TODO: на данном этапе такой код не добавляем
             ############
             if controversy_out > threshold_controversy_out:
-                # TODO: zeros_Detected не протестирован
                 self.out_fail += 1
                 continue
                 
@@ -407,17 +385,18 @@ class Minicolumn:
                 min_ind_hamming = index
                 min_out_code = out_code
 
-        if self.zeros_detected != len(in_codes) and self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
-            # TODO: нельзя выбирать нулевой код. Нужно брать первый попавшийся не нулевой
+        if self.zeros_detected != len(in_codes) and \
+                self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
             min_ind_hamming = 0
+            while min_ind_hamming < len(in_codes) and np.sum(in_codes[min_ind_hamming]) == 0:
+                min_ind_hamming += 1
             # Генерируем случайный код
             min_out_code = self.__code_alignment(np.array([0] * self.count_out_demensions))
 
         if min_out_code is not None:
-            # TODO: выход изменился (не такой, как в тестах)
             return in_codes[min_ind_hamming], min_out_code, min_ind_hamming
         else:
-            return None, None
+            return None, None, None
     
     """
         Этап обучения без учителя (функция не протестирована, так как очень похожа на unsupervised_learning)
