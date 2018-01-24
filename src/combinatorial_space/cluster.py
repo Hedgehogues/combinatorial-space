@@ -2,6 +2,8 @@ from enum import Enum
 
 import numpy as np
 
+from src.combinatorial_space.expetions import CombSpaceExceptions
+
 np.warnings.filterwarnings('ignore')
 
 
@@ -45,17 +47,12 @@ class Cluster:
         self.is_modify_lr = is_modify_lr
         self.count_modifing = 0
 
-    def __code_value_exeption(self, code):
-        # Значения выходного вектора могут быть равны 0 или 1
-        if np.sum(np.uint8(np.logical_not(np.array(code) != 0) ^ (np.array(code) != 1))) > 0:
-            raise ValueError("Значение аргумента может принимать значение 0 или 1")
-
-    def __len_exeption(self, obj_len, target_len):
-        assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
-
     def __predict(self, x, w_0, w_1, threshold_modify):
-        self.__code_value_exeption(x)
-        self.__len_exeption(len(x), len(w_0))
+
+        CombSpaceExceptions.code_value(x)
+        CombSpaceExceptions.none(x, 'Не определён аргумент')
+        CombSpaceExceptions.len(len(x), len(w_0), 'Не совпадает размерность')
+
         dot = np.dot(x, w_0)
         if np.abs(dot) > threshold_modify:
             return dot, np.int8(w_1 > self.threshold_bin), ClusterAnswer.ACTIVE
@@ -114,10 +111,12 @@ class Cluster:
         возвращается 0
     """
     def modify(self, in_x, out_x):
-        self.__code_value_exeption(out_x)
-        self.__code_value_exeption(in_x)
-        self.__len_exeption(len(out_x), len(self.out_w))
-        self.__len_exeption(len(in_x), len(self.in_w))
+        CombSpaceExceptions.code_value(out_x)
+        CombSpaceExceptions.code_value(in_x)
+        CombSpaceExceptions.len(len(out_x), len(self.out_w), 'Не совпадает размерность')
+        CombSpaceExceptions.len(len(in_x), len(self.in_w), 'Не совпадает размерность')
+        CombSpaceExceptions.none(in_x, 'Не определён аргумент')
+        CombSpaceExceptions.none(out_x, 'Не определён аргумент')
 
         in_dot = np.dot(in_x, self.in_w)
         out_dot = np.dot(out_x, self.out_w)

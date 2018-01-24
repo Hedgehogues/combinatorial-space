@@ -3,9 +3,10 @@ from enum import Enum
 import numpy as np
 
 from src.combinatorial_space.cluster import Cluster, ClusterAnswer
+from src.combinatorial_space.expetions import CombSpaceExceptions
 
 
-class PointAnswer(Enum):
+class PointPredictAnswer(Enum):
     NOT_ACTIVE = 0
     ACTIVE = 1
     NO_CLUSTERS = 2
@@ -41,20 +42,20 @@ class Point:
                  cluster_class=Cluster):
 
         if in_threshold_modify is None or out_threshold_modify is None or \
-            in_threshold_activate is None or out_threshold_activate is None or \
-            in_random_bits is None or out_random_bits is None or \
-            threshold_bin is None or is_modify_lr is None or \
-            cluster_class is None or base_lr is None or \
-            count_in_demensions is None or count_out_demensions is None or \
-            max_cluster_per_point is None or \
-            in_random_bits > count_in_demensions or out_random_bits > count_out_demensions or \
-            max_cluster_per_point < 0 or \
-            out_random_bits < 0 or in_random_bits < 0 or \
-            in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
-            in_threshold_activate < 0 or out_threshold_activate < 0 or \
-            count_in_demensions < 0 or count_out_demensions < 0 or \
-            threshold_bin < 0 or type(is_modify_lr) is not bool:
-                raise ValueError("Неожиданное значение переменной")
+                in_threshold_activate is None or out_threshold_activate is None or \
+                in_random_bits is None or out_random_bits is None or \
+                threshold_bin is None or is_modify_lr is None or \
+                cluster_class is None or base_lr is None or \
+                count_in_demensions is None or count_out_demensions is None or \
+                max_cluster_per_point is None or \
+                in_random_bits > count_in_demensions or out_random_bits > count_out_demensions or \
+                max_cluster_per_point < 0 or \
+                out_random_bits < 0 or in_random_bits < 0 or \
+                in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
+                in_threshold_activate < 0 or out_threshold_activate < 0 or \
+                count_in_demensions < 0 or count_out_demensions < 0 or \
+                threshold_bin < 0 or type(is_modify_lr) is not bool:
+                    raise ValueError("Неожиданное значение переменной")
 
         self.in_coords = np.sort(np.random.permutation(count_in_demensions)[:in_random_bits])
         self.out_coords = np.sort(np.random.permutation(count_out_demensions)[:out_random_bits])
@@ -68,32 +69,15 @@ class Point:
         self.max_cluster_per_point = max_cluster_per_point
         self.cluster_class = cluster_class
 
-    def __none_exeption(self, obj):
-        if obj is None:
-            raise ValueError("Значение аргумента недопустимо")
-
-    def __len_exeption(self, obj_len, target_len):
-        assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
-
-    def __type_code_exeption(self, type_code):
-        if not (type_code == -1 or type_code == 0):
-            raise ValueError("Неверное значение type_code")
-
-    def __code_value_exeption(self, code):
-        # Значения выходного вектора могут быть равны 0 или 1
-        if np.sum(np.uint8(np.logical_not(np.array(code) != 0) ^ (np.array(code) != 1))) > 0:
-            raise ValueError("Значение аргумента может принимать значение 0 или 1")
-
     def __predict(self, code, type_code, count_dimensions_0, count_demensions_1, coords_0, coords_1,
                   threshold_activate, is_front):
-        self.__none_exeption(code)
-        self.__len_exeption(len(code), count_dimensions_0)
-        self.__type_code_exeption(type_code)
-        self.__code_value_exeption(code)
+        CombSpaceExceptions.none(code, "Не определён аргумент")
+        CombSpaceExceptions.len(len(code), count_dimensions_0, "Не совпадает размерность")
+        CombSpaceExceptions.type_code(type_code)
+        CombSpaceExceptions.code_value(code)
 
         if len(self.clusters) == 0:
-            # TODO: не простестировано
-            return None, PointAnswer.NO_CLUSTERS
+            return None, PointPredictAnswer.NO_CLUSTERS
 
         x = np.array(code)[coords_0]
         is_active = np.sum(x) > threshold_activate
@@ -106,25 +90,21 @@ class Point:
                 else:
                     dot, pred_x, status = cluster.predict_back(x)
 
-                if status == ClusterAnswer.ACTIVE and dot < 0:
-                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
-                                     "Отрицательное значение скалярного произведения")
-                if status == ClusterAnswer.ACTIVE and pred_x is None:
-                    raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
-                                     "Предсказанный вектор None")
-
                 if status == ClusterAnswer.ACTIVE and dot > opt_dot:
+                    CombSpaceExceptions.less(dot, 0, "Отрицательное значение скалярного произведения")
+                    CombSpaceExceptions.none(dot, "Скалярное произведение None")
+                    CombSpaceExceptions.none(pred_x, "Предсказанный вектор None")
+
                     opt_dot = dot
                     opt_code = np.array([0] * count_demensions_1)
                     if type_code == -1:
                         pred_x[pred_x == 0] = -1
                     opt_code[coords_1] = pred_x
-        else:
-            return None, PointAnswer.NOT_ACTIVE
+
         if opt_code is None:
-            return opt_code, PointAnswer.NOT_ACTIVE
+            return None, PointPredictAnswer.NOT_ACTIVE
         else:
-            return opt_code, PointAnswer.ACTIVE
+            return opt_code, PointPredictAnswer.ACTIVE
 
     """
         Осуществление выбора оптимального кластера при прямом предсказании 
@@ -169,12 +149,12 @@ class Point:
     """
     def add(self, in_code, out_code):
 
-        self.__none_exeption(in_code)
-        self.__none_exeption(out_code)
-        self.__len_exeption(len(out_code), self.count_out_demensions)
-        self.__len_exeption(len(in_code), self.count_in_demensions)
-        self.__code_value_exeption(out_code)
-        self.__code_value_exeption(in_code)
+        CombSpaceExceptions.none(in_code, "Не определён аргумент")
+        CombSpaceExceptions.none(out_code, "Не определён аргумент")
+        CombSpaceExceptions.len(len(out_code), self.count_out_demensions, "Не совпадает размерность")
+        CombSpaceExceptions.len(len(in_code), self.count_in_demensions, "Не совпадает размерность")
+        CombSpaceExceptions.code_value(out_code)
+        CombSpaceExceptions.code_value(in_code)
 
         in_x = np.array(in_code)[self.in_coords]
         out_x = np.array(out_code)[self.out_coords]
@@ -202,5 +182,5 @@ class Point:
                             base_lr=self.base_lr, is_modify_lr=self.is_modify_lr
                         )
                     )
-                    return count_fails, count_modify, True
-        return count_fails, count_modify, False
+                    return count_fails, count_modify, 1
+        return count_fails, count_modify, 0

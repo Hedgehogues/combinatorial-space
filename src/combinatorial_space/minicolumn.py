@@ -3,13 +3,20 @@ from enum import Enum
 
 import Levenshtein
 import numpy as np
-from src.combinatorial_space.point import Point, PointAnswer
+
+from src.combinatorial_space.expetions import CombSpaceExceptions
+from src.combinatorial_space.point import Point, PointPredictAnswer
 
 
 class PREDICT_ENUM(Enum):
     THERE_ARE_NOT_AN_ACTIVE_POINTS = 0
     THERE_ARE_A_NONACTIVE_POINTS = 1
     ACCEPT = 2
+
+
+class LEARN_ENUM(Enum):
+    LEARN = 0
+    SLEEP = 1
 
 
 class Minicolumn:
@@ -100,26 +107,6 @@ class Minicolumn:
         
         np.random.seed(seed)
 
-    def __none_exeption(self, obj):
-        if obj is None:
-            raise ValueError("Значение аргумента недопустимо")
-
-    def __code_value_exeption(self, code):
-        # Значения выходного вектора могут быть равны 0 или 1
-        if np.sum(np.uint8(np.logical_not(np.array(code) != 0) ^ (np.array(code) != 1))) > 0:
-            raise ValueError("Значение аргумента может принимать значение 0 или 1")
-
-    def __len_exeption(self, obj_len, target_len):
-        assert obj_len == target_len, "Не совпадает заданная размерность с поданой"
-
-    def __codes_exeption(self, codes):
-        self.__none_exeption(codes)
-        for code in codes:
-            self.__none_exeption(code)
-            self.__code_value_exeption(code)
-            self.__len_exeption(len(code), self.count_in_demensions)
-            self.__code_value_exeption(code)
-
     def __predict_prepare_code(self, code, count):
         controversy = np.sum(np.uint8(np.abs(np.divide(code[count != 0], count[count != 0])) < self.threshold_controversy))
         code[code <= 0] = 0
@@ -128,9 +115,9 @@ class Minicolumn:
         return controversy
 
     def __predict(self, code, count_demensions_0, count_demensions_1, is_front):
-        self.__none_exeption(code)
-        self.__len_exeption(len(code), count_demensions_0)
-        self.__code_value_exeption(code)
+        CombSpaceExceptions.none(code, 'Не определён входной аргумент')
+        CombSpaceExceptions.len(len(code), count_demensions_0, 'Не совпадает размерность')
+        CombSpaceExceptions.code_value(code)
 
         pred_code = [0] * count_demensions_1
         count = np.array([0] * count_demensions_1)
@@ -140,22 +127,21 @@ class Minicolumn:
         active = 0
         for point in self.space:
             if is_front:
-                pred_code_local, status = point.predict_front(code, -1)
+                pred_code_local, status = point.predict_front(code)
             else:
-                pred_code_local, status = point.predict_back(code, -1)
+                pred_code_local, status = point.predict_back(code)
 
-            # Неактивная точка
-            # TODO: эти ифы не протестированы
-            if status == PointAnswer.NOT_ACTIVE:
+            if status == PointPredictAnswer.NOT_ACTIVE:
                 not_active += 1
                 continue
-            elif status == PointAnswer.NO_CLUSTERS:
+            elif status == PointPredictAnswer.NO_CLUSTERS:
                 no_clusters += 1
                 continue
-            elif status == PointAnswer.ACTIVE:
+            elif status == PointPredictAnswer.ACTIVE:
                 active += 1
 
-            self.__len_exeption(len(pred_code_local), count_demensions_1)
+            CombSpaceExceptions.none(pred_code_local, 'Не определён входной аргумент')
+            CombSpaceExceptions.len(len(pred_code_local), count_demensions_1, 'Не совпадает размерность')
 
             count += np.uint8(pred_code_local != 0)
             pred_code += pred_code_local
@@ -242,15 +228,13 @@ class Minicolumn:
         Возвращается количество одинаковых кластеров
     """    
     def sleep(self, threshold_active=0.75, threshold_in_len=4, threshold_out_len=0):
-        self.__none_exeption(threshold_active)
-        self.__none_exeption(threshold_in_len)
-        self.__none_exeption(threshold_out_len)
-        if threshold_active < 0 or threshold_active > 1:
-            raise ValueError("Неожиданное значение переменной")
-        if threshold_in_len < 0:
-            raise ValueError("Неожиданное значение переменной")
-        if threshold_out_len < 0:
-            raise ValueError("Неожиданное значение переменной")
+        CombSpaceExceptions.none(threshold_active, 'Не определён аргумент')
+        CombSpaceExceptions.none(threshold_in_len, 'Не определён аргумент')
+        CombSpaceExceptions.none(threshold_out_len, 'Не определён аргумент')
+        CombSpaceExceptions.less(threshold_active, 0, 'Недопустимое значение аргумента')
+        CombSpaceExceptions.more(threshold_active, 1, 'Недопустимое значение аргумента')
+        CombSpaceExceptions.less(threshold_in_len, 0, 'Недопустимое значение аргумента')
+        CombSpaceExceptions.less(threshold_out_len, 0, 'Недопустимое значение аргумента')
 
         the_same_clusters = 0
 
@@ -332,14 +316,11 @@ class Minicolumn:
     """
     def unsupervised_learning(self, in_codes, threshold_controversy_in=3, threshold_controversy_out=3):
 
-        self.__codes_exeption(in_codes)
-        self.__none_exeption(threshold_controversy_in)
-        self.__none_exeption(threshold_controversy_out)
-
-        if threshold_controversy_out < 0:
-            raise ValueError("Неожиданное значение переменной")
-        if threshold_controversy_in < 0:
-            raise ValueError("Неожиданное значение переменной")
+        CombSpaceExceptions.codes(in_codes, self.count_in_demensions)
+        CombSpaceExceptions.none(threshold_controversy_in, 'Неопределён аргумент')
+        CombSpaceExceptions.none(threshold_controversy_out, 'Неопределён аргумент')
+        CombSpaceExceptions.less(threshold_controversy_in, 'Недопустимое значение переменной')
+        CombSpaceExceptions.less(threshold_controversy_out, 'Недопустимое значение переменной')
 
         min_hamming = np.inf
         min_ind_hamming = None
@@ -433,9 +414,10 @@ class Minicolumn:
     """
     def supervised_learning(self, in_codes, out_codes, threshold_controversy_out=3):
 
-        self.__codes_exeption(in_codes)
-        self.__codes_exeption(out_codes)
-        self.__none_exeption(threshold_controversy_out)
+        CombSpaceExceptions.codes(in_codes, self.count_in_demensions)
+        CombSpaceExceptions.codes(out_codes, self.count_out_demensions)
+        CombSpaceExceptions.none(threshold_controversy_out, 'Неопределён аргумент')
+        CombSpaceExceptions.less(threshold_controversy_out, 'Недопустимое значение переменной')
 
         min_hamming = np.inf
         min_ind_hamming = None
@@ -506,7 +488,7 @@ class Minicolumn:
     """
     def learn(self, in_codes, out_codes=None, threshold_controversy_in=20, threshold_controversy_out=6):
         if self.is_sleep():
-            return None, None, None
+            return None, None, None, LEARN_ENUM.SLEEP
 
         count_fails = 0
         count_modify = 0
@@ -524,5 +506,5 @@ class Minicolumn:
                 count_modify += local_count_modify
                 count_fails += local_count_fails
                 count_adding += local_count_adding
-                self.count_clusters += np.uint(local_count_adding)
-        return count_fails, count_modify, count_adding
+                self.count_clusters += local_count_adding
+        return count_fails, count_modify, count_adding, LEARN_ENUM.LEARN

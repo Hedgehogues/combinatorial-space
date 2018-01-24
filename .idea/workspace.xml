@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="228949ed-ca87-4f95-8133-28b85a7150ad" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/combinatorial_space/expetions.py" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/combinatorial_space/cluster.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/cluster.py" />
       <change beforePath="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" />
       <change beforePath="$PROJECT_DIR$/src/combinatorial_space/point.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/point.py" />
-      <change beforePath="$PROJECT_DIR$/test/unittest/test_cluster.py" afterPath="$PROJECT_DIR$/test/unittest/test_cluster.py" />
-      <change beforePath="$PROJECT_DIR$/test/unittest/test_point.py" afterPath="$PROJECT_DIR$/test/unittest/test_point.py" />
+      <change beforePath="$PROJECT_DIR$/test/functionaltest/__test_comb_space.py" afterPath="$PROJECT_DIR$/test/functionaltest/__test_comb_space.py" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,34 +19,45 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="__test_comb_space.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/functionaltest/__test_comb_space.py">
+      <file leaf-file-name="minicolumn.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+            <state relative-caret-position="583">
+              <caret line="509" column="72" lean-forward="false" selection-start-line="509" selection-start-column="72" selection-end-line="509" selection-end-column="72" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+                <element signature="e#7406#7748#1" expanded="false" />
+                <element signature="e#7894#8129#1" expanded="false" />
+                <element signature="e#8325#9027#0" expanded="false" />
+                <element signature="e#9093#10135#0" expanded="false" />
+                <element signature="e#10141#10479#1" expanded="false" />
+                <element signature="e#11908#11951#1" expanded="false" />
+                <element signature="e#11984#12036#0" expanded="false" />
+                <element signature="e#13198#13401#1" expanded="false" />
+                <element signature="e#13540#14518#1" expanded="false" />
+                <element signature="e#18177#19018#1" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="expetions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/combinatorial_space/expetions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="17" column="8" lean-forward="false" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="minicolumn.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
+      <file leaf-file-name="cluster.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/combinatorial_space/cluster.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="351" column="0" lean-forward="false" selection-start-line="351" selection-start-column="0" selection-end-line="351" selection-end-column="0" />
+            <state relative-caret-position="1868">
+              <caret line="115" column="59" lean-forward="false" selection-start-line="115" selection-start-column="59" selection-end-line="115" selection-end-column="87" />
               <folding>
-                <element signature="e#0#25#0" expanded="true" />
-                <element signature="e#7995#8337#1" expanded="false" />
-                <element signature="e#8483#8718#1" expanded="false" />
-                <element signature="e#8914#9616#0" expanded="false" />
-                <element signature="e#9682#10724#0" expanded="false" />
-                <element signature="e#10730#11068#1" expanded="false" />
-                <element signature="e#11166#12355#0" expanded="false" />
-                <element signature="e#12369#12412#1" expanded="false" />
-                <element signature="e#12445#12497#0" expanded="false" />
-                <element signature="e#13659#13862#1" expanded="false" />
-                <element signature="e#14001#14979#1" expanded="false" />
-                <element signature="e#18573#19414#1" expanded="false" />
+                <element signature="e#0#21#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -55,20 +66,8 @@
       <file leaf-file-name="point.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/combinatorial_space/point.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="141" column="0" lean-forward="false" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cluster.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/combinatorial_space/cluster.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="825">
-              <caret line="72" column="8" lean-forward="false" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="8" />
+            <state relative-caret-position="241">
+              <caret line="98" column="42" lean-forward="false" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="42" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -87,10 +86,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>contro</find>
-      <find>test_active_out_mask_less_threshold</find>
-      <find>code_mod</find>
-      <find>in_fail</find>
       <find>count_active_po</find>
       <find>threshold_bits_controversy</find>
       <find>out_non_zero_bits</find>
@@ -117,6 +112,10 @@
       <find>test_add_new_cluster</find>
       <find>cv2</find>
       <find>flatten_code</find>
+      <find>No_Cl</find>
+      <find>get_</find>
+      <find>0</find>
+      <find>less</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -157,11 +156,12 @@
         <option value="$PROJECT_DIR$/__test_comb_space.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/src/image_shower.py" />
-        <option value="$PROJECT_DIR$/test/functionaltest/__test_comb_space.py" />
         <option value="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
         <option value="$PROJECT_DIR$/test/unittest/test_point.py" />
         <option value="$PROJECT_DIR$/test/unittest/test_cluster.py" />
+        <option value="$PROJECT_DIR$/test/functionaltest/__test_comb_space.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/cluster.py" />
+        <option value="$PROJECT_DIR$/src/combinatorial_space/expetions.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/point.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" />
       </list>
@@ -201,6 +201,12 @@
               <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
               <item name="redozubov" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
+              <item name="redozubov" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="combinatorial_space" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
@@ -400,12 +406,12 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32904884" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43870968" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29032257" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27225807" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25935483" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25166446" sideWeight="0.50555557" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="SFDX" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -449,7 +455,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="814" />
+      <option name="time" value="817" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="tests">
@@ -462,11 +468,27 @@
         <watch expression="pred_x[coords_1]" language="Python" />
         <watch expression="len(pred_x)" language="Python" />
         <watch expression="opt_code[coords_1]" language="Python" />
+        <watch expression="int(local_count_adding) + 1" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>int(local_count_adding) + 1</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>local_count_adding + 1</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.uint(local_count_adding)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>opt_code[coords_1]</expression-string>
         <language-id>Python</language-id>
@@ -502,32 +524,9 @@
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>context_code[8,:,:]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>context_code[7,:,:]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>context_code[6,:,:]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test/test_comb_space_cluster.py" />
-    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1692">
-          <caret line="96" column="7" lean-forward="true" selection-start-line="96" selection-start-column="7" selection-end-line="96" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/text_image.csv" />
     <entry file="file://$PROJECT_DIR$/data/MNIST/ahcd1_test.csv" />
     <entry file="file://$PROJECT_DIR$/data/MNIST/mnist_test.csv" />
@@ -654,14 +653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/image_transformations.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-13">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/image_shower.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -762,52 +753,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/cluster.py">
+    <entry file="file://$USER_HOME$/anaconda3/envs/redozubov/lib/python3.5/site-packages/pandas/core/indexing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="825">
-          <caret line="72" column="8" lean-forward="false" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="127">
+          <caret line="1500" column="0" lean-forward="false" selection-start-line="1500" selection-start-column="0" selection-end-line="1500" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/point.py">
+    <entry file="file://$PROJECT_DIR$/src/image_transformations.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="141" column="0" lean-forward="false" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="351" column="0" lean-forward="false" selection-start-line="351" selection-start-column="0" selection-end-line="351" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-            <element signature="e#7995#8337#1" expanded="false" />
-            <element signature="e#8483#8718#1" expanded="false" />
-            <element signature="e#8914#9616#0" expanded="false" />
-            <element signature="e#9682#10724#0" expanded="false" />
-            <element signature="e#10730#11068#1" expanded="false" />
-            <element signature="e#11166#12355#0" expanded="false" />
-            <element signature="e#12369#12412#1" expanded="false" />
-            <element signature="e#12445#12497#0" expanded="false" />
-            <element signature="e#13659#13862#1" expanded="false" />
-            <element signature="e#14001#14979#1" expanded="false" />
-            <element signature="e#18573#19414#1" expanded="false" />
-          </folding>
+        <state relative-caret-position="54">
+          <caret line="4" column="4" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/functionaltest/__test_comb_space.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
+        <state relative-caret-position="318">
           <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/point.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="98" column="42" lean-forward="false" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/cluster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1868">
+          <caret line="115" column="59" lean-forward="false" selection-start-line="115" selection-start-column="59" selection-end-line="115" selection-end-column="87" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/expetions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="17" column="8" lean-forward="false" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="583">
+          <caret line="509" column="72" lean-forward="false" selection-start-line="509" selection-start-column="72" selection-end-line="509" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+            <element signature="e#7406#7748#1" expanded="false" />
+            <element signature="e#7894#8129#1" expanded="false" />
+            <element signature="e#8325#9027#0" expanded="false" />
+            <element signature="e#9093#10135#0" expanded="false" />
+            <element signature="e#10141#10479#1" expanded="false" />
+            <element signature="e#11908#11951#1" expanded="false" />
+            <element signature="e#11984#12036#0" expanded="false" />
+            <element signature="e#13198#13401#1" expanded="false" />
+            <element signature="e#13540#14518#1" expanded="false" />
+            <element signature="e#18177#19018#1" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
