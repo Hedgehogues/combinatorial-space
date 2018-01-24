@@ -1,21 +1,27 @@
+from enum import Enum
+
 import numpy as np
 
 np.warnings.filterwarnings('ignore')
 
-"""
-    Кластер в точке комбинаторного пространства
 
-    base_in_subvector, base_out_subvector - бинарный код, образующий кластер. Между образующим кодом и новым кодом
-    будет вычисляться скалярное произведение
-    in_threshold_modify, out_threshold_modify - порог активации кластера 
-    threshold_bin - порог бинаризации кода
-    вектора на новый вектор больше порога, то будет пересчитан веса кластера, выделяющие первую главную компоненту
-    base_lr - начальное значение скорости обучения
-    is_modify_lr - модификация скорости обучения пропорционально номер шага
-"""
+class ClusterAnswer(Enum):
+    ACTIVE = 1
+    NOT_ACTIVE = 0
 
 
 class Cluster:
+    """
+        Кластер в точке комбинаторного пространства
+
+        base_in_subvector, base_out_subvector - бинарный код, образующий кластер. Между образующим кодом и новым кодом
+        будет вычисляться скалярное произведение
+        in_threshold_modify, out_threshold_modify - порог активации кластера
+        threshold_bin - порог бинаризации кода
+        вектора на новый вектор больше порога, то будет пересчитан веса кластера, выделяющие первую главную компоненту
+        base_lr - начальное значение скорости обучения
+        is_modify_lr - модификация скорости обучения пропорционально номер шага
+    """
     def __init__(self,
                  base_in, base_out,
                  in_threshold_modify=5, out_threshold_modify=0,
@@ -23,12 +29,12 @@ class Cluster:
                  base_lr=0.01,
                  is_modify_lr=True):
         if in_threshold_modify is None or out_threshold_modify is None or \
-            np.sum(np.uint8(np.array(base_in) is None)) or np.sum(np.uint8(np.array(base_out) is None)) or \
-            threshold_bin is None or is_modify_lr is None or \
-            in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
-            np.sum(np.uint8(np.array(base_in) < 0)) or np.sum(np.uint8(np.array(base_out) < 0)) or \
-            threshold_bin < 0 or type(is_modify_lr) is not bool:
-                raise ValueError("Неожиданное значение переменной")
+                np.sum(np.uint8(np.array(base_in) is None)) or np.sum(np.uint8(np.array(base_out) is None)) or \
+                threshold_bin is None or is_modify_lr is None or \
+                in_threshold_modify < 0 or out_threshold_modify < 0 or base_lr < 0 or \
+                np.sum(np.uint8(np.array(base_in) < 0)) or np.sum(np.uint8(np.array(base_out) < 0)) or \
+                threshold_bin < 0 or type(is_modify_lr) is not bool:
+                    raise ValueError("Неожиданное значение переменной")
         self.in_threshold_modify, self.out_threshold_modify = in_threshold_modify, out_threshold_modify
         self.base_lr = base_lr
 
@@ -52,9 +58,9 @@ class Cluster:
         self.__len_exeption(len(x), len(w_0))
         dot = np.dot(x, w_0)
         if np.abs(dot) > threshold_modify:
-            return dot, np.uint8(w_1 > self.threshold_bin)
+            return dot, np.int8(w_1 > self.threshold_bin), ClusterAnswer.ACTIVE
         else:
-            return None, None
+            return None, None, ClusterAnswer.NOT_ACTIVE
 
     """
         Предсказание вперёд, т.е. предсказание входа по выходу
@@ -123,5 +129,6 @@ class Cluster:
             self.in_w = np.divide((self.in_w + delta_in), (np.sum(self.in_w ** 2) ** (0.5)))
             self.out_w = np.divide((self.out_w + delta_out), (np.sum(self.out_w ** 2) ** (0.5)))
 
-            return 1
-        return 0
+            return ClusterAnswer.ACTIVE
+        else:
+            return ClusterAnswer.NOT_ACTIVE

@@ -430,24 +430,7 @@ class TestPointAdd(TestPointBase):
         self.assertEqual(0, count_modify)
         self.assertEqual(False, is_add)
 
-    # test_add_new_cluster_* -- проверяют корректность добавления нового кластера, в зависимости от
-    # наличия активации входного или выходного вектора
-
-    def test_add_new_cluster_0(self):
-        self.base_point_d0.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
-        self.base_point_d0.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
-        self.base_point_d0.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
-        in_ = np.array([1, 0, 0])
-        out_ = np.array([1, 0, 0])
-        count_fails, count_modify, is_add = self.base_point_d0.add(in_, out_)
-        np.testing.assert_array_equal([1, 0, 0], in_)
-        np.testing.assert_array_equal([1, 0, 0], out_)
-        self.assertEqual(0, count_fails)
-        self.assertEqual(0, count_modify)
-        self.assertEqual(True, is_add)
-        self.assertEqual(len(self.base_point_d0.clusters), 4)
-
-    def test_add_new_cluster_1(self):
+    def test_not_add_new_cluster(self):
         self.base_point_d2.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
         self.base_point_d2.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
         self.base_point_d2.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
@@ -458,22 +441,8 @@ class TestPointAdd(TestPointBase):
         np.testing.assert_array_equal([1, 0, 0], out_)
         self.assertEqual(0, count_fails)
         self.assertEqual(0, count_modify)
-        self.assertEqual(True, is_add)
-        self.assertEqual(len(self.base_point_d2.clusters), 4)
-
-    def test_add_new_cluster_2(self):
-        self.base_point_d1.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
-        self.base_point_d1.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
-        self.base_point_d1.clusters.append(cluster_mock.ClusterMockGetDotCustomBase(0, 0, 0, 0, 0, 0, 0))
-        in_ = np.array([1, 0, 0])
-        out_ = np.array([1, 0, 0])
-        count_fails, count_modify, is_add = self.base_point_d1.add(in_, out_)
-        np.testing.assert_array_equal([1, 0, 0], in_)
-        np.testing.assert_array_equal([1, 0, 0], out_)
-        self.assertEqual(0, count_fails)
-        self.assertEqual(0, count_modify)
-        self.assertEqual(True, is_add)
-        self.assertEqual(len(self.base_point_d1.clusters), 4)
+        self.assertEqual(False, is_add)
+        self.assertEqual(len(self.base_point_d2.clusters), 3)
 
     def test_add_all_clusters_modify(self):
         self.base_point_e.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
@@ -500,8 +469,8 @@ class TestPointAdd(TestPointBase):
         np.testing.assert_array_equal([1, 0, 0], out_)
         self.assertEqual(3, count_fails)
         self.assertEqual(0, count_modify)
-        self.assertEqual(False, is_add)
-        self.assertEqual(len(self.base_point_f.clusters), 3)
+        self.assertEqual(True, is_add)
+        self.assertEqual(len(self.base_point_f.clusters), 4)
 
 
 if __name__ == '__main__':

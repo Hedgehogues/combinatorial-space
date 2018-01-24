@@ -3,7 +3,7 @@ from enum import Enum
 
 import Levenshtein
 import numpy as np
-from src.combinatorial_space.point import Point
+from src.combinatorial_space.point import Point, PointAnswer
 
 
 class PREDICT_ENUM(Enum):
@@ -134,26 +134,37 @@ class Minicolumn:
 
         pred_code = [0] * count_demensions_1
         count = np.array([0] * count_demensions_1)
+        # TODO: отдавать статистику
+        not_active = 0
+        no_clusters = 0
+        active = 0
         for point in self.space:
             if is_front:
-                pred_code_local = point.predict_front(code, -1)
+                pred_code_local, status = point.predict_front(code, -1)
             else:
-                pred_code_local = point.predict_back(code, -1)
+                pred_code_local, status = point.predict_back(code, -1)
 
             # Неактивная точка
-            if pred_code_local is None:
+            # TODO: эти ифы не протестированы
+            if status == PointAnswer.NOT_ACTIVE:
+                not_active += 1
                 continue
+            elif status == PointAnswer.NO_CLUSTERS:
+                no_clusters += 1
+                continue
+            elif status == PointAnswer.ACTIVE:
+                active += 1
 
             self.__len_exeption(len(pred_code_local), count_demensions_1)
 
             count += np.uint8(pred_code_local != 0)
             pred_code += pred_code_local
 
-        non_zeros = np.sum(np.uint8(np.array(count) == 0))
-        if non_zeros != 0:
-            if non_zeros == count_demensions_1:
+        if active != len(self.space):
+            if active == 0:
                 return None, None, PREDICT_ENUM.THERE_ARE_NOT_AN_ACTIVE_POINTS
             else:
+                # TODO: количество активных кластеров может быть очень маленьким. Если кластеров мало, то, вероятно, они неинформативные
                 controversy = self.__predict_prepare_code(pred_code, count)
                 return controversy, pred_code, PREDICT_ENUM.THERE_ARE_A_NONACTIVE_POINTS
 
@@ -346,14 +357,14 @@ class Minicolumn:
                 continue
 
             # TODO: холодный старт. С чего начинать?
-            # TODO: если ни один код не распознан (accept всегда принимает значения не равные ACCEPT),
+            # TODO: если ни один код не распознан (status всегда принимает значения не равные ACCEPT),
             # TODO: то создаём случайный выходной вектор для первого кода из всех входных
             #############
             # TODO: что делать, если в одном из контекстов мы не можем распознать ничего, а в других можем?
             # TODO: на данном этапе забиваем на такие коды
             #############
-            controversy_out, out_code, accept = self.front_predict(np.array(in_codes[index]))
-            if accept is not PREDICT_ENUM.ACCEPT:
+            controversy_out, out_code, status = self.front_predict(np.array(in_codes[index]))
+            if status is not PREDICT_ENUM.ACCEPT:
                 self.out_not_detected += 1
                 continue
 
@@ -367,11 +378,11 @@ class Minicolumn:
             # Удаляем или добавляем единицы (если их мало или много)
             out_code = self.__code_alignment(out_code)
             
-            controversy_in, in_code, accept = self.back_predict(out_code)
+            controversy_in, in_code, status = self.back_predict(out_code)
             # TODO: при обратном предсказании не распознано, а при прямом -- распознано
             # TODO: на данном этапе забиваем на такие коды
             ############
-            if accept is not PREDICT_ENUM.ACCEPT:
+            if status is not PREDICT_ENUM.ACCEPT:
                 self.in_not_detected += 1
                 continue
             
@@ -387,9 +398,15 @@ class Minicolumn:
 
         if self.zeros_detected != len(in_codes) and \
                 self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
+            # TODO: выбирается наиболее активный код (правильно ли это?)
             min_ind_hamming = 0
-            while min_ind_hamming < len(in_codes) and np.sum(in_codes[min_ind_hamming]) == 0:
-                min_ind_hamming += 1
+            max_ones = -1
+            for ind, code in enumerate(in_codes):
+                sum_ones = np.sum(code)
+                if sum_ones > max_ones:
+                    max_ones = sum_ones
+                    min_ind_hamming = ind
+
             # Генерируем случайный код
             min_out_code = self.__code_alignment(np.array([0] * self.count_out_demensions))
 
@@ -461,7 +478,14 @@ class Minicolumn:
 
         # Если ни один код не определился, то берём самый первый
         if self.zeros_detected != len(in_codes) and self.in_not_detected + self.out_not_detected + self.zeros_detected == len(in_codes):
+            # TODO: выбирается наиболее активный код (правильно ли это?)
             min_ind_hamming = 0
+            max_ones = -1
+            for ind, code in enumerate(in_codes):
+                sum_ones = np.sum(code)
+                if sum_ones > max_ones:
+                    max_ones = sum_ones
+                    min_ind_hamming = ind
 
         if min_ind_hamming is not None:
             return in_codes[min_ind_hamming], out_codes[min_ind_hamming], min_ind_hamming
@@ -491,13 +515,14 @@ class Minicolumn:
         if out_codes is not None:
             in_code, out_code, opt_ind = self.supervised_learning(in_codes, out_codes, threshold_controversy_out)
         else:
-            in_code, out_code, opt_ind = self.unsupervised_learning(in_codes, threshold_controversy_in,
-                                                                    threshold_controversy_out)
+            in_code, out_code, opt_ind = self.unsupervised_learning(
+                in_codes, threshold_controversy_in, threshold_controversy_out
+            )
         if in_code is not None:
             for point in self.space:
-                __count_fails, __count_modify, __count_adding = point.add(in_code, out_code)
-                count_modify += __count_modify
-                count_fails += __count_fails
-                count_adding += __count_adding
-                self.count_clusters += np.uint(__count_adding)
+                local_count_fails, local_count_modify, local_count_adding = point.add(in_code, out_code)
+                count_modify += local_count_modify
+                count_fails += local_count_fails
+                count_adding += local_count_adding
+                self.count_clusters += np.uint(local_count_adding)
         return count_fails, count_modify, count_adding

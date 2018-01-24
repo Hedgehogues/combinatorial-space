@@ -1,6 +1,14 @@
+from enum import Enum
+
 import numpy as np
 
-from src.combinatorial_space.cluster import Cluster
+from src.combinatorial_space.cluster import Cluster, ClusterAnswer
+
+
+class PointAnswer(Enum):
+    NOT_ACTIVE = 0
+    ACTIVE = 1
+    NO_CLUSTERS = 2
 
 
 class Point:
@@ -77,11 +85,15 @@ class Point:
             raise ValueError("Значение аргумента может принимать значение 0 или 1")
 
     def __predict(self, code, type_code, count_dimensions_0, count_demensions_1, coords_0, coords_1,
-                  threshold_activate):
+                  threshold_activate, is_front):
         self.__none_exeption(code)
         self.__len_exeption(len(code), count_dimensions_0)
         self.__type_code_exeption(type_code)
         self.__code_value_exeption(code)
+
+        if len(self.clusters) == 0:
+            # TODO: не простестировано
+            return None, PointAnswer.NO_CLUSTERS
 
         x = np.array(code)[coords_0]
         is_active = np.sum(x) > threshold_activate
@@ -89,24 +101,30 @@ class Point:
         opt_code = None
         if is_active:
             for cluster in self.clusters:
-                # TODO: тест на случай, когда out_x == None, dot == None
-                dot, pred_x = cluster.predict_front(x)
+                if is_front:
+                    dot, pred_x, status = cluster.predict_front(x)
+                else:
+                    dot, pred_x, status = cluster.predict_back(x)
 
-                if dot is not None and dot < 0:
+                if status == ClusterAnswer.ACTIVE and dot < 0:
                     raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
                                      "Отрицательное значение скалярного произведения")
-                # TODO: dot != 0 заменил на  dot is not None
-                if dot is not None and pred_x is None:
+                if status == ClusterAnswer.ACTIVE and pred_x is None:
                     raise ValueError("Неожиданный ответ от метода predict_front класса Cluster. "
-                                     "Скалярное произведение > 0. Предсказанный вектор None")
+                                     "Предсказанный вектор None")
 
-                if dot is not None and dot > opt_dot:
+                if status == ClusterAnswer.ACTIVE and dot > opt_dot:
                     opt_dot = dot
                     opt_code = np.array([0] * count_demensions_1)
                     if type_code == -1:
                         pred_x[pred_x == 0] = -1
-                    opt_code[coords_1] = pred_x[coords_1]
-        return opt_code
+                    opt_code[coords_1] = pred_x
+        else:
+            return None, PointAnswer.NOT_ACTIVE
+        if opt_code is None:
+            return opt_code, PointAnswer.NOT_ACTIVE
+        else:
+            return opt_code, PointAnswer.ACTIVE
 
     """
         Осуществление выбора оптимального кластера при прямом предсказании 
@@ -121,7 +139,7 @@ class Point:
             in_code, type_code,
             self.count_in_demensions, self.count_out_demensions,
             self.in_coords, self.out_coords,
-            self.in_threshold_activate
+            self.in_threshold_activate, True
         )
 
     """
@@ -138,7 +156,7 @@ class Point:
             out_code, type_code,
             self.count_out_demensions, self.count_in_demensions,
             self.out_coords, self.in_coords,
-            self.out_threshold_activate
+            self.out_threshold_activate, False
         )
 
     """
