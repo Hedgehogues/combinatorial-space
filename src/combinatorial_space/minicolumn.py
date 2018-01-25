@@ -2,6 +2,7 @@ from copy import deepcopy
 from enum import Enum
 
 import Levenshtein
+import multiprocessing
 import numpy as np
 
 from src.combinatorial_space.expetions import CombSpaceExceptions
@@ -125,9 +126,11 @@ class Minicolumn:
         CombSpaceExceptions.len(len(code), count_dimensions_0, 'Не совпадает размерность')
         CombSpaceExceptions.code_value(code)
 
-        pred_code = [0] * count_dimensions_1
-        count = np.array([0] * count_dimensions_1)
+        pred_code = np.zeros(count_dimensions_1, dtype=np.int)
+        count = np.zeros(count_dimensions_1, dtype=np.int)
         is_active_any_point = False
+        # pool = multiprocessing.Pool(processes=4)
+
         for point in self.space:
 
             pred_code_local, status = self.__select_predict_function(point, code, is_front)
@@ -370,7 +373,7 @@ class Minicolumn:
                     min_ind_hamming = ind
 
             # Генерируем случайный код
-            min_out_code = self.__code_alignment(np.array([0] * self.count_out_dimensions))
+            min_out_code = self.__code_alignment(np.zeros(self.count_out_dimensions, dtype=np.int))
 
         return in_codes[min_ind_hamming], min_out_code, min_ind_hamming
     
@@ -480,7 +483,20 @@ class Minicolumn:
                 in_codes, threshold_controversy_in, threshold_controversy_out
             )
         if in_code is not None:
-            for point in self.space:
+            for ind, point in enumerate(self.space):
                 new_cluster = point.add(in_code, out_code)
                 self.count_clusters += new_cluster
         return LearnEnum.LEARN
+
+
+
+# Всего кластеров: 1270
+# Всего кластеров: 1270
+# Всего кластеров: 4367
+# Всего кластеров: 4627
+# Всего кластеров: 5467
+# Всего кластеров: 5483
+# Всего кластеров: 7350
+# Всего кластеров: 7818
+# Всего кластеров: 9446
+# Всего кластеров: 10203

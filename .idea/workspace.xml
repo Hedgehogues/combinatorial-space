@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="228949ed-ca87-4f95-8133-28b85a7150ad" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/mnist.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/parallel_test.py" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/combinatorial_space/cluster.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/cluster.py" />
-      <change beforePath="$PROJECT_DIR$/src/combinatorial_space/expetions.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/expetions.py" />
+      <change beforePath="$PROJECT_DIR$/mnist.py" afterPath="$PROJECT_DIR$/mnist.py" />
       <change beforePath="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" />
-      <change beforePath="$PROJECT_DIR$/src/combinatorial_space/point.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/point.py" />
-      <change beforePath="$PROJECT_DIR$/test/functionaltest/__test_comb_space.py" afterPath="$PROJECT_DIR$/test/functionaltest/test_comb_space.py" />
-      <change beforePath="$PROJECT_DIR$/test/unittest/test_cluster.py" afterPath="$PROJECT_DIR$/test/unittest/test_cluster.py" />
-      <change beforePath="$PROJECT_DIR$/test/unittest/test_minicolumn.py" afterPath="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
+      <change beforePath="$PROJECT_DIR$/src/context_transform.py" afterPath="$PROJECT_DIR$/src/context_transform.py" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,8 +21,8 @@
       <file leaf-file-name="mnist.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mnist.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="35" column="30" lean-forward="false" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
+            <state relative-caret-position="270">
+              <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -34,14 +30,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="minicolumn.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
+      <file leaf-file-name="context_transform.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/context_transform.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-23">
-              <caret line="328" column="63" lean-forward="false" selection-start-line="328" selection-start-column="63" selection-end-line="328" selection-end-column="63" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="126">
+              <caret line="8" column="72" lean-forward="false" selection-start-line="8" selection-start-column="72" selection-end-line="8" selection-end-column="72" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -49,8 +43,8 @@
       <file leaf-file-name="point.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/combinatorial_space/point.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="563">
-              <caret line="101" column="73" lean-forward="false" selection-start-line="101" selection-start-column="73" selection-end-line="101" selection-end-column="73" />
+            <state relative-caret-position="126">
+              <caret line="83" column="0" lean-forward="true" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -69,7 +63,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>in_code</find>
       <find>in_codes</find>
       <find>in_codes=</find>
       <find>unsupervised_learning</find>
@@ -99,6 +92,7 @@
       <find>_zeros</find>
       <find>IN</find>
       <find>statistics</find>
+      <find>[0]</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -146,9 +140,12 @@
         <option value="$PROJECT_DIR$/test/functionaltest/__test_comb_space.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/expetions.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/cluster.py" />
-        <option value="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" />
+        <option value="$PROJECT_DIR$/parallel_test.py" />
+        <option value="$PROJECT_DIR$/parallel_test_2.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/point.py" />
+        <option value="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" />
         <option value="$PROJECT_DIR$/mnist.py" />
+        <option value="$PROJECT_DIR$/src/context_transform.py" />
       </list>
     </option>
   </component>
@@ -181,28 +178,6 @@
               <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
               <item name="redozubov" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
-              <item name="redozubov" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
-              <item name="redozubov" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="combinatorial_space" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
-              <item name="redozubov" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
-              <item name="redozubov" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="functionaltest" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -216,17 +191,18 @@
     <property name="SearchEverywhereHistoryKey" value="custom_mock_cluster&#9;null&#9;null" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/test/functionaltest" />
+      <recent name="$PROJECT_DIR$/test/unittest" />
+      <recent name="$PROJECT_DIR$/test" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/test/functionaltest" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/data/MNIST" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/data" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/test/functionaltest" />
-      <recent name="$PROJECT_DIR$/test/unittest" />
-      <recent name="$PROJECT_DIR$/test" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -278,37 +254,37 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="test_cluster" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="parallel_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/unittest" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="redozubov" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/unittest/test_cluster.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/parallel_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="test_minicolumn" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="parallel_test_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/unittest" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="redozubov" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/parallel_test_2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -334,18 +310,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.__test_comb_space" />
-      <item index="1" class="java.lang.String" itemvalue="Python.test_cluster" />
-      <item index="2" class="java.lang.String" itemvalue="Python.test_minicolumn" />
-      <item index="3" class="java.lang.String" itemvalue="Python.test_point" />
-      <item index="4" class="java.lang.String" itemvalue="Python.mnist" />
+      <item index="1" class="java.lang.String" itemvalue="Python.test_point" />
+      <item index="2" class="java.lang.String" itemvalue="Python.mnist" />
+      <item index="3" class="java.lang.String" itemvalue="Python.parallel_test" />
+      <item index="4" class="java.lang.String" itemvalue="Python.parallel_test_2" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.mnist" />
-        <item index="1" class="java.lang.String" itemvalue="Python.__test_comb_space" />
-        <item index="2" class="java.lang.String" itemvalue="Python.test_point" />
-        <item index="3" class="java.lang.String" itemvalue="Python.test_minicolumn" />
-        <item index="4" class="java.lang.String" itemvalue="Python.test_cluster" />
+        <item index="1" class="java.lang.String" itemvalue="Python.parallel_test_2" />
+        <item index="2" class="java.lang.String" itemvalue="Python.parallel_test" />
+        <item index="3" class="java.lang.String" itemvalue="Python.__test_comb_space" />
+        <item index="4" class="java.lang.String" itemvalue="Python.test_point" />
       </list>
     </recent_temporary>
   </component>
@@ -409,7 +385,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2864516" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39225808" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4619355" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25166446" sideWeight="0.50555557" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="SFDX" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -457,11 +433,21 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/mnist.py</url>
-          <line>41</line>
+          <line>36</line>
           <option name="timeStamp" value="872" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/combinatorial_space/point.py</url>
+          <line>174</line>
+          <option name="timeStamp" value="874" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py</url>
+          <line>481</line>
+          <option name="timeStamp" value="877" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="873" />
+      <option name="time" value="894" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="tests">
@@ -470,71 +456,65 @@
         <watch expression="min_hamming &lt; hamming_dist" language="Python" />
       </configuration>
       <configuration name="PythonConfigurationType">
-        <watch expression="count_in_demensions" language="Python" />
-        <watch expression="image" language="Python" />
-        <watch expression="np.abs(np.divide(code[count != 0], count[count != 0]))" language="Python" />
-        <watch expression="len(out_code)" language="Python" />
+        <watch expression="min([window_size[0] - 1 + np.random.randint(0, image.shape[0] - 2 * window_size[0] - 1) for _ in range(2500)])" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
       <expression>
-        <expression-string>len(out_code)</expression-string>
+        <expression-string>min([window_size[0] - 1 + np.random.randint(0, image.shape[0] - 2 * window_size[0] - 1) for _ in range(2500)])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>count[count != 0]</expression-string>
+        <expression-string>max([window_size[0] - 1 + np.random.randint(0, image.shape[0] - 2 * window_size[0] - 1) for _ in range(2500)])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>code[count != 0]</expression-string>
+        <expression-string>max([window_size[0] - 1 + np.random.randint(0, image.shape[0] - 2 * window_size[0]) for _ in range(2500)])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>np.abs(np.divide(code[count != 0], count[count != 0]))</expression-string>
+        <expression-string>max([window_size[0] - 1 + np.random.randint(0, image.shape[0] - 3 * window_size[0]) for _ in range(2500)])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>np.abs(np.divide(code[count != 0], count[count != 0])</expression-string>
+        <expression-string>[window_size[0] - 1 + np.random.randint(0, image.shape[0] - 3 * window_size[0]) for _ in range(250)]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>image</expression-string>
+        <expression-string>[window_size[0] - 1 + np.random.randint(0, image.shape[0] - 3 * window_size[0])] * 250</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>cluster.out_w</expression-string>
+        <expression-string>window_size[0] - 1 + np.random.randint(0, image.shape[0] - 3 * window_size[0])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>point.clusters[1].in_w</expression-string>
+        <expression-string>np.random.randint(0, 5)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>point.clusters[0].in_w</expression-string>
+        <expression-string>image.shape[0] - 2 * window_size[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>point.clusters[0]</expression-string>
+        <expression-string>np.random.randint(0, 2)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test_comb_space.py" />
-    <entry file="file:///usr/local/lib/python3.5/dist-packages/numpy/lib/function_base.py" />
-    <entry file="file://$USER_HOME$/.PyCharmCE2017.2/system/python_stubs/-1247971764/builtins.py" />
     <entry file="file://$PROJECT_DIR$/TODO.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -693,13 +673,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/context_transform.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/unittest/test_cluster.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="127">
@@ -769,7 +742,7 @@
         <state relative-caret-position="54">
           <caret line="5" column="24" lean-forward="false" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
           <folding>
-            <element signature="e#0#21#0" expanded="true" />
+            <element signature="e#0#21#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -790,33 +763,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/parallel_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="415">
+          <caret line="26" column="8" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#22#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parallel_test_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="20" lean-forward="false" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/redozubov/lib/python3.5/site-packages/numpy/core/fromnumeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="1865" column="0" lean-forward="false" selection-start-line="1865" selection-start-column="0" selection-end-line="1865" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/combinatorial_space/point.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="101" column="73" lean-forward="false" selection-start-line="101" selection-start-column="73" selection-end-line="101" selection-end-column="73" />
+        <state relative-caret-position="126">
+          <caret line="83" column="0" lean-forward="true" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="132" column="0" lean-forward="true" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mnist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="35" column="30" lean-forward="false" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
+        <state relative-caret-position="270">
+          <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
+    <entry file="file://$PROJECT_DIR$/src/context_transform.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-23">
-          <caret line="328" column="63" lean-forward="false" selection-start-line="328" selection-start-column="63" selection-end-line="328" selection-end-column="63" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="126">
+          <caret line="8" column="72" lean-forward="false" selection-start-line="8" selection-start-column="72" selection-end-line="8" selection-end-column="72" />
+          <folding />
         </state>
       </provider>
     </entry>

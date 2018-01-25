@@ -1,44 +1,45 @@
 import numpy as np
 import cv2
 
+
 # Получаем коды изображения во всех возможных контекстах
-def get_shift_context(image, flatten_code=True, flatten_context=True):
+def get_shift_context(image, window_size, threshold_non_zeros=5):
     context_codes = []
-    window_size = np.array(image).shape
+    image_sample = get_sample(image, window_size)
+    if np.sum(np.sum(np.uint8(image_sample) != 0)) > threshold_non_zeros:
+        return None
     for context_y in np.arange(-window_size[0]+1, window_size[0], 1):
-        if not flatten_context:
-            context_codes.append([])
         for context_x in np.arange(-window_size[1]+1, window_size[1], 1):
             context_number = [context_y, context_x]
-            context_image = get_context_image(context_number=context_number, image=image)
+            context_image = get_context_image(
+                context_number=context_number,
+                image=image_sample,
+                window_size=window_size
+            )
             context_code = get_codes(context_image)
-            if not flatten_context:
-                context_codes[-1].append(context_code.flatten() if flatten_code else context_code)
-            else:
-                context_codes.append(context_code.flatten() if flatten_code else context_code)
+            context_codes.append(context_code.flatten())
     return context_codes
 
-def get_context_image(context_number, image):
-    dx = context_number[1]
-    dy = context_number[0]
-    x_context_image = np.zeros(image.shape)
-    context_image = np.zeros(image.shape)
-    
-    # Формируем изображение в новом контексте
-    if dx < 0:
-        x_context_image[:, -dx:] = image[:, :dx]
-    elif dx == 0:
-        x_context_image = image
-    else:
-        x_context_image[:, :-dx] = image[:, dx:]
-    if dy < 0:
-        context_image[-dy:, :] = x_context_image[:dy, :]
-    elif dy == 0:
-        context_image = x_context_image
-    else:
-        context_image[:-dy, :] = x_context_image[dy:, :]
-        
+
+def get_sample(image, window_size):
+    y = window_size[0] - 1 + np.random.randint(0, image.shape[0] - 2 * window_size[0] - 1)
+    x = window_size[1] - 1 + np.random.randint(0, image.shape[1] - 2 * window_size[1] - 1)
+    return image[
+        y - window_size[0] + 1:y + 2 * window_size[0] - 1,
+        x - window_size[1] + 1:x + 2 * window_size[1] - 1
+    ]
+
+
+def get_context_image(context_number, image, window_size):
+    x0 = window_size[0] - 1
+    y0 = window_size[1] - 1
+    dx = context_number[0]
+    dy = context_number[1]
+    wdh = window_size[0]
+    hgt = window_size[1]
+    context_image = image[y0 + dy:y0 + dy + hgt, x0 + dx:x0 + dx + wdh]
     return np.uint8(context_image)
+
 
 # Получаем код изображения
 def get_codes(image, count_directs=16, width_angle=np.pi/2, strength_threshould=0):
