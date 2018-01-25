@@ -193,7 +193,7 @@ class TestClusterModify(TestClusterBase):
         self.assertEqual([1] * 1 + [0] * 9, in_x)
         self.assertEqual([1] * 1 + [0] * 5, out_x)
         self.assertEqual(is_modify, ClusterAnswer.NOT_ACTIVE)
-        self.assertEqual(self.base_cluster_a.count_modifing, 0)
+        self.assertEqual(self.base_cluster_a.count_modify, 0)
         np.testing.assert_array_almost_equal(
             self.base_cluster_a.in_w,
             np.array([0.005] * 5 + [0.0006] * 5),
@@ -212,7 +212,7 @@ class TestClusterModify(TestClusterBase):
         self.assertEqual([0] * 9 + [1] * 1, in_x)
         self.assertEqual([1] * 5 + [0] * 1, out_x)
         self.assertEqual(is_modify, ClusterAnswer.NOT_ACTIVE)
-        self.assertEqual(self.base_cluster_b.count_modifing, 0)
+        self.assertEqual(self.base_cluster_b.count_modify, 0)
         np.testing.assert_array_almost_equal(
             self.base_cluster_b.in_w,
             np.array([0.2] * 5 + [0.0] * 5),
@@ -231,7 +231,7 @@ class TestClusterModify(TestClusterBase):
         self.assertEqual([1] * 9 + [0] * 1, in_x)
         self.assertEqual([0] * 5 + [1] * 1, out_x)
         self.assertEqual(is_modify, ClusterAnswer.NOT_ACTIVE)
-        self.assertEqual(self.base_cluster_b.count_modifing, 0)
+        self.assertEqual(self.base_cluster_b.count_modify, 0)
         np.testing.assert_array_almost_equal(
             self.base_cluster_b.in_w,
             np.array([0.2] * 5 + [0.0] * 5),
@@ -250,7 +250,7 @@ class TestClusterModify(TestClusterBase):
         self.assertEqual([1] * 9 + [0] * 1, in_x)
         self.assertEqual([1] * 5 + [0] * 1, out_x)
         self.assertEqual(is_modify, ClusterAnswer.ACTIVE)
-        self.assertEqual(self.base_cluster_b.count_modifing, 1)
+        self.assertEqual(self.base_cluster_b.count_modify, 1)
         np.testing.assert_array_almost_equal(
             self.base_cluster_b.in_w,
             np.array([1.56524758, 1.56524758, 1.56524758, 1.56524758, 1.56524758, 1.11803399,
@@ -270,7 +270,7 @@ class TestClusterModify(TestClusterBase):
         self.assertEqual([1] * 9 + [0] * 1, in_x)
         self.assertEqual([1] * 5 + [0] * 1, out_x)
         self.assertEqual(is_modify, ClusterAnswer.ACTIVE)
-        self.assertEqual(self.base_cluster_c.count_modifing, 1)
+        self.assertEqual(self.base_cluster_c.count_modify, 1)
         np.testing.assert_array_almost_equal(
             self.base_cluster_c.in_w,
             np.array([1.5, 1.5, 1.5, 1.5, 1.5, 1.7, 1.7, 1.7, 1.7, 0.4]),

@@ -45,7 +45,7 @@ class Cluster:
 
         self.threshold_bin = threshold_bin
         self.is_modify_lr = is_modify_lr
-        self.count_modifing = 0
+        self.count_modify = 0
 
     def __predict(self, x, w_0, w_1, threshold_modify):
 
@@ -89,14 +89,15 @@ class Cluster:
         in_y = np.dot(in_x, self.in_w)
         out_y = np.dot(out_x, self.out_w)
         if self.is_modify_lr:
-            delta_in = np.array((self.base_lr / self.count_modifing) * in_y * np.array(in_x))
-            delta_out = np.array((self.base_lr / self.count_modifing) * out_y * np.array(out_x))
+            modify_lr = self.base_lr / self.count_modify
+            delta_in = np.array(modify_lr * np.multiply(in_y, np.array(in_x)))
+            delta_out = np.array(modify_lr * np.multiply(out_y, np.array(out_x)))
             # Правило Ойо почему-то расходится
             #                   self.in_w = self.in_w + (self.base_lr/self.count_modifing)*in_y*(in_x - in_y*self.in_w)
             #                   self.out_w = self.out_w + (self.base_lr/self.count_modifing)*out_y*(out_x - out_y*self.out_w)
         else:
-            delta_in = np.array(self.base_lr * in_y * np.array(in_x))
-            delta_out = np.array(self.base_lr * out_y * np.array(out_x))
+            delta_in = np.array(self.base_lr * np.multiply(in_y, np.array(in_x)))
+            delta_out = np.array(self.base_lr * np.multiply(out_y, np.array(out_x)))
             # Правило Ойо почему-то расходится
             #                   self.in_w = self.in_w + (self.base_lr*in_y*(in_x - in_y*self.in_w)
             #                   self.out_w = self.out_w + (self.base_lr*out_y*(out_x - out_y*self.out_w)
@@ -123,10 +124,10 @@ class Cluster:
 
         if np.abs(in_dot) > self.in_threshold_modify and \
            np.abs(out_dot) > self.out_threshold_modify:
-            self.count_modifing += 1
+            self.count_modify += 1
             delta_in, delta_out = self.__get_delta(in_x, out_x)
-            self.in_w = np.divide((self.in_w + delta_in), (np.sum(self.in_w ** 2) ** (0.5)))
-            self.out_w = np.divide((self.out_w + delta_out), (np.sum(self.out_w ** 2) ** (0.5)))
+            self.in_w = np.divide((self.in_w + delta_in), (np.sqrt(np.sum(np.square(self.in_w)))))
+            self.out_w = np.divide((self.out_w + delta_out), (np.sqrt(np.sum(np.square(self.out_w)))))
 
             return ClusterAnswer.ACTIVE
         else:

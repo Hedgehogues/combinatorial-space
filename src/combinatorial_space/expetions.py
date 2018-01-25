@@ -1,4 +1,10 @@
+from enum import Enum
+
 import numpy as np
+
+
+class StatiscticsKey(Enum):
+    pass
 
 
 class CombSpaceExceptions:

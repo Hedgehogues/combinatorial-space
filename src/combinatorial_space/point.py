@@ -69,6 +69,9 @@ class Point:
         self.max_cluster_per_point = max_cluster_per_point
         self.cluster_class = cluster_class
 
+        self.statistics = {
+        }
+
     def __predict(self, code, type_code, count_dimensions_0, count_demensions_1, coords_0, coords_1,
                   threshold_activate, is_front):
         CombSpaceExceptions.none(code, "Не определён аргумент")
@@ -96,7 +99,7 @@ class Point:
                     CombSpaceExceptions.none(pred_x, "Предсказанный вектор None")
 
                     opt_dot = dot
-                    opt_code = np.array([0] * count_demensions_1)
+                    opt_code = np.zeros(count_demensions_1, dtype=np.int)
                     if type_code == -1:
                         pred_x[pred_x == 0] = -1
                     opt_code[coords_1] = pred_x
@@ -144,8 +147,7 @@ class Point:
 
         in_code, out_code - входной и выходной бинарные векторы кодов соответствующих размерностей
 
-        Возвращается количество произведённых модификаций внутри кластеров точки, флаг добавления кластера
-        (True - добавлен, False - не добавлен)
+        Возвращается флаг добавления кластера (True - добавлен, False - не добавлен)
     """
     def add(self, in_code, out_code):
 
@@ -158,21 +160,22 @@ class Point:
 
         in_x = np.array(in_code)[self.in_coords]
         out_x = np.array(out_code)[self.out_coords]
-        count_modify = 0
-        count_fails = 0
+
+        is_modify_cluster = False
 
         # TODO: Возможно, проверять активацию не нужно, поскольку это будет отсекаться по скалярному
         # TODO: произведению при подсчёте корелляции
         is_active = np.sum(in_x) > self.in_threshold_activate and \
-                    np.sum(out_x) > self.out_threshold_activate
+            np.sum(out_x) > self.out_threshold_activate
+
         if len(self.clusters) < self.max_cluster_per_point:
             if is_active:
+
                 for cluster in self.clusters:
-                    if cluster.modify(in_x, out_x):
-                        count_modify += 1
-                    else:
-                        count_fails += 1
-                if count_modify == 0:
+                    if cluster.modify(in_x, out_x) is ClusterAnswer.ACTIVE:
+                        is_modify_cluster = True
+
+                if not is_modify_cluster:
                     self.clusters.append(
                         self.cluster_class(
                             base_in=in_x, base_out=out_x,
@@ -182,5 +185,5 @@ class Point:
                             base_lr=self.base_lr, is_modify_lr=self.is_modify_lr
                         )
                     )
-                    return count_fails, count_modify, 1
-        return count_fails, count_modify, 0
+                    return True
+        return False

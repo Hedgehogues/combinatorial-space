@@ -2,7 +2,7 @@
 
 import unittest
 import numpy as np
-from src.combinatorial_space.minicolumn import Minicolumn, PREDICT_ENUM
+from src.combinatorial_space.minicolumn import Minicolumn, PredictEnum
 from test.unittest.cluster_mock import ClusterMockForPointWeight
 from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMockInOutCode, PointMockZeros, \
     PointMockDoubleIdentical, PointMockCodeAligment, PointMockControversyIn, PointMockAssertDem2
@@ -32,7 +32,7 @@ class TestMinicolumn__init__(unittest.TestCase):
             in_random_bits=1, out_random_bits=1
         )
         Minicolumn(
-            code_aligment_threshold=2, count_in_demensions=4, count_out_demensions=4,
+            code_aligment_threshold=2, count_in_dimensions=4, count_out_dimensions=4,
             in_random_bits=1, out_random_bits=1
         )
 
@@ -117,8 +117,8 @@ class TestPointPredict(unittest.TestCase):
             space_size=100,
             in_random_bits=1,
             out_random_bits=1,
-            count_in_demensions=1,
-            count_out_demensions=1,
+            count_in_dimensions=1,
+            count_out_dimensions=1,
             code_aligment_threshold=1,
             class_point=PointMockNone
         )
@@ -126,8 +126,8 @@ class TestPointPredict(unittest.TestCase):
             space_size=20,
             in_random_bits=10,
             out_random_bits=10,
-            count_in_demensions=10,
-            count_out_demensions=10,
+            count_in_dimensions=10,
+            count_out_dimensions=10,
             seed=41,
             threshold_controversy=0.05,
             code_aligment_threshold=1,
@@ -137,8 +137,8 @@ class TestPointPredict(unittest.TestCase):
             space_size=20,
             in_random_bits=10,
             out_random_bits=2,
-            count_in_demensions=10,
-            count_out_demensions=2,
+            count_in_dimensions=10,
+            count_out_dimensions=2,
             seed=41,
             threshold_controversy=0.05,
             code_aligment_threshold=1,
@@ -148,8 +148,8 @@ class TestPointPredict(unittest.TestCase):
             space_size=20,
             in_random_bits=2,
             out_random_bits=10,
-            count_in_demensions=2,
-            count_out_demensions=10,
+            count_in_dimensions=2,
+            count_out_dimensions=10,
             seed=41,
             threshold_controversy=0.05,
             code_aligment_threshold=1,
@@ -159,8 +159,8 @@ class TestPointPredict(unittest.TestCase):
             space_size=20,
             in_random_bits=10,
             out_random_bits=2,
-            count_in_demensions=10,
-            count_out_demensions=2,
+            count_in_dimensions=10,
+            count_out_dimensions=2,
             seed=41,
             threshold_controversy=0.05,
             code_aligment_threshold=1,
@@ -170,8 +170,8 @@ class TestPointPredict(unittest.TestCase):
             space_size=20,
             in_random_bits=2,
             out_random_bits=10,
-            count_in_demensions=2,
-            count_out_demensions=10,
+            count_in_dimensions=2,
+            count_out_dimensions=10,
             seed=41,
             threshold_controversy=0.05,
             code_aligment_threshold=1,
@@ -181,8 +181,8 @@ class TestPointPredict(unittest.TestCase):
             space_size=20,
             in_random_bits=2,
             out_random_bits=10,
-            count_in_demensions=2,
-            count_out_demensions=10,
+            count_in_dimensions=2,
+            count_out_dimensions=10,
             seed=41,
             threshold_controversy=0.05,
             code_aligment_threshold=1,
@@ -213,7 +213,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([1], code)
         self.assertEqual(None, out_code)
         self.assertEqual(None, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_AN_ACTIVE_POINTS, accept)
+        self.assertEqual(PredictEnum.INACTIVE_POINTS, accept)
 
     def test_back_assert_not_active_point(self):
         code = [1]
@@ -221,7 +221,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([1], code)
         self.assertEqual(None, in_code)
         self.assertEqual(None, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_AN_ACTIVE_POINTS, accept)
+        self.assertEqual(PredictEnum.INACTIVE_POINTS, accept)
 
     def test_front_assert_not_valid_dem_2(self):
         self.assertRaises(AssertionError, self.minicolumn_assert_dem_2.front_predict, [1] * 2)
@@ -235,7 +235,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([1], code)
         self.assertEqual(None, out_code)
         self.assertEqual(None, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_NOT_AN_ACTIVE_POINTS, accept)
+        self.assertEqual(PredictEnum.INACTIVE_POINTS, accept)
 
     def test_back_assert_there_are_non_acrive_points(self):
         out_code = [0] + [1] + [1] * 4 + [0] * 4
@@ -243,7 +243,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([0] + [1] + [1] * 4 + [0] * 4, out_code)
         np.testing.assert_array_equal(np.array([0, 1]), in_code)
         self.assertEqual(0, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_A_NONACTIVE_POINTS, accept)
+        self.assertEqual(PredictEnum.THERE_ARE_A_NONACTIVE_POINTS, accept)
 
     def test_front_assert_there_are_non_acrive_points(self):
         in_code = [0] + [1] + [1] * 4 + [0] * 4
@@ -251,7 +251,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([0] + [1] + [1] * 4 + [0] * 4, in_code)
         np.testing.assert_array_equal(np.array([0, 1]), out_code)
         self.assertEqual(0, controversy)
-        self.assertEqual(PREDICT_ENUM.THERE_ARE_A_NONACTIVE_POINTS, accept)
+        self.assertEqual(PredictEnum.THERE_ARE_A_NONACTIVE_POINTS, accept)
 
     def test_front_active_point(self):
         in_code = [1] * 10
@@ -259,7 +259,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([1] * 10, in_code)
         np.testing.assert_array_equal(np.array([1, 0, 1, 0, 1, 0, 0, 1, 1, 0]), out_code)
         self.assertEqual(2, controversy)
-        self.assertEqual(PREDICT_ENUM.ACCEPT, accept)
+        self.assertEqual(PredictEnum.ACCEPT, accept)
 
     def test_back_active_point(self):
         out_code = [1] * 10
@@ -267,7 +267,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual([1] * 10, out_code)
         np.testing.assert_array_equal(np.array([1, 0, 1, 0, 1, 0, 0, 1, 1, 0]), code)
         self.assertEqual(2, controversy)
-        self.assertEqual(PREDICT_ENUM.ACCEPT, accept)
+        self.assertEqual(PredictEnum.ACCEPT, accept)
 
 
 class TestPointSleep(unittest.TestCase):
@@ -276,8 +276,8 @@ class TestPointSleep(unittest.TestCase):
             space_size=5,
             in_random_bits=1,
             out_random_bits=1,
-            count_in_demensions=1,
-            count_out_demensions=1,
+            count_in_dimensions=1,
+            count_out_dimensions=1,
             code_aligment_threshold=1,
             class_point=PointMockNone
         )
@@ -287,8 +287,8 @@ class TestPointSleep(unittest.TestCase):
             out_random_bits=1,
             in_threshold_activate=2,
             out_threshold_activate=2,
-            count_in_demensions=1,
-            count_out_demensions=1,
+            count_in_dimensions=1,
+            count_out_dimensions=1,
             code_aligment_threshold=1,
             class_point=PointMockNone
         )
@@ -375,8 +375,8 @@ class TestPointUnsupervisedLearningException(unittest.TestCase):
             space_size=5,
             in_random_bits=1,
             out_random_bits=1,
-            count_in_demensions=1,
-            count_out_demensions=1,
+            count_in_dimensions=1,
+            count_out_dimensions=1,
             code_aligment_threshold=1,
             class_point=PointMockNone
         )
@@ -409,8 +409,8 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             space_size=5,
             in_random_bits=1,
             out_random_bits=1,
-            count_in_demensions=1,
-            count_out_demensions=1,
+            count_in_dimensions=1,
+            count_out_dimensions=1,
             code_aligment_threshold=1,
             class_point=PointMockNone
         )
@@ -418,8 +418,8 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             space_size=5,
             in_random_bits=3,
             out_random_bits=3,
-            count_in_demensions=3,
-            count_out_demensions=3,
+            count_in_dimensions=3,
+            count_out_dimensions=3,
             code_aligment_threshold=2,
             seed=42,
             class_point=PointMockZeros
@@ -428,8 +428,8 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             space_size=5,
             in_random_bits=4,
             out_random_bits=8,
-            count_in_demensions=4,
-            count_out_demensions=8,
+            count_in_dimensions=4,
+            count_out_dimensions=8,
             code_aligment_threshold=4,
             seed=42,
             threshold_controversy=2,
@@ -439,8 +439,8 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             space_size=200,
             in_random_bits=4,
             out_random_bits=8,
-            count_in_demensions=4,
-            count_out_demensions=8,
+            count_in_dimensions=4,
+            count_out_dimensions=8,
             code_aligment_threshold=2,
             seed=42,
             threshold_controversy=0.2,
@@ -450,8 +450,8 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             space_size=5,
             in_random_bits=4,
             out_random_bits=8,
-            count_in_demensions=4,
-            count_out_demensions=8,
+            count_in_dimensions=4,
+            count_out_dimensions=8,
             code_aligment_threshold=4,
             seed=42,
             threshold_controversy=0.1,
