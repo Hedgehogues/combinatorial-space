@@ -99,7 +99,6 @@ class Point:
 
                     opt_dot = dot
                     opt_code = np.zeros(count_demensions_1, dtype=np.int)
-                    # TODO: Возможно не нужны замены на "-1"
                     if type_code == -1:
                         pred_x[pred_x == 0] = -1
                     opt_code[coords_1] = pred_x

@@ -141,7 +141,7 @@ class Minicolumn:
                 count += np.uint8(pred_code_local != 0)
                 pred_code += pred_code_local
 
-        if active_points < 200:
+        if active_points < 80:
             return None, None, PredictEnum.INACTIVE_POINTS
         controversy = self.__predict_prepare_code(pred_code, count)
         return controversy, pred_code, PredictEnum.ACCEPT

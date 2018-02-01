@@ -29,7 +29,7 @@ df = pd.read_csv('data/MNIST/mnist_train.csv', header=None, nrows=100)
 max_number = 5000
 count_subimages_for_image = 10
 window_size = [4, 4]
-space_size = 500
+space_size = 2000
 minicolumn = Minicolumn(
     space_size=space_size,
     max_count_clusters=30000,
@@ -37,7 +37,7 @@ minicolumn = Minicolumn(
     count_out_dimensions=20, out_random_bits=15,
     seed=42,
     code_aligment_threshold=5,
-    in_threshold_activate=7,
+    in_threshold_activate=5,
     out_threshold_activate=4,
     in_threshold_modify=6,
     out_threshold_modify=3,
@@ -71,16 +71,19 @@ for image_number in range(max_number):
             threshold_controversy_in=20,
             threshold_controversy_out=5
         )
+        if opt_ind is None:
+            continue
         opt_context_numbes.append(context_numbes[opt_ind])
         opt_image_sample.append(image_sample)
         opt_out.append(out_code)
         opt_ind_arr.append(opt_ind)
 
         if status == LearnEnum.LEARN:
-            print('Всего кластеров:', minicolumn.count_clusters)
+            print('№', ind, 'Всего кластеров:', minicolumn.count_clusters)
             means.append(np.mean([len(p.clusters) for p in minicolumn.space]))
         elif status == LearnEnum.SLEEP:
             sleep__(minicolumn)
+        ind += 1
     print('Изменение кол-ва кластеров', minicolumn.count_clusters - start)
     delta.append(minicolumn.count_clusters - start)
     if minicolumn.is_sleep() or minicolumn.count_clusters - start < 200:
