@@ -2,7 +2,6 @@ from copy import deepcopy
 from enum import Enum
 
 import Levenshtein
-import multiprocessing
 import numpy as np
 
 from src.combinatorial_space.expetions import CombSpaceExceptions
@@ -173,11 +172,11 @@ class Minicolumn:
     def __sleep_process_clusters(self, point):
 
         for cluster_ind, cluster in enumerate(point.clusters):
-            in_active_mask = np.abs(cluster.in_w) > self.__threshold_active
-            out_active_mask = np.abs(cluster.out_w) > self.__threshold_active
+            in_active_mask = np.abs(cluster.in_w) >= self.__threshold_active
+            out_active_mask = np.abs(cluster.out_w) >= self.__threshold_active
 
-            if len(cluster.in_w[in_active_mask]) > self.__threshold_in_len and \
-                    len(cluster.out_w[out_active_mask]) > self.__threshold_out_len:
+            if len(cluster.in_w[in_active_mask]) >= self.__threshold_in_len and \
+                    len(cluster.out_w[out_active_mask]) >= self.__threshold_out_len:
 
                 # Подрезаем кластер
                 cluster.in_w[~in_active_mask] = 0
@@ -266,9 +265,8 @@ class Minicolumn:
             stay_numbers = np.random.choice(
                 count_active_bits, self.code_aligment_threshold, replace=False
             )
-            active_bits = active_bits[stay_numbers]
             code_mod = np.zeros(code.shape[0])
-            code_mod[active_bits] = 1
+            code_mod[active_bits[stay_numbers]] = 1
         elif count_active_bits < self.code_aligment_threshold:
             non_active_bits = np.where(code == 0)[0]
             count_non_active_bits = non_active_bits.shape[0]
@@ -276,9 +274,8 @@ class Minicolumn:
             stay_numbers = np.random.choice(
                 count_non_active_bits, self.code_aligment_threshold - count_active_bits, replace=False
             )
-            non_active_bits = non_active_bits[stay_numbers]
             code_mod = deepcopy(code)
-            code_mod[non_active_bits] = 1
+            code_mod[non_active_bits[stay_numbers]] = 1
         else:
             code_mod = deepcopy(code)
         return np.int8(code_mod)
@@ -316,6 +313,9 @@ class Minicolumn:
         all_codes_is_zeros = True
         for index in range(len(in_codes)):
 
+            if index == 23:
+                print(23)
+
             # Не обрабатываются полностью нулевые коды
             if np.sum(in_codes[index]) == 0:
                 continue
@@ -336,7 +336,7 @@ class Minicolumn:
             # TODO: что если все коды противоречивые? как быть?
             # TODO: на данном этапе такой код не добавляем
             ############
-            if controversy_out > threshold_controversy_out:
+            if controversy_out >= threshold_controversy_out:
                 continue
                 
             # Удаляем или добавляем единицы (если их мало или много)
@@ -349,7 +349,7 @@ class Minicolumn:
             if status is PredictEnum.INACTIVE_POINTS:
                 continue
 
-            if controversy_in > threshold_controversy_in:
+            if controversy_in >= threshold_controversy_in:
                 continue
 
             hamming_dist = Levenshtein.hamming(''.join(map(str, in_code)), ''.join(map(str, in_codes[index])))
@@ -433,7 +433,7 @@ class Minicolumn:
             # TODO: что если все коды противоречивые? как быть?
             # TODO: на данном этапе такой код не добавляем
             ############
-            if controversy_out > threshold_controversy_out:
+            if controversy_out >= threshold_controversy_out:
                 self.statistics['out_fail'] += 1
                 continue
 
@@ -471,32 +471,21 @@ class Minicolumn:
         Возвращается количество точек, которые оказались неактивными; количество модификаций кластеров;
         количество новых кластеров
     """
-    def learn(self, in_codes, out_codes=None, threshold_controversy_in=20, threshold_controversy_out=6):
+    def learn(self, in_codes, step_number, out_codes=None, threshold_controversy_in=20, threshold_controversy_out=6):
 
         if self.is_sleep():
-            return None, None, None, LearnEnum.SLEEP
+            return None, LearnEnum.SLEEP
 
         if out_codes is not None:
-            in_code, out_code, opt_ind = self.supervised_learning(in_codes, out_codes, threshold_controversy_out)
+            in_code, out_code, opt_ind = self.supervised_learning(
+                in_codes, out_codes, threshold_controversy_out
+            )
         else:
             in_code, out_code, opt_ind = self.unsupervised_learning(
                 in_codes, threshold_controversy_in, threshold_controversy_out
             )
         if in_code is not None:
             for ind, point in enumerate(self.space):
-                new_cluster = point.add(in_code, out_code)
+                new_cluster = point.add(in_code, out_code, step_number)
                 self.count_clusters += new_cluster
-        return LearnEnum.LEARN
-
-
-
-# Всего кластеров: 1270
-# Всего кластеров: 1270
-# Всего кластеров: 4367
-# Всего кластеров: 4627
-# Всего кластеров: 5467
-# Всего кластеров: 5483
-# Всего кластеров: 7350
-# Всего кластеров: 7818
-# Всего кластеров: 9446
-# Всего кластеров: 10203
+        return opt_ind, out_code, LearnEnum.LEARN

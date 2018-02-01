@@ -69,8 +69,7 @@ class Point:
         self.max_cluster_per_point = max_cluster_per_point
         self.cluster_class = cluster_class
 
-        self.statistics = {
-        }
+        self.statistics = []
 
     def __predict(self, code, type_code, count_dimensions_0, count_demensions_1, coords_0, coords_1,
                   threshold_activate, is_front):
@@ -83,7 +82,7 @@ class Point:
             return None, PointPredictAnswer.NO_CLUSTERS
 
         x = np.array(code)[coords_0]
-        is_active = np.sum(x) > threshold_activate
+        is_active = np.sum(x) >= threshold_activate
         opt_dot = -np.inf
         opt_code = None
         if is_active:
@@ -100,6 +99,7 @@ class Point:
 
                     opt_dot = dot
                     opt_code = np.zeros(count_demensions_1, dtype=np.int)
+                    # TODO: Возможно не нужны замены на "-1"
                     if type_code == -1:
                         pred_x[pred_x == 0] = -1
                     opt_code[coords_1] = pred_x
@@ -149,7 +149,7 @@ class Point:
 
         Возвращается флаг добавления кластера (True - добавлен, False - не добавлен)
     """
-    def add(self, in_code, out_code):
+    def add(self, in_code, out_code, step_number=None):
 
         CombSpaceExceptions.none(in_code, "Не определён аргумент")
         CombSpaceExceptions.none(out_code, "Не определён аргумент")
@@ -158,31 +158,39 @@ class Point:
         CombSpaceExceptions.code_value(out_code)
         CombSpaceExceptions.code_value(in_code)
 
-        in_x = np.array(in_code)[self.in_coords]
-        out_x = np.array(out_code)[self.out_coords]
-
-        is_modify_cluster = False
-
-        # TODO: Возможно, проверять активацию не нужно, поскольку это будет отсекаться по скалярному
-        # TODO: произведению при подсчёте корелляции
-        is_active = np.sum(in_x) > self.in_threshold_activate and \
-            np.sum(out_x) > self.out_threshold_activate
-
         if len(self.clusters) < self.max_cluster_per_point:
-            if is_active:
 
-                for cluster in self.clusters:
+            in_x = np.array(in_code)[self.in_coords]
+            out_x = np.array(out_code)[self.out_coords]
+
+            is_modify_cluster = False
+
+            # TODO: Возможно, проверять активацию не нужно, поскольку это будет отсекаться по скалярному
+            # TODO: произведению при подсчёте корелляции
+            if np.sum(in_x) >= self.in_threshold_activate and np.sum(out_x) >= self.out_threshold_activate:
+
+                for cluster_id, cluster in enumerate(self.clusters):
                     if cluster.modify(in_x, out_x) is ClusterAnswer.ACTIVE:
+                        tmp = self.statistics[cluster_id]
+                        tmp.append(step_number)
+                        self.statistics[cluster_id] = tmp
                         is_modify_cluster = True
+                    else:
+                        tmp = self.statistics[cluster_id]
+                        tmp.append(-1)
+                        self.statistics[cluster_id] = tmp
 
                 if not is_modify_cluster:
+                    self.statistics.append([step_number])
                     self.clusters.append(
                         self.cluster_class(
                             base_in=in_x, base_out=out_x,
                             in_threshold_modify=self.in_threshold_modify,
                             out_threshold_modify=self.out_threshold_modify,
                             threshold_bin=self.threshold_bin,
-                            base_lr=self.base_lr, is_modify_lr=self.is_modify_lr
+                            base_lr=self.base_lr, is_modify_lr=self.is_modify_lr,
+
+                            step_number=step_number
                         )
                     )
                     return True

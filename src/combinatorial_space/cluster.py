@@ -29,7 +29,8 @@ class Cluster:
                  in_threshold_modify=5, out_threshold_modify=0,
                  threshold_bin=0.1,
                  base_lr=0.01,
-                 is_modify_lr=True):
+                 is_modify_lr=True,
+                 step_number=None):
         if in_threshold_modify is None or out_threshold_modify is None or \
                 np.sum(np.uint8(np.array(base_in) is None)) or np.sum(np.uint8(np.array(base_out) is None)) or \
                 threshold_bin is None or is_modify_lr is None or \
@@ -46,6 +47,7 @@ class Cluster:
         self.threshold_bin = threshold_bin
         self.is_modify_lr = is_modify_lr
         self.count_modify = 0
+        self.step_number = step_number
 
     def __predict(self, x, w_0, w_1, threshold_modify):
 
@@ -54,8 +56,8 @@ class Cluster:
         CombSpaceExceptions.len(len(x), len(w_0), 'Не совпадает размерность')
 
         dot = np.dot(x, w_0)
-        if np.abs(dot) > threshold_modify:
-            return dot, np.int8(w_1 > self.threshold_bin), ClusterAnswer.ACTIVE
+        if np.abs(dot) >= threshold_modify:
+            return dot, np.int8(w_1 >= self.threshold_bin), ClusterAnswer.ACTIVE
         else:
             return None, None, ClusterAnswer.NOT_ACTIVE
 
@@ -119,11 +121,8 @@ class Cluster:
         CombSpaceExceptions.none(in_x, 'Не определён аргумент')
         CombSpaceExceptions.none(out_x, 'Не определён аргумент')
 
-        in_dot = np.dot(in_x, self.in_w)
-        out_dot = np.dot(out_x, self.out_w)
-
-        if np.abs(in_dot) > self.in_threshold_modify and \
-           np.abs(out_dot) > self.out_threshold_modify:
+        if np.sum(np.dot(in_x, np.uint8(np.abs(self.in_w) >= self.threshold_bin))) >= self.in_threshold_modify and \
+           np.sum(np.dot(out_x, np.uint8(np.abs(self.out_w) >= self.threshold_bin))) >= self.out_threshold_modify:
             self.count_modify += 1
             delta_in, delta_out = self.__get_delta(in_x, out_x)
             self.in_w = np.divide((self.in_w + delta_in), (np.sqrt(np.sum(np.square(self.in_w)))))
