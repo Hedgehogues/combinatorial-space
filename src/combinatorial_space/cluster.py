@@ -121,8 +121,8 @@ class Cluster:
         CombSpaceExceptions.none(in_x, 'Не определён аргумент')
         CombSpaceExceptions.none(out_x, 'Не определён аргумент')
 
-        if np.sum(np.dot(in_x, np.uint8(np.abs(self.in_w) >= self.threshold_bin))) >= self.in_threshold_modify and \
-           np.sum(np.dot(out_x, np.uint8(np.abs(self.out_w) >= self.threshold_bin))) >= self.out_threshold_modify:
+        if np.dot(in_x, np.uint8(np.abs(self.in_w) >= self.threshold_bin)) >= self.in_threshold_modify and \
+           np.dot(out_x, np.uint8(np.abs(self.out_w) >= self.threshold_bin)) >= self.out_threshold_modify:
             self.count_modify += 1
             delta_in, delta_out = self.__get_delta(in_x, out_x)
             self.in_w = np.divide((self.in_w + delta_in), (np.sqrt(np.sum(np.square(self.in_w)))))

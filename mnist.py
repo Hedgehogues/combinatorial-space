@@ -29,20 +29,25 @@ df = pd.read_csv('data/MNIST/mnist_train.csv', header=None, nrows=100)
 max_number = 5000
 count_subimages_for_image = 10
 window_size = [4, 4]
+space_size = 500
 minicolumn = Minicolumn(
-    space_size=2,
+    space_size=space_size,
     max_count_clusters=30000,
     count_in_dimensions=64, in_random_bits=25,
     count_out_dimensions=20, out_random_bits=15,
     seed=42,
-    code_aligment_threshold=4,
-    in_threshold_activate=1,
-    out_threshold_activate=1,
-    in_threshold_modify=3,
+    code_aligment_threshold=5,
+    in_threshold_activate=7,
+    out_threshold_activate=4,
+    in_threshold_modify=6,
     out_threshold_modify=3,
     base_lr=0.3, threshold_bin=0.1
 )
 transforms = ContextTransformations(count_directs=4)
+
+for i in range(space_size, 10000):
+    np.sort(np.random.permutation(64)[:25])
+    np.sort(np.random.permutation(20)[:15])
 
 means = []
 delta = []
@@ -51,10 +56,6 @@ opt_context_numbes = []
 opt_image_sample = []
 opt_out = []
 opt_ind_arr = []
-
-for i in range(2, 10000):
-    np.sort(np.random.permutation(64)[:25])
-    np.sort(np.random.permutation(20)[:15])
 
 for image_number in range(max_number):
     label, image = image_transformations.get_image(df, image_number)

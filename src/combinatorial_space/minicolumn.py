@@ -102,8 +102,7 @@ class Minicolumn:
         self.__active_clusters = None
 
         # Statistics (debug) variables
-        self.statistics = {
-        }
+        self.statistics = []
 
     def __predict_prepare_code(self, code, count):
         controversy = np.sum(
@@ -127,7 +126,7 @@ class Minicolumn:
 
         pred_code = np.zeros(count_dimensions_1, dtype=np.int)
         count = np.zeros(count_dimensions_1, dtype=np.int)
-        is_active_any_point = False
+        active_points = 0
         # pool = multiprocessing.Pool(processes=4)
 
         for point in self.space:
@@ -135,15 +134,14 @@ class Minicolumn:
             pred_code_local, status = self.__select_predict_function(point, code, is_front)
 
             if status is PointPredictAnswer.ACTIVE:
-                is_active_any_point = True
-
+                active_points += 1
                 CombSpaceExceptions.none(pred_code_local, 'Не определён входной аргумент')
                 CombSpaceExceptions.len(len(pred_code_local), count_dimensions_1, 'Не совпадает размерность')
 
                 count += np.uint8(pred_code_local != 0)
                 pred_code += pred_code_local
 
-        if not is_active_any_point:
+        if active_points < 200:
             return None, None, PredictEnum.INACTIVE_POINTS
         controversy = self.__predict_prepare_code(pred_code, count)
         return controversy, pred_code, PredictEnum.ACCEPT
@@ -313,11 +311,8 @@ class Minicolumn:
         all_codes_is_zeros = True
         for index in range(len(in_codes)):
 
-            if index == 23:
-                print(23)
-
             # Не обрабатываются полностью нулевые коды
-            if np.sum(in_codes[index]) == 0:
+            if np.sum(in_codes[index]) < 10:
                 continue
 
             all_codes_is_zeros = False
