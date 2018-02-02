@@ -30,6 +30,11 @@ class CombSpaceExceptions:
         assert obj_len == target_len, msg
 
     @staticmethod
+    def is_type(variable, type, msg="Неверное значение type_code"):
+        if type(variable) is not type:
+            raise TypeError(msg)
+
+    @staticmethod
     def type_code(type_code, msg="Неверное значение type_code"):
         if not (type_code == -1 or type_code == 0):
             raise ValueError(msg)
@@ -42,6 +47,16 @@ class CombSpaceExceptions:
     @staticmethod
     def less(obj, value, msg="Недопустимое значение переменной"):
         if obj < value:
+            raise ValueError(msg)
+
+    @staticmethod
+    def less_or_equal(obj, value, msg="Недопустимое значение переменной"):
+        if obj <= value:
+            raise ValueError(msg)
+
+    @staticmethod
+    def more_or_equal(obj, value, msg="Недопустимое значение переменной"):
+        if obj >= value:
             raise ValueError(msg)
 
     @staticmethod
