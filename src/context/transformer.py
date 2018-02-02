@@ -13,7 +13,7 @@ class ContextTransformer:
         self.non_zeros_bits = non_zeros_bits
 
     # Получаем коды изображения во всех возможных контекстах
-    def get_all_codes(self, image):
+    def get_sample_codes(self, image):
         context_codes = []
         context_numbers = []
         image_sample = self.__get_sample(image)

@@ -62,7 +62,7 @@ for image_number in range(max_number):
     print(image_number, label)
     start = minicolumn.count_clusters
     for subimage_number in range(0, count_subimages_for_image):
-        codes, context_numbes, image_sample = transforms.get_all_codes(image)
+        codes, context_numbes, image_sample = transforms.get_sample_codes(image)
         if codes is None:
             continue
         opt_ind, out_code, status = minicolumn.learn(
