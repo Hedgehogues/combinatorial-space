@@ -32,16 +32,16 @@ window_size = [4, 4]
 space_size = 2000
 minicolumn = Minicolumn(
     space_size=space_size,
-    max_count_clusters=30000,
-    count_in_dimensions=64, in_random_bits=25,
-    count_out_dimensions=20, out_random_bits=15,
+    max_clusters=30000,
+    in_dimensions=64, in_random_bits=25,
+    out_dimensions=20, out_random_bits=15,
     seed=42,
-    code_aligment_threshold=5,
-    in_threshold_activate=5,
-    out_threshold_activate=4,
-    in_threshold_modify=6,
-    out_threshold_modify=3,
-    base_lr=0.3, threshold_bin=0.1
+    code_alignment=5,
+    in_point_activate=5,
+    out_point_activate=4,
+    in_cluster_modify=6,
+    out_cluster_modify=3,
+    lr=0.3, binarization=0.1
 )
 transforms = ContextTransformations(count_directs=4)
 

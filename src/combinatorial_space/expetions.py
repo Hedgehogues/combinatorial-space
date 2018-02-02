@@ -17,7 +17,7 @@ class CombSpaceExceptions:
         for code in codes:
             CombSpaceExceptions.none(code)
             CombSpaceExceptions.code_value(code)
-            CombSpaceExceptions.len(len(code), count_dimensions)
+            CombSpaceExceptions.eq(len(code), count_dimensions, "Не совпадает размерность")
             CombSpaceExceptions.code_value(code)
 
     @staticmethod
@@ -26,8 +26,12 @@ class CombSpaceExceptions:
             raise ValueError(msg)
 
     @staticmethod
-    def len(obj_len, target_len, msg="Не совпадает размерность"):
+    def eq(obj_len, target_len, msg="Не совпадает размерность"):
         assert obj_len == target_len, msg
+
+    @staticmethod
+    def neq(obj_len, target_len, msg="Не совпадает размерность"):
+        assert obj_len != target_len, msg
 
     @staticmethod
     def is_type(variable, type, msg="Неверное значение type_code"):

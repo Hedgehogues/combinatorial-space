@@ -58,43 +58,43 @@ class TestClusterBase(unittest.TestCase):
     def setUp(self):
         n, m = 5, 3
         self.base_cluster_a = Cluster(
-            base_in=np.array([0.005] * n + [0.0006] * n),
-            base_out=np.array([0.007] * m + [0.0008] * m),
-            in_threshold_modify=0.5, out_threshold_modify=0.5,
-            threshold_bin=0.1,
-            base_lr=0.5,
+            in_sub_code=np.array([0.005] * n + [0.0006] * n),
+            out_sub_code=np.array([0.007] * m + [0.0008] * m),
+            in_cluster_modify=0.5, out_cluster_modify=0.5,
+            binarization=0.1,
+            lr=0.5,
             is_modify_lr=True
         )
         self.base_cluster_b = Cluster(
-            base_in=np.array([0.2] * n + [0] * n),
-            base_out=np.array([0.05] * m + [0] * m),
-            in_threshold_modify=0.1, out_threshold_modify=0.1,
-            threshold_bin=0.1,
-            base_lr=0.5,
+            in_sub_code=np.array([0.2] * n + [0] * n),
+            out_sub_code=np.array([0.05] * m + [0] * m),
+            in_cluster_modify=0.1, out_cluster_modify=0.1,
+            binarization=0.1,
+            lr=0.5,
             is_modify_lr=True
         )
         self.base_cluster_c = Cluster(
-            base_in=np.array([0.1] * n + [0.2] * n),
-            base_out=np.array([0.3] * m + [0.4] * m),
-            in_threshold_modify=0.1, out_threshold_modify=0.1,
-            threshold_bin=0.25,
-            base_lr=0.5,
+            in_sub_code=np.array([0.1] * n + [0.2] * n),
+            out_sub_code=np.array([0.3] * m + [0.4] * m),
+            in_cluster_modify=0.1, out_cluster_modify=0.1,
+            binarization=0.25,
+            lr=0.5,
             is_modify_lr=False
         )
         self.base_cluster_d = Cluster(
-            base_in=np.array([0.2] * n + [0] * n),
-            base_out=np.array([0.2] * m + [0] * m),
-            in_threshold_modify=0.1, out_threshold_modify=0.1,
-            threshold_bin=0.1,
-            base_lr=0.5,
+            in_sub_code=np.array([0.2] * n + [0] * n),
+            out_sub_code=np.array([0.2] * m + [0] * m),
+            in_cluster_modify=0.1, out_cluster_modify=0.1,
+            binarization=0.1,
+            lr=0.5,
             is_modify_lr=True
         )
         self.base_cluster_e = Cluster(
-            base_in=np.array([0.3] * n + [0] * n),
-            base_out=np.array([0.3] * m + [0] * m),
-            in_threshold_modify=0.1, out_threshold_modify=0.1,
-            threshold_bin=0.1,
-            base_lr=0.5,
+            in_sub_code=np.array([0.3] * n + [0] * n),
+            out_sub_code=np.array([0.3] * m + [0] * m),
+            in_cluster_modify=0.1, out_cluster_modify=0.1,
+            binarization=0.1,
+            lr=0.5,
             is_modify_lr=True
         )
 

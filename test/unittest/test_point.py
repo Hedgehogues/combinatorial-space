@@ -54,90 +54,90 @@ class TestPoint__init__(unittest.TestCase):
 class TestPointBase(unittest.TestCase):
     def setUp(self):
         self.base_point_a = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=1, out_threshold_activate=1,
-            threshold_bin=1,
+            in_cluster_modify=1, out_cluster_modify=1,
+            in_point_activate=1, out_point_activate=1,
+            binarization=1,
             in_random_bits=1, out_random_bits=1,
-            count_in_demensions=1, count_out_demensions=1,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1,
+            in_dimensions=1, out_dimensions=1,
+            lr=0, is_modify_lr=True,
+            max_clusters_per_point=1,
             cluster_class=cluster_mock.ClusterMock0None
         )
 
         self.base_point_b = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
+            in_cluster_modify=1, out_cluster_modify=1,
+            in_point_activate=0, out_point_activate=0,
+            binarization=1,
             in_random_bits=1, out_random_bits=1,
-            count_in_demensions=1, count_out_demensions=1,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1,
+            in_dimensions=1, out_dimensions=1,
+            lr=0, is_modify_lr=True,
+            max_clusters_per_point=1,
             cluster_class=cluster_mock.ClusterMock0None
         )
 
         self.base_point_c = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
+            in_cluster_modify=1, out_cluster_modify=1,
+            in_point_activate=0, out_point_activate=0,
+            binarization=1,
             in_random_bits=4, out_random_bits=4,
-            count_in_demensions=4, count_out_demensions=4,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=1,
+            in_dimensions=4, out_dimensions=4,
+            lr=0, is_modify_lr=True,
+            max_clusters_per_point=1,
             cluster_class=cluster_mock.ClusterMock0None
         )
 
         self.base_point_d0 = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=100, out_threshold_activate=100,
-            threshold_bin=1,
+            in_cluster_modify=1, out_cluster_modify=1,
+            in_point_activate=100, out_point_activate=100,
+            binarization=1,
             in_random_bits=3, out_random_bits=3,
-            count_in_demensions=3, count_out_demensions=3,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=5,
+            in_dimensions=3, out_dimensions=3,
+            lr=0, is_modify_lr=True,
+            max_clusters_per_point=5,
             cluster_class=cluster_mock.ClusterMockGetDotCustomBase
         )
 
         self.base_point_d1 = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=100, out_threshold_activate=0,
-            threshold_bin=1,
+            in_cluster_modify=1, out_cluster_modify=1,
+            in_point_activate=100, out_point_activate=0,
+            binarization=1,
             in_random_bits=3, out_random_bits=3,
-            count_in_demensions=3, count_out_demensions=3,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=5,
+            in_dimensions=3, out_dimensions=3,
+            lr=0, is_modify_lr=True,
+            max_clusters_per_point=5,
             cluster_class=cluster_mock.ClusterMockGetDotCustomBase
         )
 
         self.base_point_d2 = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=100,
-            threshold_bin=1,
+            in_cluster_modify=1, out_cluster_modify=1,
+            in_point_activate=0, out_point_activate=100,
+            binarization=1,
             in_random_bits=3, out_random_bits=3,
-            count_in_demensions=3, count_out_demensions=3,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=5,
+            in_dimensions=3, out_dimensions=3,
+            lr=0, is_modify_lr=True,
+            max_clusters_per_point=5,
             cluster_class=cluster_mock.ClusterMockGetDotCustomBase
         )
 
         self.base_point_e = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
+            in_cluster_modify=1, out_cluster_modify=1,
+            in_point_activate=0, out_point_activate=0,
+            binarization=1,
             in_random_bits=3, out_random_bits=3,
-            count_in_demensions=3, count_out_demensions=3,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=5,
+            in_dimensions=3, out_dimensions=3,
+            lr=0, is_modify_lr=True,
+            max_clusters_per_point=5,
             cluster_class=cluster_mock.ClusterMock1None
         )
 
         self.base_point_f = Point(
-            in_threshold_modify=1, out_threshold_modify=1,
-            in_threshold_activate=0, out_threshold_activate=0,
-            threshold_bin=1,
+            in_cluster_modify=1, out_cluster_modify=1,
+            in_point_activate=0, out_point_activate=0,
+            binarization=1,
             in_random_bits=3, out_random_bits=3,
-            count_in_demensions=3, count_out_demensions=3,
-            base_lr=0, is_modify_lr=True,
-            max_cluster_per_point=5,
+            in_dimensions=3, out_dimensions=3,
+            lr=0, is_modify_lr=True,
+            max_clusters_per_point=5,
             cluster_class=cluster_mock.ClusterMock0None
         )
 
@@ -265,13 +265,13 @@ class TestPointPredict(TestPointBase):
     def test_back_1_cluster_type_code_0_get_opt_code(self):
         for _ in np.arange(0, 100):
             base_point_d = Point(
-                in_threshold_modify=1, out_threshold_modify=1,
-                in_threshold_activate=0, out_threshold_activate=0,
-                threshold_bin=1,
+                in_cluster_modify=1, out_cluster_modify=1,
+                in_point_activate=0, out_point_activate=0,
+                binarization=1,
                 in_random_bits=3, out_random_bits=3,
-                count_in_demensions=4, count_out_demensions=4,
-                base_lr=0, is_modify_lr=True,
-                max_cluster_per_point=1,
+                in_dimensions=4, out_dimensions=4,
+                lr=0, is_modify_lr=True,
+                max_clusters_per_point=1,
                 cluster_class=cluster_mock.ClusterMock0None
             )
             base_point_d.clusters = [
@@ -288,13 +288,13 @@ class TestPointPredict(TestPointBase):
     def test_front_1_cluster_type_code_0_get_opt_code(self):
         for _ in np.arange(0, 100):
             base_point_d = Point(
-                in_threshold_modify=1, out_threshold_modify=1,
-                in_threshold_activate=0, out_threshold_activate=0,
-                threshold_bin=1,
+                in_cluster_modify=1, out_cluster_modify=1,
+                in_point_activate=0, out_point_activate=0,
+                binarization=1,
                 in_random_bits=3, out_random_bits=3,
-                count_in_demensions=4, count_out_demensions=4,
-                base_lr=0, is_modify_lr=True,
-                max_cluster_per_point=1,
+                in_dimensions=4, out_dimensions=4,
+                lr=0, is_modify_lr=True,
+                max_clusters_per_point=1,
                 cluster_class=cluster_mock.ClusterMock0None
             )
             base_point_d.clusters = [
@@ -311,13 +311,13 @@ class TestPointPredict(TestPointBase):
     def test_back_1_cluster_type_code_minus_1_get_opt_code(self):
         for _ in np.arange(0, 100):
             base_point_d = Point(
-                in_threshold_modify=1, out_threshold_modify=1,
-                in_threshold_activate=0, out_threshold_activate=0,
-                threshold_bin=1,
+                in_cluster_modify=1, out_cluster_modify=1,
+                in_point_activate=0, out_point_activate=0,
+                binarization=1,
                 in_random_bits=3, out_random_bits=3,
-                count_in_demensions=4, count_out_demensions=4,
-                base_lr=0, is_modify_lr=True,
-                max_cluster_per_point=1,
+                in_dimensions=4, out_dimensions=4,
+                lr=0, is_modify_lr=True,
+                max_clusters_per_point=1,
                 cluster_class=cluster_mock.ClusterMock0None
             )
             base_point_d.clusters = [
@@ -334,13 +334,13 @@ class TestPointPredict(TestPointBase):
     def test_front_1_cluster_type_code_minus_1_get_opt_code(self):
         for _ in np.arange(0, 100):
             base_point_d = Point(
-                in_threshold_modify=1, out_threshold_modify=1,
-                in_threshold_activate=0, out_threshold_activate=0,
-                threshold_bin=1,
+                in_cluster_modify=1, out_cluster_modify=1,
+                in_point_activate=0, out_point_activate=0,
+                binarization=1,
                 in_random_bits=3, out_random_bits=3,
-                count_in_demensions=4, count_out_demensions=4,
-                base_lr=0, is_modify_lr=True,
-                max_cluster_per_point=1,
+                in_dimensions=4, out_dimensions=4,
+                lr=0, is_modify_lr=True,
+                max_clusters_per_point=1,
                 cluster_class=cluster_mock.ClusterMock0None
             )
             base_point_d.clusters = [

@@ -9,7 +9,7 @@ df = pd.read_csv('data/test_image.csv', header=None)
 max_number = 5000
 count_subimages_for_image = 100
 window_size = [4, 4]
-minicolumn = Minicolumn(max_count_clusters=6000, seed=10)
+minicolumn = Minicolumn(max_clusters=6000, seed=10)
 for image_number in range(max_number):
     label, image = image_transformations.get_image(df, 0)
     for subimage_number in range(0, count_subimages_for_image):

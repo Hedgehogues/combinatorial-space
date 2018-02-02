@@ -32,7 +32,7 @@ class TestMinicolumn__init__(unittest.TestCase):
             in_random_bits=1, out_random_bits=1
         )
         Minicolumn(
-            code_aligment_threshold=2, count_in_dimensions=4, count_out_dimensions=4,
+            code_alignment=2, in_dimensions=4, out_dimensions=4,
             in_random_bits=1, out_random_bits=1
         )
 
@@ -117,75 +117,75 @@ class TestPointPredict(unittest.TestCase):
             space_size=100,
             in_random_bits=1,
             out_random_bits=1,
-            count_in_dimensions=1,
-            count_out_dimensions=1,
-            code_aligment_threshold=1,
+            in_dimensions=1,
+            out_dimensions=1,
+            code_alignment=1,
             class_point=PointMockNone
         )
         self.minicolumn = Minicolumn(
             space_size=20,
             in_random_bits=10,
             out_random_bits=10,
-            count_in_dimensions=10,
-            count_out_dimensions=10,
+            in_dimensions=10,
+            out_dimensions=10,
             seed=41,
-            threshold_controversy=0.05,
-            code_aligment_threshold=1,
+            controversy=0.05,
+            code_alignment=1,
             class_point=PointMockOddEven
         )
         self.minicolumn_front = Minicolumn(
             space_size=20,
             in_random_bits=10,
             out_random_bits=2,
-            count_in_dimensions=10,
-            count_out_dimensions=2,
+            in_dimensions=10,
+            out_dimensions=2,
             seed=41,
-            threshold_controversy=0.05,
-            code_aligment_threshold=1,
+            controversy=0.05,
+            code_alignment=1,
             class_point=PointMockOddEven
         )
         self.minicolumn_back = Minicolumn(
             space_size=20,
             in_random_bits=2,
             out_random_bits=10,
-            count_in_dimensions=2,
-            count_out_dimensions=10,
+            in_dimensions=2,
+            out_dimensions=10,
             seed=41,
-            threshold_controversy=0.05,
-            code_aligment_threshold=1,
+            controversy=0.05,
+            code_alignment=1,
             class_point=PointMockOddEven
         )
         self.minicolumn_out_code = Minicolumn(
             space_size=20,
             in_random_bits=10,
             out_random_bits=2,
-            count_in_dimensions=10,
-            count_out_dimensions=2,
+            in_dimensions=10,
+            out_dimensions=2,
             seed=41,
-            threshold_controversy=0.05,
-            code_aligment_threshold=1,
+            controversy=0.05,
+            code_alignment=1,
             class_point=PointMockInOutCode
         )
         self.minicolumn_in_code = Minicolumn(
             space_size=20,
             in_random_bits=2,
             out_random_bits=10,
-            count_in_dimensions=2,
-            count_out_dimensions=10,
+            in_dimensions=2,
+            out_dimensions=10,
             seed=41,
-            threshold_controversy=0.05,
-            code_aligment_threshold=1,
+            controversy=0.05,
+            code_alignment=1,
             class_point=PointMockInOutCode
         )
         self.minicolumn_assert_dem_2 = Minicolumn(
             space_size=20,
             in_random_bits=2,
             out_random_bits=10,
-            count_in_dimensions=2,
-            count_out_dimensions=10,
+            in_dimensions=2,
+            out_dimensions=10,
             seed=41,
-            threshold_controversy=0.05,
-            code_aligment_threshold=1,
+            controversy=0.05,
+            code_alignment=1,
             class_point=PointMockAssertDem2
         )
 
@@ -276,20 +276,20 @@ class TestPointSleep(unittest.TestCase):
             space_size=5,
             in_random_bits=1,
             out_random_bits=1,
-            count_in_dimensions=1,
-            count_out_dimensions=1,
-            code_aligment_threshold=1,
+            in_dimensions=1,
+            out_dimensions=1,
+            code_alignment=1,
             class_point=PointMockNone
         )
         self.minicolumn_activate = Minicolumn(
             space_size=5,
             in_random_bits=1,
             out_random_bits=1,
-            in_threshold_activate=2,
-            out_threshold_activate=2,
-            count_in_dimensions=1,
-            count_out_dimensions=1,
-            code_aligment_threshold=1,
+            in_point_activate=2,
+            out_point_activate=2,
+            in_dimensions=1,
+            out_dimensions=1,
+            code_alignment=1,
             class_point=PointMockNone
         )
 
@@ -375,9 +375,9 @@ class TestPointUnsupervisedLearningException(unittest.TestCase):
             space_size=5,
             in_random_bits=1,
             out_random_bits=1,
-            count_in_dimensions=1,
-            count_out_dimensions=1,
-            code_aligment_threshold=1,
+            in_dimensions=1,
+            out_dimensions=1,
+            code_alignment=1,
             class_point=PointMockNone
         )
 
@@ -409,18 +409,18 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             space_size=5,
             in_random_bits=1,
             out_random_bits=1,
-            count_in_dimensions=1,
-            count_out_dimensions=1,
-            code_aligment_threshold=1,
+            in_dimensions=1,
+            out_dimensions=1,
+            code_alignment=1,
             class_point=PointMockNone
         )
         self.minicolumn_zeros = Minicolumn(
             space_size=5,
             in_random_bits=3,
             out_random_bits=3,
-            count_in_dimensions=3,
-            count_out_dimensions=3,
-            code_aligment_threshold=2,
+            in_dimensions=3,
+            out_dimensions=3,
+            code_alignment=2,
             seed=42,
             class_point=PointMockZeros
         )
@@ -428,33 +428,33 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             space_size=5,
             in_random_bits=4,
             out_random_bits=8,
-            count_in_dimensions=4,
-            count_out_dimensions=8,
-            code_aligment_threshold=4,
+            in_dimensions=4,
+            out_dimensions=8,
+            code_alignment=4,
             seed=42,
-            threshold_controversy=2,
+            controversy=2,
             class_point=PointMockDoubleIdentical
         )
         self.minicolumn_controversy_in = Minicolumn(
             space_size=200,
             in_random_bits=4,
             out_random_bits=8,
-            count_in_dimensions=4,
-            count_out_dimensions=8,
-            code_aligment_threshold=2,
+            in_dimensions=4,
+            out_dimensions=8,
+            code_alignment=2,
             seed=42,
-            threshold_controversy=0.2,
+            controversy=0.2,
             class_point=PointMockControversyIn
         )
         self.minicolumn_code_aligment = Minicolumn(
             space_size=5,
             in_random_bits=4,
             out_random_bits=8,
-            count_in_dimensions=4,
-            count_out_dimensions=8,
-            code_aligment_threshold=4,
+            in_dimensions=4,
+            out_dimensions=8,
+            code_alignment=4,
             seed=42,
-            threshold_controversy=0.1,
+            controversy=0.1,
             class_point=PointMockCodeAligment
         )
 
@@ -514,7 +514,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, zeros_detected)
         self.assertEqual(3, in_not_detected)
         self.assertEqual(0, out_not_detected)
-        self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
+        self.assertEqual(self.minicolumn_code_aligment.alignment, np.sum(min_out_code))
 
     def test_code_aligment_less(self):
         in_codes = [[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]]
@@ -529,7 +529,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, zeros_detected)
         self.assertEqual(3, in_not_detected)
         self.assertEqual(0, out_not_detected)
-        self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
+        self.assertEqual(self.minicolumn_code_aligment.alignment, np.sum(min_out_code))
 
     def test_code_aligment_eq(self):
         in_codes = [[1, 1, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0]]
@@ -545,7 +545,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         self.assertEqual(0, zeros_detected)
         self.assertEqual(3, in_not_detected)
         self.assertEqual(0, out_not_detected)
-        self.assertEqual(self.minicolumn_code_aligment.code_aligment_threshold, np.sum(min_out_code))
+        self.assertEqual(self.minicolumn_code_aligment.alignment, np.sum(min_out_code))
 
     def test_code_controversy_in(self):
         in_codes = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]

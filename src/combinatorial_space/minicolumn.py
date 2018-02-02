@@ -24,99 +24,102 @@ class Minicolumn:
         Миниколонка. Миниколонка - это набор точек комбинаторного пространства
 
         space_size - количество точек комбинаторного пространства
-        max_cluster_per_point - максимальное количество кластеров в точке
-        max_count_clusters - максмальное суммарное количество кластеров по всем точкам комбинаторного пространства
-        in_threshold_modify, out_threshold_modify - порог активации кластера. Если скалярное произведение базового
-        вектора кластера на новый вектор больше порога, то будет пересчитан веса кластера, выделяющие первую главную
-        компоненту
-        threshold_bin - порог бинаризации кода
-        in_threshold_activate, out_threshold_activate - порог активации точки комбинаторного пространства. Если кол-во
-        активных битов больше порога, то будет инициирован процесс модификации существующих кластеров, а также будет
-        добавлен новый кластер
-        in_random_bits, out_random_bits - количество случайных битов входного/выходного вектора
-        base_lr - начальное значение скорости обучения
-        is_modify_lr - модификация скорости обучения пропорционально номер шага
-        count_in_demensions, count_out_demensions - размер входного и выходного векторов
-        threshold_controversy - порог противоречия для битов кодов
-        code_aligment_threshold - число ненулевых бит в выходном векторе
+        max_clusters_per_point - максимальное количество кластеров в точке
+        max_clusters - максмальное суммарное количество кластеров по всем точкам комбинаторного пространства
+        in_cluster_modify, out_cluster_modify - порог модификации кластера. Если скалярное произведение кластера
+        на новый вектор больше порога, то будет пересчитаны веса кластера, выделяющие первую главную компоненту
+        in_point_activate, out_point_activate - порог активации точки комбинаторного пространства. Если кол-во
+        активных битов больше порога, то будет инициирован процесс модификации существующих кластеров или добавления
+        нового кластера
+        binarization - порог бинаризации кода. Скалярное произведение вычисляенся [w >= bin], где w - вес
+        lr - начальное значение скорости обучения
+        is_modify_lr - модификация скорости обучения пропорционально номеру шага
+        in_random_bits, out_random_bits - количество случайных битов входного/выходного вектора для точки комб.
+        пространства
+        in_dimensions, out_dimensions - размер входного и выходного векторов
+        controversy - порог противоречия для битов кодов
+        code_alignment - число ненулевых бит в выходном векторе
+        min_active_point - минимальное количество активных точек, необходимых, чтобы кластер был распознан
+        in_code_activate, out_code_activate - количество активных битов во входном и выходном векторах
+        seed - инициализация случайным состоянием
     """
-    def __init__(self, space_size=10000, max_cluster_per_point=100,
-                 max_count_clusters=1000000, seed=42,
-                 in_threshold_modify=5, out_threshold_modify=0,
-                 in_threshold_activate=5, out_threshold_activate=0,
-                 threshold_bin=0.1,
+    def __init__(self, space_size=10000, max_clusters_per_point=100,
+                 max_clusters=1000000,
+                 in_cluster_modify=5, out_cluster_modify=0,
+                 in_point_activate=5, out_point_activate=0,
+                 binarization=0.1, lr=0.01, is_modify_lr=True,
                  in_random_bits=24, out_random_bits=10,
-                 base_lr=0.01, is_modify_lr=True,
-                 count_in_dimensions=256, count_out_dimensions=16,
-                 threshold_controversy=0.1,
-                 code_aligment_threshold=6, count_active_point=30,
-                 threshold_in_len=14, threshold_out_len=3,
-                 class_point=Point):
+                 in_dimensions=256, out_dimensions=16,
+                 controversy=0.1,
+                 code_alignment=6, min_active_points=80,
+                 in_code_activate=14, out_code_activate=3,
+                 seed=42, class_point=Point):
 
         CombSpaceExceptions.none(seed)
         CombSpaceExceptions.none(space_size)
-        CombSpaceExceptions.none(in_threshold_modify)
-        CombSpaceExceptions.none(out_threshold_modify)
-        CombSpaceExceptions.none(in_threshold_activate)
+        CombSpaceExceptions.none(in_cluster_modify)
+        CombSpaceExceptions.none(out_cluster_modify)
+        CombSpaceExceptions.none(in_point_activate)
+        CombSpaceExceptions.none(out_point_activate)
         CombSpaceExceptions.none(in_random_bits)
         CombSpaceExceptions.none(out_random_bits)
-        CombSpaceExceptions.none(threshold_bin)
+        CombSpaceExceptions.none(binarization)
         CombSpaceExceptions.none(is_modify_lr)
-        CombSpaceExceptions.none(base_lr)
-        CombSpaceExceptions.none(max_cluster_per_point)
-        CombSpaceExceptions.none(count_out_dimensions)
-        CombSpaceExceptions.none(count_in_dimensions)
-        CombSpaceExceptions.none(threshold_controversy)
-        CombSpaceExceptions.none(max_count_clusters)
-        CombSpaceExceptions.none(code_aligment_threshold)
+        CombSpaceExceptions.none(lr)
+        CombSpaceExceptions.none(max_clusters_per_point)
+        CombSpaceExceptions.none(in_dimensions)
+        CombSpaceExceptions.none(out_dimensions)
+        CombSpaceExceptions.none(controversy)
+        CombSpaceExceptions.none(max_clusters)
+        CombSpaceExceptions.none(code_alignment)
         CombSpaceExceptions.none(class_point)
-        CombSpaceExceptions.none(count_active_point)
+        CombSpaceExceptions.none(min_active_points)
 
-        CombSpaceExceptions.less_or_equal(max_count_clusters, 0)
+        CombSpaceExceptions.less_or_equal(max_clusters, 0)
         CombSpaceExceptions.less_or_equal(space_size, 0)
 
-        CombSpaceExceptions.less(max_cluster_per_point, 0)
+        CombSpaceExceptions.less(max_clusters_per_point, 0)
         CombSpaceExceptions.less(out_random_bits, 0)
         CombSpaceExceptions.less(in_random_bits, 0)
-        CombSpaceExceptions.less(in_threshold_modify, 0)
-        CombSpaceExceptions.less(out_threshold_modify, 0)
-        CombSpaceExceptions.less(in_threshold_activate, 0)
-        CombSpaceExceptions.less(out_threshold_activate, 0)
-        CombSpaceExceptions.less(count_in_dimensions, 0)
-        CombSpaceExceptions.less(count_out_dimensions, 0)
-        CombSpaceExceptions.less(threshold_bin, 0)
-        CombSpaceExceptions.less(threshold_controversy, 0)
-        CombSpaceExceptions.less(code_aligment_threshold, 0)
-        CombSpaceExceptions.less(threshold_in_len, 0)
-        CombSpaceExceptions.less(threshold_out_len, 0)
+        CombSpaceExceptions.less(in_cluster_modify, 0)
+        CombSpaceExceptions.less(out_cluster_modify, 0)
+        CombSpaceExceptions.less(in_point_activate, 0)
+        CombSpaceExceptions.less(out_point_activate, 0)
+        CombSpaceExceptions.less(in_dimensions, 0)
+        CombSpaceExceptions.less(out_dimensions, 0)
+        CombSpaceExceptions.less(binarization, 0)
+        CombSpaceExceptions.less(controversy, 0)
+        CombSpaceExceptions.less(code_alignment, 0)
+        CombSpaceExceptions.less(in_code_activate, 0)
+        CombSpaceExceptions.less(out_code_activate, 0)
 
         CombSpaceExceptions.is_type(is_modify_lr, bool)
 
-        CombSpaceExceptions.more(in_random_bits, count_in_dimensions)
-        CombSpaceExceptions.more(out_random_bits, count_out_dimensions)
-        CombSpaceExceptions.more(code_aligment_threshold, count_out_dimensions)
+        CombSpaceExceptions.more(in_random_bits, in_dimensions)
+        CombSpaceExceptions.more(out_random_bits, out_dimensions)
+        CombSpaceExceptions.more(code_alignment, out_dimensions)
 
         np.random.seed(seed)
 
         self.space = np.array(
             [
                 class_point(
-                    in_threshold_modify, out_threshold_modify,
-                    in_threshold_activate, out_threshold_activate,
-                    threshold_bin,
+                    in_cluster_modify, out_cluster_modify,
+                    in_point_activate, out_point_activate,
+                    binarization,
                     in_random_bits, out_random_bits,
-                    count_in_dimensions, count_out_dimensions,
-                    base_lr, is_modify_lr,
-                    max_cluster_per_point
+                    in_dimensions, out_dimensions,
+                    lr, is_modify_lr,
+                    max_clusters_per_point
                 ) for _ in range(space_size)
             ]
         )
-        self.max_count_clusters = max_count_clusters
-        self.threshold_controversy = threshold_controversy
-        self.code_aligment_threshold = code_aligment_threshold
-        self.count_active_point = count_active_point
-        self.count_in_dimensions, self.count_out_dimensions = count_in_dimensions, count_out_dimensions
-        self.threshold_in_len, self.threshold_out_len = threshold_in_len, threshold_out_len
+        self.max_clusters = max_clusters
+        self.controversy = controversy
+        self.alignment = code_alignment
+        self.min_active_points = min_active_points
+        self.count_in_dimensions, self.count_out_dimensions = in_dimensions, out_dimensions
+        self.in_non_zero_threshold, self.out_non_zero_threshold = in_code_activate, out_code_activate
 
         self.count_clusters = 0
 
@@ -130,7 +133,7 @@ class Minicolumn:
 
     def __predict_prepare_code(self, code, count):
         controversy = np.sum(
-            np.uint8(np.abs(np.divide(code[count != 0], count[count != 0])) < self.threshold_controversy)
+            np.uint8(np.abs(np.divide(code[count != 0], count[count != 0])) < self.controversy)
         )
         code[code <= 0] = 0
         code[code > 0] = 1
@@ -145,7 +148,7 @@ class Minicolumn:
 
     def __predict(self, code, count_dimensions_0, count_dimensions_1, is_front):
         CombSpaceExceptions.none(code, 'Не определён входной аргумент')
-        CombSpaceExceptions.len(len(code), count_dimensions_0, 'Не совпадает размерность')
+        CombSpaceExceptions.eq(len(code), count_dimensions_0, 'Не совпадает размерность')
         CombSpaceExceptions.code_value(code)
 
         pred_code = np.zeros(count_dimensions_1, dtype=np.int)
@@ -160,12 +163,12 @@ class Minicolumn:
             if status is PointPredictAnswer.ACTIVE:
                 active_points += 1
                 CombSpaceExceptions.none(pred_code_local, 'Не определён входной аргумент')
-                CombSpaceExceptions.len(len(pred_code_local), count_dimensions_1, 'Не совпадает размерность')
+                CombSpaceExceptions.eq(len(pred_code_local), count_dimensions_1, 'Не совпадает размерность')
 
                 count += np.uint8(pred_code_local != 0)
                 pred_code += pred_code_local
 
-        if active_points < 80:
+        if active_points < self.min_active_point:
             return None, None, PredictEnum.INACTIVE_POINTS
         controversy = self.__predict_prepare_code(pred_code, count)
         return controversy, pred_code, PredictEnum.ACCEPT
@@ -191,14 +194,15 @@ class Minicolumn:
     def back_predict(self, out_code):
         return self.__predict(out_code, self.count_out_dimensions, self.count_in_dimensions, False)
 
+    # TODO: перенести внутрь Clusters
     def __sleep_process_clusters(self, point):
 
         for cluster_ind, cluster in enumerate(point.clusters):
             in_active_mask = np.abs(cluster.in_w) >= self.__threshold_active
             out_active_mask = np.abs(cluster.out_w) >= self.__threshold_active
 
-            if len(cluster.in_w[in_active_mask]) >= self.threshold_in_len and \
-                    len(cluster.out_w[out_active_mask]) >= self.threshold_out_len:
+            if len(cluster.in_w[in_active_mask]) >= self.in_non_zero_threshold and \
+                    len(cluster.out_w[out_active_mask]) >= self.out_non_zero_threshold:
 
                 # Подрезаем кластер
                 cluster.in_w[~in_active_mask] = 0
@@ -209,6 +213,7 @@ class Minicolumn:
             else:
                 self.count_clusters -= 1
 
+    # TODO: перенести внутрь Clusters
     def __sleep_remove_the_same_clusters(self, point):
         # Удаляем одинаковые кластеры (те кластеры, у которых одинаковые базовые векторы)
         the_same_clusters = 0
@@ -271,24 +276,24 @@ class Minicolumn:
         Проверям: пора ли спать
     """
     def is_sleep(self):
-        return self.count_clusters > self.max_count_clusters
+        return self.count_clusters > self.max_clusters
     
     def __code_alignment(self, code):
         count_active_bits = np.sum(code)
-        if count_active_bits > self.code_aligment_threshold:
+        if count_active_bits > self.alignment:
             active_bits = np.where(code == 1)[0]
             count_active_bits = active_bits.shape[0]
             stay_numbers = np.random.choice(
-                count_active_bits, self.code_aligment_threshold, replace=False
+                count_active_bits, self.alignment, replace=False
             )
             code_mod = np.zeros(code.shape[0])
             code_mod[active_bits[stay_numbers]] = 1
-        elif count_active_bits < self.code_aligment_threshold:
+        elif count_active_bits < self.alignment:
             non_active_bits = np.where(code == 0)[0]
             count_non_active_bits = non_active_bits.shape[0]
             count_active_bits = code.shape[0] - count_non_active_bits
             stay_numbers = np.random.choice(
-                count_non_active_bits, self.code_aligment_threshold - count_active_bits, replace=False
+                count_non_active_bits, self.alignment - count_active_bits, replace=False
             )
             code_mod = deepcopy(code)
             code_mod[non_active_bits[stay_numbers]] = 1
@@ -330,7 +335,7 @@ class Minicolumn:
         for index in range(len(in_codes)):
 
             # Не обрабатываются коды из большого кол-ва нулей
-            if np.sum(in_codes[index]) < self.non_in_zero_threshold:
+            if np.sum(in_codes[index]) < self.in_non_zero_threshold:
                 continue
 
             all_codes_is_zeros = False
@@ -420,8 +425,8 @@ class Minicolumn:
         for index in range(len(in_codes)):
 
             # Не обрабатываются коды из большого кол-ва нулей
-            if np.sum(in_codes[index]) < self.non_in_zero_threshold or \
-                    np.sum(in_codes[index]) < self.non_out_zero_threshold:
+            if np.sum(in_codes[index]) < self.in_non_zero_threshold or \
+                    np.sum(in_codes[index]) < self.out_non_zero_threshold:
                 continue
 
             all_codes_is_zeros = False
