@@ -2,22 +2,22 @@ import numpy as np
 import cv2
 
 
-class ContextTransformations:
+class ContextTransformer:
 
-    def __init__(self, count_directs=16, width_angle=np.pi/2, strength_threshold=0,
-                 window_size=np.array([4, 4]), threshold_non_zeros_bits=5):
-        self.count_directs = count_directs
+    def __init__(self, directs=16, width_angle=np.pi / 2, strength=0,
+                 window_size=np.array([4, 4]), non_zeros_bits=5):
+        self.directs = directs
         self.width_angle = width_angle
-        self.strength_threshold = strength_threshold
+        self.strength = strength
         self.window_size = window_size
-        self.threshold_non_zeros_bits = threshold_non_zeros_bits
+        self.non_zeros_bits = non_zeros_bits
 
     # Получаем коды изображения во всех возможных контекстах
-    def get_all_codes(self, image, context_numbers_flag=False, image_sample_falg=False):
+    def get_all_codes(self, image):
         context_codes = []
         context_numbers = []
         image_sample = self.__get_sample(image)
-        if np.sum(np.sum(np.uint8(image_sample != 0))) <= self.threshold_non_zeros_bits:
+        if np.sum(np.sum(np.uint8(image_sample != 0))) <= self.non_zeros_bits:
             return None, None, None
         for context_y in np.arange(-self.window_size[0]+1, self.window_size[0], 1):
             for context_x in np.arange(-self.window_size[1]+1, self.window_size[1], 1):
@@ -28,16 +28,7 @@ class ContextTransformations:
                 )
                 context_code = self.get_codes(context_image)
                 context_codes.append(context_code.flatten())
-        answ = [context_codes]
-        if context_numbers_flag:
-            answ.append(context_numbers)
-        else:
-            answ.append(None)
-        if image_sample_falg:
-            answ.append(image_sample)
-        else:
-            answ.append(None)
-        return answ
+        return [context_codes, context_numbers, image_sample]
 
     def __get_sample(self, image):
         y = self.window_size[0] - 1 + np.random.randint(0, image.shape[0] - 2 * self.window_size[0] - 1)
@@ -64,7 +55,7 @@ class ContextTransformations:
         start_angle = 0
         finish_angle = 2*np.pi
 
-        step_angle = (finish_angle - start_angle) / self.count_directs
+        step_angle = (finish_angle - start_angle) / self.directs
         central_angle = np.arange(start_angle, finish_angle, step_angle) + self.width_angle/2
 
         gamma_down = central_angle - self.width_angle/2
@@ -80,7 +71,7 @@ class ContextTransformations:
                     (0 <= angle) & (angle <= gamma_up[i] - 2*np.pi) & (gamma_up[i] > 2*np.pi)
                 )
                 &
-                (strength > self.strength_threshold)
+                (strength > self.strength)
             )
-            for i in range(0, self.count_directs)
+            for i in range(0, self.directs)
         ])

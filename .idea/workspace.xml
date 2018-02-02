@@ -4,10 +4,10 @@
     <list default="true" id="2252da76-c76a-4dd3-b1b5-7d9cbe3e397d" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/mnist.py" afterPath="$PROJECT_DIR$/mnist.py" />
-      <change beforePath="$PROJECT_DIR$/src/combinatorial_space/cluster.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/cluster.py" />
-      <change beforePath="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" />
-      <change beforePath="$PROJECT_DIR$/src/combinatorial_space/point.py" afterPath="$PROJECT_DIR$/src/combinatorial_space/point.py" />
-      <change beforePath="$PROJECT_DIR$/test/unittest/test_minicolumn.py" afterPath="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
+      <change beforePath="$PROJECT_DIR$/src/context_transform.py" afterPath="$PROJECT_DIR$/src/context/transformer.py" />
+      <change beforePath="$PROJECT_DIR$/src/image_shower.py" afterPath="$PROJECT_DIR$/src/image/showers.py" />
+      <change beforePath="$PROJECT_DIR$/src/image_transformations.py" afterPath="$PROJECT_DIR$/src/image/transformers.py" />
+      <change beforePath="$PROJECT_DIR$/test/functionaltest/test_comb_space.py" afterPath="$PROJECT_DIR$/test/functionaltest/test_comb_space.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,12 +18,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="minicolumn.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="minicolumn.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="401" column="65" lean-forward="false" selection-start-line="401" selection-start-column="65" selection-end-line="401" selection-end-column="65" />
+            <state relative-caret-position="-5738">
+              <caret line="148" column="44" lean-forward="true" selection-start-line="148" selection-start-column="44" selection-end-line="148" selection-end-column="44" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="transformer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/context/transformer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="transformers.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/image/transformers.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -46,6 +70,11 @@
         <option value="$PROJECT_DIR$/src/combinatorial_space/cluster.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/point.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" />
+        <option value="$PROJECT_DIR$/src/image_shower.py" />
+        <option value="$PROJECT_DIR$/mnist.py" />
+        <option value="$PROJECT_DIR$/src/context/transform.py" />
+        <option value="$PROJECT_DIR$/src/context/transformer.py" />
+        <option value="$PROJECT_DIR$/src/image/transformers.py" />
       </list>
     </option>
   </component>
@@ -87,7 +116,13 @@
               <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
               <item name="redozubov" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="combinatorial_space" type="462c0819:PsiDirectoryNode" />
+              <item name="context" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="redozubov" type="b2602c69:ProjectViewProjectNode" />
+              <item name="redozubov" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="image" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -98,6 +133,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/image" />
+      <recent name="$PROJECT_DIR$/src/context" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -196,9 +237,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="401" column="65" lean-forward="false" selection-start-line="401" selection-start-column="65" selection-end-line="401" selection-end-column="65" />
+        <state relative-caret-position="-5738">
+          <caret line="148" column="44" lean-forward="true" selection-start-line="148" selection-start-column="44" selection-end-line="148" selection-end-column="44" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="64" column="67" lean-forward="false" selection-start-line="64" selection-start-column="67" selection-end-line="64" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/image/showers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/context/transformer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/image/transformers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 import pickle
 
-from src import image_transformations
+from src.image import transformers
 from src.combinatorial_space.minicolumn import Minicolumn, LearnEnum
-from src.context_transform import ContextTransformations
+from src.context.transformer import ContextTransformer
 
 
 def sleep__(minicolumn):
@@ -43,7 +43,7 @@ minicolumn = Minicolumn(
     out_cluster_modify=3,
     lr=0.3, binarization=0.1
 )
-transforms = ContextTransformations(count_directs=4)
+transforms = ContextTransformer(directs=4)
 
 for i in range(space_size, 10000):
     np.sort(np.random.permutation(64)[:25])
@@ -58,11 +58,11 @@ opt_out = []
 opt_ind_arr = []
 
 for image_number in range(max_number):
-    label, image = image_transformations.get_image(df, image_number)
+    label, image = transformers.get_image(df, image_number)
     print(image_number, label)
     start = minicolumn.count_clusters
     for subimage_number in range(0, count_subimages_for_image):
-        codes, context_numbes, image_sample = transforms.get_all_codes(image, True, True)
+        codes, context_numbes, image_sample = transforms.get_all_codes(image)
         if codes is None:
             continue
         opt_ind, out_code, status = minicolumn.learn(
