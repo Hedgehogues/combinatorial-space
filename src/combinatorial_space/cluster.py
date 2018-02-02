@@ -42,6 +42,8 @@ class Cluster:
         CombSpaceExceptions.less(binarization, 0)
 
         CombSpaceExceptions.is_type(is_modify_lr, bool)
+        CombSpaceExceptions.is_type(in_sub_code, list)
+        CombSpaceExceptions.is_type(out_sub_code, list)
 
         self.in_cluster_modify, self.out_cluster_modify = in_cluster_modify, out_cluster_modify
         self.base_lr = lr
@@ -58,6 +60,7 @@ class Cluster:
         CombSpaceExceptions.code_value(x)
         CombSpaceExceptions.none(x, 'Не определён аргумент')
         CombSpaceExceptions.eq(len(x), len(w_0), 'Не совпадает размерность')
+        CombSpaceExceptions.is_type(x, list)
 
         dot = np.dot(x, w_0)
         if np.abs(dot) < cluster_modify:
@@ -125,6 +128,9 @@ class Cluster:
         CombSpaceExceptions.eq(len(in_x), len(self.in_w), 'Не совпадает размерность')
         CombSpaceExceptions.none(in_x, 'Не определён аргумент')
         CombSpaceExceptions.none(out_x, 'Не определён аргумент')
+
+        CombSpaceExceptions.is_type(in_x, list)
+        CombSpaceExceptions.is_type(out_x, list)
 
         if np.dot(in_x, np.uint8(np.abs(self.in_w) >= self.binarization)) < self.in_cluster_modify:
             return ClusterAnswer.NOT_MODIFY

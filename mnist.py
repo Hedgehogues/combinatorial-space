@@ -10,7 +10,7 @@ from src.context_transform import ContextTransformations
 def sleep__(minicolumn):
     print('Сон')
     clusters_of_points, the_same_clusters = minicolumn.sleep(
-        threshold_active=0.75,
+        activate=0.75,
         threshold_in_len=3,
         threshold_out_len=2
     )
@@ -68,8 +68,8 @@ for image_number in range(max_number):
         opt_ind, out_code, status = minicolumn.learn(
             codes,
             ind,
-            threshold_controversy_in=20,
-            threshold_controversy_out=5
+            in_controversy=20,
+            out_controversy=5
         )
         if opt_ind is None:
             continue

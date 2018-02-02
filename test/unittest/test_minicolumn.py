@@ -550,7 +550,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
     def test_code_controversy_in(self):
         in_codes = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
         min_in_code, min_out_code, min_ind_hamming = self.minicolumn_controversy_in.unsupervised_learning(
-            in_codes=in_codes, threshold_controversy_in=0
+            in_codes=in_codes, controversy_in=0
         )
         self.assertEqual([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]], in_codes)
         out_fail, in_fail, in_not_detected, out_not_detected, zeros_detected = self.minicolumn_controversy_in.get_stat()

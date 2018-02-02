@@ -118,8 +118,8 @@ class Minicolumn:
         self.controversy = controversy
         self.alignment = code_alignment
         self.min_active_points = min_active_points
-        self.count_in_dimensions, self.count_out_dimensions = in_dimensions, out_dimensions
-        self.in_non_zero_threshold, self.out_non_zero_threshold = in_code_activate, out_code_activate
+        self.in_dimensions, self.out_dimensions = in_dimensions, out_dimensions
+        self.in_code_activate, self.out_code_activate = in_code_activate, out_code_activate
 
         self.count_clusters = 0
 
@@ -146,32 +146,34 @@ class Minicolumn:
         else:
             return point.predict_back(code)
 
-    def __predict(self, code, count_dimensions_0, count_dimensions_1, is_front):
+    def __predict(self, code, dimensions_0, dimensions_1, is_front):
         CombSpaceExceptions.none(code, 'Не определён входной аргумент')
-        CombSpaceExceptions.eq(len(code), count_dimensions_0, 'Не совпадает размерность')
+        CombSpaceExceptions.eq(len(code), dimensions_0, 'Не совпадает размерность')
         CombSpaceExceptions.code_value(code)
+        CombSpaceExceptions.is_type(code, list)
 
-        pred_code = np.zeros(count_dimensions_1, dtype=np.int)
-        count = np.zeros(count_dimensions_1, dtype=np.int)
+        total_sub_code = np.zeros(dimensions_1, dtype=np.int)
+        count = np.zeros(dimensions_1, dtype=np.int)
         active_points = 0
         # pool = multiprocessing.Pool(processes=4)
 
         for point in self.space:
 
-            pred_code_local, status = self.__select_predict_function(point, code, is_front)
+            predicted_sub_code, status = self.__select_predict_function(point, code, is_front)
 
             if status is PointPredictAnswer.ACTIVE:
                 active_points += 1
-                CombSpaceExceptions.none(pred_code_local, 'Не определён входной аргумент')
-                CombSpaceExceptions.eq(len(pred_code_local), count_dimensions_1, 'Не совпадает размерность')
+                CombSpaceExceptions.none(predicted_sub_code, 'Не определён входной аргумент')
+                CombSpaceExceptions.eq(len(predicted_sub_code), dimensions_1, 'Не совпадает размерность')
 
-                count += np.uint8(pred_code_local != 0)
-                pred_code += pred_code_local
+                count += np.uint8(predicted_sub_code != 0)
+                total_sub_code += predicted_sub_code
 
-        if active_points < self.min_active_point:
+        if active_points < self.min_active_points:
             return None, None, PredictEnum.INACTIVE_POINTS
-        controversy = self.__predict_prepare_code(pred_code, count)
-        return controversy, pred_code, PredictEnum.ACCEPT
+
+        controversy = self.__predict_prepare_code(total_sub_code, count)
+        return controversy, total_sub_code, PredictEnum.ACCEPT
 
     """
         Получение выходного кода по входному. Прямое предсказание в каждой точке комбинаторного пространства
@@ -182,7 +184,7 @@ class Minicolumn:
         возвращается бесконечное значение противоречивости
     """
     def front_predict(self, in_code):
-        return self.__predict(in_code, self.count_in_dimensions, self.count_out_dimensions, True)
+        return self.__predict(in_code, self.in_dimensions, self.out_dimensions, True)
     
     """
         Получение входного кода по выходному. Обратное предсказание в каждой точке комбинаторного пространства
@@ -192,7 +194,7 @@ class Minicolumn:
         Возвращаемые значения: непротиворечивость, входной код
     """
     def back_predict(self, out_code):
-        return self.__predict(out_code, self.count_out_dimensions, self.count_in_dimensions, False)
+        return self.__predict(out_code, self.out_dimensions, self.in_dimensions, False)
 
     # TODO: перенести внутрь Clusters
     def __sleep_process_clusters(self, point):
@@ -201,8 +203,8 @@ class Minicolumn:
             in_active_mask = np.abs(cluster.in_w) >= self.__threshold_active
             out_active_mask = np.abs(cluster.out_w) >= self.__threshold_active
 
-            if len(cluster.in_w[in_active_mask]) >= self.in_non_zero_threshold and \
-                    len(cluster.out_w[out_active_mask]) >= self.out_non_zero_threshold:
+            if len(cluster.in_w[in_active_mask]) >= self.in_code_activate and \
+                    len(cluster.out_w[out_active_mask]) >= self.out_code_activate:
 
                 # Подрезаем кластер
                 cluster.in_w[~in_active_mask] = 0
@@ -234,30 +236,31 @@ class Minicolumn:
                 if in_equal and out_equal or in_equal and not out_equal:
                     is_exist_the_same = True
                     break
+
             if not is_exist_the_same:
                 point.clusters.append(self.__active_clusters[cluster_i])
             else:
                 the_same_clusters += 1
                 self.count_clusters -= 1
+
         return the_same_clusters
 
     """
         Этап сна
         
-        threshold_active - порог активности бита внутри кластера (вес в преобразовании к первой главной компоненте), 
+        active - порог активности бита внутри кластера (вес в преобразовании к первой главной компоненте), 
         выше которого активность остаётся
-        threshold_in_len, threshold_out_len - порог количества ненулевых битов
         
         Возвращается количество одинаковых кластеров
     """    
-    def sleep(self, threshold_active=0.75):
-        CombSpaceExceptions.none(threshold_active, 'Не определён аргумент')
-        CombSpaceExceptions.less(threshold_active, 0, 'Недопустимое значение аргумента')
-        CombSpaceExceptions.more(threshold_active, 1, 'Недопустимое значение аргумента')
+    def sleep(self, activate=0.75):
+        CombSpaceExceptions.none(activate, 'Не определён аргумент')
+        CombSpaceExceptions.less(activate, 0, 'Недопустимое значение аргумента')
+        CombSpaceExceptions.more(activate, 1, 'Недопустимое значение аргумента')
 
         the_same_clusters = 0
 
-        self.__threshold_active = threshold_active
+        self.__threshold_active = activate
         self.__clusters_of_points = []
 
         for point_ind, point in enumerate(self.space):
@@ -299,46 +302,41 @@ class Minicolumn:
             code_mod[non_active_bits[stay_numbers]] = 1
         else:
             code_mod = deepcopy(code)
+
         return np.int8(code_mod)
 
     """
-        Этап обучения без учителя (не написан один тест. см. тесты)
+        Этап обучения без учителя (не написан один тест. см. тесты для выбора максимума)
         
         Делается предсказание для всех переданных кодов и выбирается самый непротиворечивый из них, 
-        либо констатируется, что такого нет.
-        
-        Для каждой активной точки выбирается наиболее подходящий кластер. Его предсказание учитывается в качестве
-        ответа. Для конкретной точки все остальные кластеры учтены не будут.
-        
-        В качестве результата непротиворечивости берём среднее значение по ответам делёное на число активных точек.
-        
-        Замечание: в случае, если кода нет в памяти, то генерируется случайный код. В таком случае,
-                   вызов данной функции будет не воспроизводимым.  
+        либо констатируется, что такого нет. Если существует несколько непротиворечивых кодов, то выбирается тот,
+        который лучше всего подходит под узнанную закономерность. Если же ни один код не является ни противоречивым,
+        ни узнанным, то генерируется случайный выход для наиболее активного кода.
         
         in_codes - входные коды в разных контекстах
-        threshold_controversy_in, threshold_controversy_out - порого противоречивости для кодов
+        controversy_in, controversy_out - порого противоречивости для кодов
         
-        Возвращается оптимальный код, порядковый номер контекста-победителя
+        Возвращаются: (Оптимальный входной код, оптимальный выходной код, порядковый номер контекста-победителя)
     """
-    def unsupervised_learning(self, in_codes, threshold_controversy_in=3, threshold_controversy_out=3):
+    def unsupervised_learning(self, in_codes, controversy_in=3, controversy_out=3):
 
-        CombSpaceExceptions.codes(in_codes, self.count_in_dimensions)
-        CombSpaceExceptions.none(threshold_controversy_in, 'Неопределён аргумент')
-        CombSpaceExceptions.none(threshold_controversy_out, 'Неопределён аргумент')
-        CombSpaceExceptions.less(threshold_controversy_in, 0, 'Недопустимое значение переменной')
-        CombSpaceExceptions.less(threshold_controversy_out, 0, 'Недопустимое значение переменной')
+        CombSpaceExceptions.codes(in_codes, self.in_dimensions)
+        CombSpaceExceptions.none(controversy_in, 'Неопределён аргумент')
+        CombSpaceExceptions.none(controversy_out, 'Неопределён аргумент')
+        CombSpaceExceptions.less(controversy_in, 0, 'Недопустимое значение переменной')
+        CombSpaceExceptions.less(controversy_out, 0, 'Недопустимое значение переменной')
 
         min_hamming = np.inf
         min_ind_hamming = None
         min_out_code = None
-        all_codes_is_zeros = True
+        all_codes_not_active = True
         for index in range(len(in_codes)):
 
             # Не обрабатываются коды из большого кол-ва нулей
-            if np.sum(in_codes[index]) < self.in_non_zero_threshold:
+            if np.sum(in_codes[index]) < self.in_code_activate:
                 continue
 
-            all_codes_is_zeros = False
+            all_codes_not_active = False
 
             # TODO: холодный старт. С чего начинать?
             # TODO: если ни один код не распознан (status всегда принимает значения не равные ACCEPT),
@@ -354,7 +352,7 @@ class Minicolumn:
             # TODO: что если все коды противоречивые? как быть?
             # TODO: на данном этапе такой код не добавляем
             ############
-            if controversy_out >= threshold_controversy_out:
+            if controversy_out >= controversy_out:
                 continue
                 
             # Удаляем или добавляем единицы (если их мало или много)
@@ -367,7 +365,7 @@ class Minicolumn:
             if status is PredictEnum.INACTIVE_POINTS:
                 continue
 
-            if controversy_in >= threshold_controversy_in:
+            if controversy_in >= controversy_in:
                 continue
 
             hamming_dist = Levenshtein.hamming(''.join(map(str, in_code)), ''.join(map(str, in_codes[index])))
@@ -376,7 +374,7 @@ class Minicolumn:
                 min_ind_hamming = index
                 min_out_code = out_code
 
-        if all_codes_is_zeros:
+        if all_codes_not_active:
             return None, None, None
 
         if min_ind_hamming is None:
@@ -392,44 +390,40 @@ class Minicolumn:
                     min_ind_hamming = ind
 
             # Генерируем случайный код
-            min_out_code = self.__code_alignment(np.zeros(self.count_out_dimensions, dtype=np.int))
+            min_out_code = self.__code_alignment(np.zeros(self.out_dimensions, dtype=np.int))
 
         return in_codes[min_ind_hamming], min_out_code, min_ind_hamming
     
     """
-        Этап обучения без учителя (функция не протестирована, так как очень похожа на unsupervised_learning)
+        Этап обучения с учителем (не протестирован)
         
         Делается предсказание для всех переданных кодов и выбирается самый непротиворечивый из них, 
-        либо констатируется, что такого нет.
+        либо констатируется, что такого нет. Если существует несколько непротиворечивых кодов, то выбирается тот,
+        который лучше всего подходит под узнанную закономерность.
         
-        Для каждой активной точки выбирается наиболее подходящий кластер. Его предсказание учитывается в качестве
-        ответа. Для конкретной точки все остальные кластеры учтены не будут.
+        in_codes - входные коды в разных контекстах
+        controversy_in, controversy_out - порого противоречивости для кодов
         
-        В качестве результата непротиворечивости берём среднее значение по ответам делёное на число активных точек.
-        
-        codes - входные коды в разных контекстах
-        threshold_controversy_in, threshold_controversy_out - порого противоречивости для кодов
-        
-        Возвращается минимальный индекс предсказанного кода в смысле хемминга
+        Возвращаются: (Оптимальный входной код, оптимальный выходной код, порядковый номер контекста-победителя)
     """
-    def supervised_learning(self, in_codes, out_codes, threshold_controversy_out=3):
+    def supervised_learning(self, in_codes, out_codes, out_controversy=3):
 
-        CombSpaceExceptions.codes(in_codes, self.count_in_dimensions)
-        CombSpaceExceptions.codes(out_codes, self.count_out_dimensions)
-        CombSpaceExceptions.none(threshold_controversy_out, 'Неопределён аргумент')
-        CombSpaceExceptions.less(threshold_controversy_out, 'Недопустимое значение переменной')
+        CombSpaceExceptions.codes(in_codes, self.in_dimensions)
+        CombSpaceExceptions.codes(out_codes, self.out_dimensions)
+        CombSpaceExceptions.none(out_controversy, 'Неопределён аргумент')
+        CombSpaceExceptions.less(out_controversy, 'Недопустимое значение переменной')
 
         min_hamming = np.inf
         min_ind_hamming = None
-        all_codes_is_zeros = True
+        all_codes_not_active = True
         for index in range(len(in_codes)):
 
             # Не обрабатываются коды из большого кол-ва нулей
-            if np.sum(in_codes[index]) < self.in_non_zero_threshold or \
-                    np.sum(in_codes[index]) < self.out_non_zero_threshold:
+            if np.sum(in_codes[index]) < self.in_code_activate or \
+                    np.sum(in_codes[index]) < self.out_code_activate:
                 continue
 
-            all_codes_is_zeros = False
+            all_codes_not_active = False
 
             # TODO: холодный старт. С чего начинать?
             # TODO: если ни один код не распознан (accept всегда принимает значения не равные ACCEPT),
@@ -445,7 +439,7 @@ class Minicolumn:
             # TODO: что если все коды противоречивые? как быть?
             # TODO: на данном этапе такой код не добавляем
             ############
-            if controversy_out >= threshold_controversy_out:
+            if controversy_out >= out_controversy:
                 continue
             
             hamming_dist = Levenshtein.hamming(''.join(map(str, out_code)), ''.join(map(str, out_codes[index])))
@@ -453,7 +447,7 @@ class Minicolumn:
                 min_hamming = hamming_dist
                 min_ind_hamming = index
 
-        if all_codes_is_zeros:
+        if all_codes_not_active:
             return None, None, None
 
         # Если ни один код не определился, то берём самый первый
@@ -484,25 +478,24 @@ class Minicolumn:
         Возвращается количество точек, которые оказались неактивными; количество модификаций кластеров;
         количество новых кластеров
     """
-    def learn(self, in_codes, step_number, out_codes=None, threshold_controversy_in=20, threshold_controversy_out=6):
+    def learn(self, in_codes, step_number, out_codes=None, in_controversy=20, out_controversy=6):
 
         if self.is_sleep():
             return None, None, LearnEnum.SLEEP
 
         if out_codes is not None:
             in_code, out_code, opt_ind = self.supervised_learning(
-                in_codes, out_codes, threshold_controversy_out
+                in_codes, out_codes, out_controversy
             )
         else:
             in_code, out_code, opt_ind = self.unsupervised_learning(
-                in_codes, threshold_controversy_in, threshold_controversy_out
+                in_codes, in_controversy, out_controversy
             )
 
         if opt_ind is not None:
             return opt_ind, out_code, LearnEnum.BAD_CODES
 
         for ind, point in enumerate(self.space):
-            new_cluster = point.add(in_code, out_code, step_number)
-            self.count_clusters += new_cluster
+            self.count_clusters += point.add(in_code, out_code, step_number)
 
         return opt_ind, out_code, LearnEnum.LEARN

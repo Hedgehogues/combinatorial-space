@@ -82,42 +82,44 @@ class Point:
 
         self.statistics = []
 
-    def __predict(self, code, type_code, count_dimensions_0, count_demensions_1, coords_0, coords_1,
-                  threshold_activate, is_front):
+    def __select_predict_function(self, cluster, sub_code, is_front):
+        if is_front:
+            return cluster.predict_front(sub_code)
+        else:
+            return cluster.predict_back(sub_code)
+
+    def __predict(self, code, type_code, count_dimensions_0, count_dimensions_1, coords_0, coords_1,
+                  point_activate, is_front):
         CombSpaceExceptions.none(code, "Не определён аргумент")
         CombSpaceExceptions.eq(len(code), count_dimensions_0, "Не совпадает размерность")
         CombSpaceExceptions.type_code(type_code)
         CombSpaceExceptions.code_value(code)
+        CombSpaceExceptions.is_type(code, list)
 
         if len(self.clusters) == 0:
             return None, PointPredictAnswer.NO_CLUSTERS
 
-        x = np.array(code)[coords_0]
-        is_active = np.sum(x) >= threshold_activate
+        sub_code = np.array(code)[coords_0]
         opt_dot = -np.inf
-        opt_code = None
-        if is_active:
+        opt_sub_code = None
+        if np.sum(sub_code) >= point_activate:
             for cluster in self.clusters:
-                if is_front:
-                    dot, pred_x, status = cluster.predict_front(x)
-                else:
-                    dot, pred_x, status = cluster.predict_back(x)
+                dot, predicted_sub_code, status = self.__select_predict_function(cluster, sub_code, is_front)
 
                 if status == ClusterAnswer.ACTIVE and dot > opt_dot:
                     CombSpaceExceptions.less(dot, 0, "Отрицательное значение скалярного произведения")
                     CombSpaceExceptions.none(dot, "Скалярное произведение None")
-                    CombSpaceExceptions.none(pred_x, "Предсказанный вектор None")
+                    CombSpaceExceptions.none(predicted_sub_code, "Предсказанный вектор None")
 
                     opt_dot = dot
-                    opt_code = np.zeros(count_demensions_1, dtype=np.int)
+                    opt_sub_code = np.zeros(count_dimensions_1, dtype=np.int)
                     if type_code == -1:
-                        pred_x[pred_x == 0] = -1
-                    opt_code[coords_1] = pred_x
+                        predicted_sub_code[predicted_sub_code == 0] = -1
+                    opt_sub_code[coords_1] = predicted_sub_code
 
-        if opt_code is None:
+        if opt_sub_code is None:
             return None, PointPredictAnswer.NOT_ACTIVE
-        else:
-            return opt_code, PointPredictAnswer.ACTIVE
+        return opt_sub_code, PointPredictAnswer.ACTIVE
 
     """
         Осуществление выбора оптимального кластера при прямом предсказании 
@@ -175,6 +177,8 @@ class Point:
         CombSpaceExceptions.eq(len(in_code), self.in_dimensions, "Не совпадает размерность")
         CombSpaceExceptions.code_value(out_code)
         CombSpaceExceptions.code_value(in_code)
+        CombSpaceExceptions.is_type(in_code, list)
+        CombSpaceExceptions.is_type(out_code, list)
 
         if len(self.clusters) < self.max_clusters_per_point:
 
