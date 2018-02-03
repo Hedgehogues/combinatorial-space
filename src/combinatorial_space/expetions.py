@@ -34,8 +34,8 @@ class CombSpaceExceptions:
         assert obj_len != target_len, msg
 
     @staticmethod
-    def is_type(variable, type, msg="Неверное значение type_code"):
-        if type(variable) is not type:
+    def is_type(variable, type_, msg="Неверный тип"):
+        if type(variable) is not type_:
             raise TypeError(msg)
 
     @staticmethod

@@ -7,51 +7,49 @@ from src.combinatorial_space.cluster import Cluster, ClusterAnswer
 
 class TestCluster__init__(unittest.TestCase):
 
-    def test_base_lr_less_0(self):
+    def test_lr_less_0(self):
         n, m = 5, 3
-        self.assertRaises(ValueError, Cluster,
-            base_in=np.array([0.1] * n + [0.2] * n),
-            base_out=np.array([0.3] * m + [0.4] * m),
-            base_lr=-0.5
-        )
+        values = [-0.5, None]
+        for value in values:
+            self.assertRaises(
+                ValueError, Cluster,
+                in_sub_code=np.array([0.1] * n + [0.2] * n),
+                out_sub_code=np.array([0.3] * m + [0.4] * m),
+                lr=value
+            )
 
-    def test_threshold_bin_less_0(self):
+    def test_binarization_less_0(self):
         n, m = 5, 3
-        self.assertRaises(ValueError, Cluster,
-            base_in=np.array([0.1] * n + [0.2] * n),
-            base_out=np.array([0.3] * m + [0.4] * m),
-            threshold_bin=-0.25
-        )
+        values = [-0.25, None]
+        for value in values:
+            self.assertRaises(
+                ValueError, Cluster,
+                in_sub_code=np.array([0.1] * n + [0.2] * n),
+                out_sub_code=np.array([0.3] * m + [0.4] * m),
+                binarization=value
+            )
 
-    def test_in_threshold_modify_less_0(self):
+    def test_in_cluster_modify_less_0(self):
         n, m = 5, 3
-        self.assertRaises(ValueError, Cluster,
-                base_in=np.array([0.1] * n + [0.2] * n),
-                base_out=np.array([0.3] * m + [0.4] * m),
-                in_threshold_modify=-0.1
-        )
+        values = [-0.25, None]
+        for value in values:
+            self.assertRaises(
+                ValueError, Cluster,
+                in_sub_code=np.array([0.1] * n + [0.2] * n),
+                out_sub_code=np.array([0.3] * m + [0.4] * m),
+                in_cluster_modify=value
+            )
 
-    def test_out_threshold_modify_less_0(self):
+    def test_out_cluster_modify_less_0(self):
         n, m = 5, 3
-        self.assertRaises(ValueError, Cluster,
-                base_in=np.array([0.1] * n + [0.2] * n),
-                base_out=np.array([0.3] * m + [0.4] * m),
-                out_threshold_modify=-0.1
-        )
-
-    def test_base_in_less_0(self):
-        n, m = 5, 3
-        self.assertRaises(ValueError, Cluster,
-                base_in=np.array([-0.1] * n + [0.2] * n),
-                base_out=np.array([0.3] * m + [0.4] * m)
-        )
-
-    def test_base_out_less_0(self):
-        n, m = 5, 3
-        self.assertRaises(ValueError, Cluster,
-                base_in=np.array([0.1] * n + [0.2] * n),
-                base_out=np.array([-0.3] * m + [0.4] * m)
-        )
+        values = [-0.25, None]
+        for value in values:
+            self.assertRaises(
+                ValueError, Cluster,
+                in_sub_code=np.array([0.1] * n + [0.2] * n),
+                out_sub_code=np.array([0.3] * m + [0.4] * m),
+                out_cluster_modify=value
+            )
 
 
 class TestClusterBase(unittest.TestCase):
@@ -69,7 +67,7 @@ class TestClusterBase(unittest.TestCase):
             in_sub_code=np.array([0.2] * n + [0] * n),
             out_sub_code=np.array([0.05] * m + [0] * m),
             in_cluster_modify=0.1, out_cluster_modify=0.1,
-            binarization=0.1,
+            binarization=0.005,
             lr=0.5,
             is_modify_lr=True
         )
@@ -77,7 +75,7 @@ class TestClusterBase(unittest.TestCase):
             in_sub_code=np.array([0.1] * n + [0.2] * n),
             out_sub_code=np.array([0.3] * m + [0.4] * m),
             in_cluster_modify=0.1, out_cluster_modify=0.1,
-            binarization=0.25,
+            binarization=0,
             lr=0.5,
             is_modify_lr=False
         )
@@ -136,7 +134,7 @@ class TestClusterException(TestClusterBase):
 
 
 class TestClusterPredict(TestClusterBase):
-    def test_front_not_threshold_modify(self):
+    def test_front_0(self):
         code = [1] * 1 + [0] * 9
         dot, out_sub_code, status = self.base_cluster_a.predict_front(code)
         self.assertEqual(status, ClusterAnswer.NOT_ACTIVE)
@@ -144,7 +142,7 @@ class TestClusterPredict(TestClusterBase):
         self.assertEqual(dot, None)
         self.assertIsNone(out_sub_code)
 
-    def test_back_not_threshold_modify(self):
+    def test_back_0(self):
         code = [1] * 1 + [0] * 5
         dot, in_sub_code, status = self.base_cluster_a.predict_back(code)
         self.assertEqual(status, ClusterAnswer.NOT_ACTIVE)
@@ -152,15 +150,15 @@ class TestClusterPredict(TestClusterBase):
         self.assertEqual(dot, None)
         self.assertIsNone(in_sub_code)
 
-    def test_front_modify_not_more_threshold_bin(self):
+    def test_front_1(self):
         code = [1] * 1 + [0] * 9
         dot, out_sub_code, status = self.base_cluster_b.predict_front(code)
         self.assertEqual(status, ClusterAnswer.ACTIVE)
         self.assertEqual([1] * 1 + [0] * 9, code)
         self.assertAlmostEqual(dot, 0.2, places=5)
-        np.testing.assert_array_equal(out_sub_code, [0] * 6)
+        np.testing.assert_array_equal(out_sub_code, [1] * 3 + [0] * 3)
 
-    def test_back_modify_not_more_threshold_bin(self):
+    def test_back_1(self):
         code = [1] * 1 + [0] * 5
         dot, in_sub_code, status = self.base_cluster_d.predict_back(code)
         self.assertEqual(status, ClusterAnswer.ACTIVE)
@@ -168,7 +166,7 @@ class TestClusterPredict(TestClusterBase):
         self.assertAlmostEqual(dot, 0.2, places=5)
         np.testing.assert_array_equal(in_sub_code, [1] * 5 + [0] * 5)
 
-    def test_front_modify_more_threshold_bin(self):
+    def test_front_2(self):
         code = [0] * 1 + [1] * 9
         dot, out_sub_code, status = self.base_cluster_c.predict_front(code)
         self.assertEqual(status, ClusterAnswer.ACTIVE)
@@ -176,7 +174,7 @@ class TestClusterPredict(TestClusterBase):
         self.assertAlmostEqual(dot, 1.4, places=5)
         np.testing.assert_array_equal(out_sub_code, [1] * 6)
 
-    def test_back_modify_more_threshold_bin(self):
+    def test_back_2(self):
         code = [0] * 1 + [1] * 5
         dot, in_sub_code, status = self.base_cluster_e.predict_back(code)
         self.assertEqual(status, ClusterAnswer.ACTIVE)
@@ -186,13 +184,13 @@ class TestClusterPredict(TestClusterBase):
 
 
 class TestClusterModify(TestClusterBase):
-    def test_modify_not_threshold_modify(self):
+    def test_0(self):
         in_x = [1] * 1 + [0] * 9
         out_x = [1] * 1 + [0] * 5
         is_modify = self.base_cluster_a.modify(in_x, out_x)
         self.assertEqual([1] * 1 + [0] * 9, in_x)
         self.assertEqual([1] * 1 + [0] * 5, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.NOT_ACTIVE)
+        self.assertEqual(is_modify, ClusterAnswer.NOT_MODIFY)
         self.assertEqual(self.base_cluster_a.count_modify, 0)
         np.testing.assert_array_almost_equal(
             self.base_cluster_a.in_w,
@@ -205,13 +203,13 @@ class TestClusterModify(TestClusterBase):
             decimal=5
         )
 
-    def test_modify_false_in_true_out_threshold_modify(self):
+    def test_1(self):
         in_x = [0] * 9 + [1] * 1
         out_x = [1] * 5 + [0] * 1
         is_modify = self.base_cluster_b.modify(in_x, out_x)
         self.assertEqual([0] * 9 + [1] * 1, in_x)
         self.assertEqual([1] * 5 + [0] * 1, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.NOT_ACTIVE)
+        self.assertEqual(is_modify, ClusterAnswer.NOT_MODIFY)
         self.assertEqual(self.base_cluster_b.count_modify, 0)
         np.testing.assert_array_almost_equal(
             self.base_cluster_b.in_w,
@@ -224,13 +222,13 @@ class TestClusterModify(TestClusterBase):
             decimal=5
         )
 
-    def test_modify_true_in_false_out_threshold_modify(self):
+    def test_2(self):
         in_x = [1] * 9 + [0] * 1
         out_x = [0] * 5 + [1] * 1
         is_modify = self.base_cluster_b.modify(in_x, out_x)
         self.assertEqual([1] * 9 + [0] * 1, in_x)
         self.assertEqual([0] * 5 + [1] * 1, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.NOT_ACTIVE)
+        self.assertEqual(is_modify, ClusterAnswer.NOT_MODIFY)
         self.assertEqual(self.base_cluster_b.count_modify, 0)
         np.testing.assert_array_almost_equal(
             self.base_cluster_b.in_w,
@@ -243,13 +241,13 @@ class TestClusterModify(TestClusterBase):
             decimal=5
         )
 
-    def test_modify_threshold_modify_true_modify_lr(self):
+    def test_3(self):
         in_x = [1] * 9 + [0] * 1
         out_x = [1] * 5 + [0] * 1
         is_modify = self.base_cluster_b.modify(in_x, out_x)
         self.assertEqual([1] * 9 + [0] * 1, in_x)
         self.assertEqual([1] * 5 + [0] * 1, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.ACTIVE)
+        self.assertEqual(is_modify, ClusterAnswer.MODIFY)
         self.assertEqual(self.base_cluster_b.count_modify, 1)
         np.testing.assert_array_almost_equal(
             self.base_cluster_b.in_w,
@@ -263,13 +261,13 @@ class TestClusterModify(TestClusterBase):
             decimal=5
         )
 
-    def test_modify_threshold_modify_false_modify_lr(self):
+    def test_4(self):
         in_x = [1] * 9 + [0] * 1
         out_x = [1] * 5 + [0] * 1
         is_modify = self.base_cluster_c.modify(in_x, out_x)
         self.assertEqual([1] * 9 + [0] * 1, in_x)
         self.assertEqual([1] * 5 + [0] * 1, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.ACTIVE)
+        self.assertEqual(is_modify, ClusterAnswer.MODIFY)
         self.assertEqual(self.base_cluster_c.count_modify, 1)
         np.testing.assert_array_almost_equal(
             self.base_cluster_c.in_w,

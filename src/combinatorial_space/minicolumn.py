@@ -150,7 +150,6 @@ class Minicolumn:
         CombSpaceExceptions.none(code, 'Не определён входной аргумент')
         CombSpaceExceptions.eq(len(code), dimensions_0, 'Не совпадает размерность')
         CombSpaceExceptions.code_value(code)
-        CombSpaceExceptions.is_type(code, list)
 
         total_sub_code = np.zeros(dimensions_1, dtype=np.int)
         count = np.zeros(dimensions_1, dtype=np.int)

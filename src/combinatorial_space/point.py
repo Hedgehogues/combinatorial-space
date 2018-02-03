@@ -94,7 +94,6 @@ class Point:
         CombSpaceExceptions.eq(len(code), count_dimensions_0, "Не совпадает размерность")
         CombSpaceExceptions.type_code(type_code)
         CombSpaceExceptions.code_value(code)
-        CombSpaceExceptions.is_type(code, list)
 
         if len(self.clusters) == 0:
             return None, PointPredictAnswer.NO_CLUSTERS
@@ -177,8 +176,6 @@ class Point:
         CombSpaceExceptions.eq(len(in_code), self.in_dimensions, "Не совпадает размерность")
         CombSpaceExceptions.code_value(out_code)
         CombSpaceExceptions.code_value(in_code)
-        CombSpaceExceptions.is_type(in_code, list)
-        CombSpaceExceptions.is_type(out_code, list)
 
         if len(self.clusters) < self.max_clusters_per_point:
 
