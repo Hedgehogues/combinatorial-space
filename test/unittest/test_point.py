@@ -10,21 +10,21 @@ class TestPoint__init__(unittest.TestCase):
     def test_cluster_class(self):
         self.assertRaises(ValueError, Point, cluster_class=None)
 
-    def test_threshold_modify(self):
-        self.assertRaises(ValueError, Point, in_threshold_modify=-1)
-        self.assertRaises(ValueError, Point, out_threshold_modify=-1)
-        self.assertRaises(ValueError, Point, in_threshold_modify=None)
-        self.assertRaises(ValueError, Point, out_threshold_modify=None)
+    def test_cluster_modify(self):
+        self.assertRaises(ValueError, Point, in_cluster_modify=-1)
+        self.assertRaises(ValueError, Point, out_cluster_modify=-1)
+        self.assertRaises(ValueError, Point, in_cluster_modify=None)
+        self.assertRaises(ValueError, Point, out_cluster_modify=None)
 
-    def test_threshold_activate(self):
-        self.assertRaises(ValueError, Point, in_threshold_activate=-1)
-        self.assertRaises(ValueError, Point, out_threshold_activate=-1)
-        self.assertRaises(ValueError, Point, in_threshold_activate=None)
-        self.assertRaises(ValueError, Point, out_threshold_activate=None)
+    def test_point_activate(self):
+        self.assertRaises(ValueError, Point, in_point_activate=-1)
+        self.assertRaises(ValueError, Point, out_point_activate=-1)
+        self.assertRaises(ValueError, Point, in_point_activate=None)
+        self.assertRaises(ValueError, Point, out_point_activate=None)
 
-    def test_threshold_bin(self):
-        self.assertRaises(ValueError, Point, threshold_bin=-1)
-        self.assertRaises(ValueError, Point, threshold_bin=None)
+    def test_binarization(self):
+        self.assertRaises(ValueError, Point, binarization=-1)
+        self.assertRaises(ValueError, Point, binarization=None)
 
     def test_in_out_size(self):
         self.assertRaises(ValueError, Point, in_random_bits=-1)
@@ -32,15 +32,15 @@ class TestPoint__init__(unittest.TestCase):
         self.assertRaises(ValueError, Point, in_random_bits=None)
         self.assertRaises(ValueError, Point, out_random_bits=None)
 
-    def test_count_demensions(self):
-        self.assertRaises(ValueError, Point, count_out_demensions=-4)
-        self.assertRaises(ValueError, Point, count_in_demensions=-4)
-        self.assertRaises(ValueError, Point, count_out_demensions=None)
-        self.assertRaises(ValueError, Point, count_in_demensions=None)
+    def test_demensions(self):
+        self.assertRaises(ValueError, Point, out_demensions=-4)
+        self.assertRaises(ValueError, Point, in_demensions=-4)
+        self.assertRaises(ValueError, Point, out_demensions=None)
+        self.assertRaises(ValueError, Point, in_demensions=None)
 
-    def test_base_lr(self):
-        self.assertRaises(ValueError, Point, base_lr=-1)
-        self.assertRaises(ValueError, Point, base_lr=None)
+    def test_lr(self):
+        self.assertRaises(ValueError, Point, lr=-1)
+        self.assertRaises(ValueError, Point, lr=None)
 
     def test_max_cluster_per_point(self):
         self.assertRaises(ValueError, Point, max_cluster_per_point=None)
