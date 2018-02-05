@@ -1,17 +1,9 @@
-from enum import Enum
-
 import numpy as np
 
+from src.combinatorial_space.enums import ClusterAnswer
 from src.combinatorial_space.expetions import CombSpaceExceptions
 
 np.warnings.filterwarnings('ignore')
-
-
-class ClusterAnswer(Enum):
-    ACTIVE = 1
-    NOT_ACTIVE = 0
-    MODIFY = 2
-    NOT_MODIFY = 3
 
 
 class Cluster:

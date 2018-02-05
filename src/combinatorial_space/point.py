@@ -1,15 +1,8 @@
-from enum import Enum
-
 import numpy as np
 
-from src.combinatorial_space.cluster import Cluster, ClusterAnswer
+from src.combinatorial_space.cluster import Cluster
+from src.combinatorial_space.enums import PointPredictAnswer, ClusterAnswer
 from src.combinatorial_space.expetions import CombSpaceExceptions
-
-
-class PointPredictAnswer(Enum):
-    NOT_ACTIVE = 0
-    ACTIVE = 1
-    NO_CLUSTERS = 2
 
 
 class Point:
@@ -51,6 +44,7 @@ class Point:
         CombSpaceExceptions.none(max_clusters_per_point)
         CombSpaceExceptions.none(in_dimensions)
         CombSpaceExceptions.none(out_dimensions)
+        CombSpaceExceptions.none(cluster_class)
 
         CombSpaceExceptions.less(max_clusters_per_point, 0)
         CombSpaceExceptions.less(out_random_bits, 0)
@@ -62,6 +56,7 @@ class Point:
         CombSpaceExceptions.less(in_dimensions, 0)
         CombSpaceExceptions.less(out_dimensions, 0)
         CombSpaceExceptions.less(binarization, 0)
+        CombSpaceExceptions.less(lr, 0)
 
         CombSpaceExceptions.is_type(is_modify_lr, bool)
 

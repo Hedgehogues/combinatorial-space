@@ -1,12 +1,13 @@
 import numpy as np
 
+
 class ClusterMock0None:
     def __init__(self,
-                 base_in, base_out,
-                 in_threshold_modify, out_threshold_modify,
-                 threshold_bin,
-                 base_lr,
-                 is_modify_lr):
+                 base_in=None, base_out=None,
+                 in_threshold_modify=None, out_threshold_modify=None,
+                 threshold_bin=None,
+                 base_lr=None,
+                 is_modify_lr=None):
         pass
 
     def predict_front(self, in_x):
@@ -88,7 +89,7 @@ class ClusterMockGetDotCustomBase:
         self.base_out = base_out
 
     def predict_front(self, in_x):
-        return np.dot(self.base_in, in_x), self.base_out
+        return np.dot(self.base_in, in_x), self.base_out,
 
     def predict_back(self, out_x):
         return np.dot(self.base_in, out_x), self.base_in

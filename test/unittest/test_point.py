@@ -2,8 +2,9 @@
 
 import unittest
 import numpy as np
-from src.combinatorial_space.point import Point
+from src.combinatorial_space.point import Point, PointPredictAnswer
 from test.unittest import cluster_mock
+from test.unittest.cluster_mock import ClusterMock0None
 
 
 class TestPoint__init__(unittest.TestCase):
@@ -32,23 +33,23 @@ class TestPoint__init__(unittest.TestCase):
         self.assertRaises(ValueError, Point, in_random_bits=None)
         self.assertRaises(ValueError, Point, out_random_bits=None)
 
-    def test_demensions(self):
-        self.assertRaises(ValueError, Point, out_demensions=-4)
-        self.assertRaises(ValueError, Point, in_demensions=-4)
-        self.assertRaises(ValueError, Point, out_demensions=None)
-        self.assertRaises(ValueError, Point, in_demensions=None)
+    def test_dimensions(self):
+        self.assertRaises(ValueError, Point, out_dimensions=-4)
+        self.assertRaises(ValueError, Point, in_dimensions=-4)
+        self.assertRaises(ValueError, Point, out_dimensions=None)
+        self.assertRaises(ValueError, Point, in_dimensions=None)
 
     def test_lr(self):
         self.assertRaises(ValueError, Point, lr=-1)
         self.assertRaises(ValueError, Point, lr=None)
 
     def test_max_cluster_per_point(self):
-        self.assertRaises(ValueError, Point, max_cluster_per_point=None)
-        self.assertRaises(ValueError, Point, max_cluster_per_point=-1)
+        self.assertRaises(ValueError, Point, max_clusters_per_point=None)
+        self.assertRaises(ValueError, Point, max_clusters_per_point=-1)
 
     def test_is_modify_lr(self):
         self.assertRaises(ValueError, Point, is_modify_lr=None)
-        self.assertRaises(ValueError, Point, is_modify_lr=0)
+        self.assertRaises(TypeError, Point, is_modify_lr=0)
 
 
 class TestPointBase(unittest.TestCase):
@@ -66,7 +67,7 @@ class TestPointBase(unittest.TestCase):
 
         self.base_point_b = Point(
             in_cluster_modify=1, out_cluster_modify=1,
-            in_point_activate=0, out_point_activate=0,
+            in_point_activate=2, out_point_activate=2,
             binarization=1,
             in_random_bits=1, out_random_bits=1,
             in_dimensions=1, out_dimensions=1,
@@ -173,22 +174,6 @@ class TestPointException(TestPointBase):
     def test_back_not_activate(self):
         self.assertRaises(AssertionError, self.base_point_a.predict_back, [-1] * 1 + [0] * 9)
 
-    def test_back_dot_less_0(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMockMinusNone(0, 0, 0, 0, 0, 0, 0))
-        self.assertRaises(ValueError, self.base_point_b.predict_back, [1])
-
-    def test_front_dot_less_0(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMockMinusNone(0, 0, 0, 0, 0, 0, 0))
-        self.assertRaises(ValueError, self.base_point_b.predict_front, [1])
-
-    def test_back_dot_more_0_out_is_none(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
-        self.assertRaises(ValueError, self.base_point_b.predict_back, [1])
-
-    def test_front_dot_more_0_out_is_none(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
-        self.assertRaises(ValueError, self.base_point_b.predict_front, [1])
-
     def test_front_none(self):
         self.base_point_b.clusters.append(cluster_mock.ClusterMock1None(0, 0, 0, 0, 0, 0, 0))
         self.assertRaises(ValueError, self.base_point_b.predict_front, None)
@@ -201,26 +186,33 @@ class TestPointException(TestPointBase):
 class TestPointPredict(TestPointBase):
     def test_back_not_active(self):
         code = [1]
-        opt_in_code = self.base_point_a.predict_back(code)
+        opt_in_code, status = self.base_point_a.predict_back(code)
         self.assertEqual([1], code)
         self.assertIsNone(opt_in_code)
+        self.assertEqual(status, PointPredictAnswer.NO_CLUSTERS)
 
     def test_front_not_active(self):
         code = [1]
-        opt_in_code = self.base_point_a.predict_front(code)
+        opt_in_code, status = self.base_point_a.predict_front(code)
         self.assertEqual([1], code)
         self.assertIsNone(opt_in_code)
+        self.assertEqual(status, PointPredictAnswer.NO_CLUSTERS)
 
     def test_back_active_empty_cluster(self):
-        code = [1]
-        opt_in_code = self.base_point_b.predict_back(code)
+        code = [0]
+        self.base_point_b.clusters.append(ClusterMock0None())
+        opt_in_code, status = self.base_point_b.predict_back(code)
+        self.assertEqual([0], code)
         self.assertIsNone(opt_in_code)
+        self.assertEqual(status, PointPredictAnswer.NOT_ACTIVE)
 
     def test_front_active_empty_cluster(self):
-        code = [1]
-        opt_in_code = self.base_point_b.predict_front([1])
-        self.assertEqual([1], code)
+        code = [0]
+        self.base_point_b.clusters.append(ClusterMock0None())
+        opt_in_code, status = self.base_point_b.predict_front(code)
+        self.assertEqual([0], code)
         self.assertIsNone(opt_in_code)
+        self.assertEqual(status, PointPredictAnswer.NOT_ACTIVE)
 
     def test_back_1_cluster_type_code_0(self):
         self.base_point_c.clusters.append(
@@ -354,7 +346,7 @@ class TestPointPredict(TestPointBase):
             target[base_point_d.out_coords] = np.array([1, 1, 1, -1])[base_point_d.out_coords]
             np.testing.assert_array_equal(target, opt_out_code)
 
-    def test_back_get_max_dot_for_opt(self):
+    def test_back_max_dot(self):
         self.base_point_c.clusters = [
             cluster_mock.ClusterMockGetDotCustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0),
@@ -371,7 +363,7 @@ class TestPointPredict(TestPointBase):
         target = np.array([1, 1, 1, 1])
         np.testing.assert_array_equal(target, opt_in_code)
 
-    def test_front_get_max_dot_for_opt(self):
+    def test_front_max_dot(self):
         self.base_point_c.clusters = [
             cluster_mock.ClusterMockGetDotCustomBase(
                 np.array([1, 1, 0, 0]), np.array([1, 1, 0, 0]), 0, 0, 0, 0, 0),
