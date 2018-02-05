@@ -5,7 +5,7 @@ import numpy as np
 from src.combinatorial_space.cluster import Cluster, ClusterAnswer
 
 
-class TestCluster__init__(unittest.TestCase):
+class TestClusterConstructor(unittest.TestCase):
 
     def test_lr_less_0(self):
         n, m = 5, 3

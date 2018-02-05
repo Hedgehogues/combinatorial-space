@@ -185,17 +185,17 @@ class Point:
 
                 for cluster_id, cluster in enumerate(self.clusters):
                     if cluster.modify(in_x, out_x) is ClusterAnswer.MODIFY:
-                        tmp = self.statistics[cluster_id]
-                        tmp.append(step_number)
-                        self.statistics[cluster_id] = tmp
+                        # tmp = self.statistics[cluster_id]
+                        # tmp.append(step_number)
+                        # self.statistics[cluster_id] = tmp
                         is_modify_cluster = True
-                    else:
-                        tmp = self.statistics[cluster_id]
-                        tmp.append(-1)
-                        self.statistics[cluster_id] = tmp
+                    # else:
+                    #     tmp = self.statistics[cluster_id]
+                    #     tmp.append(-1)
+                    #     self.statistics[cluster_id] = tmp
 
                 if not is_modify_cluster:
-                    self.statistics.append([step_number])
+                    # self.statistics.append([step_number])
                     self.clusters.append(
                         self.cluster_class(
                             in_sub_code=in_x, out_sub_code=out_x,

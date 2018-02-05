@@ -1,111 +1,94 @@
 import numpy as np
 
+from src.combinatorial_space.enums import ClusterAnswer
 
-class ClusterMock0None:
+
+class ClusterMockNoneNotActive:
     def __init__(self,
-                 base_in=None, base_out=None,
-                 in_threshold_modify=None, out_threshold_modify=None,
-                 threshold_bin=None,
-                 base_lr=None,
+                 in_sub_code=None, out_sub_code=None,
+                 in_cluster_modify=None, out_cluster_modify=None,
+                 binarization=None,
+                 lr=None,
                  is_modify_lr=None):
         pass
 
     def predict_front(self, in_x):
-        return 0, None
+        return 0, None, ClusterAnswer.NOT_ACTIVE
 
     def predict_back(self, out_x):
-        return 0, None
+        return 0, None, ClusterAnswer.NOT_ACTIVE
 
     def modify(self, in_x, out_x):
-        return 0
-
-
-class ClusterMockMinusNone:
-    def __init__(self,
-                 base_in, base_out,
-                 in_threshold_modify, out_threshold_modify,
-                 threshold_bin,
-                 base_lr,
-                 is_modify_lr):
         pass
-
-    def predict_front(self, in_x):
-        return -1, None
-
-    def predict_back(self, out_x):
-        return -1, None
-
-    def modify(self, in_x, out_x):
-        return -1
 
 
 class ClusterMock1None:
     def __init__(self,
-                 base_in, base_out,
-                 in_threshold_modify, out_threshold_modify,
-                 threshold_bin,
-                 base_lr,
-                 is_modify_lr):
+                 in_sub_code=None, out_sub_code=None,
+                 in_cluster_modify=None, out_cluster_modify=None,
+                 binarization=None,
+                 lr=None,
+                 is_modify_lr=None):
         pass
 
     def predict_front(self, in_x):
-        return 1, None
+        pass
 
     def predict_back(self, out_x):
-        return 1, None
+        pass
 
     def modify(self, in_x, out_x):
-        return 1
+        return ClusterAnswer.MODIFY
 
 
-class ClusterMock1CustomBase:
+class ClusterMockCustom:
     def __init__(self,
-                 base_in, base_out,
-                 in_threshold_modify, out_threshold_modify,
-                 threshold_bin,
-                 base_lr,
-                 is_modify_lr):
-        self.base_in = base_in
-        self.base_out = base_out
+                 in_sub_code=None, out_sub_code=None,
+                 in_cluster_modify=None, out_cluster_modify=None,
+                 binarization=None,
+                 lr=None,
+                 is_modify_lr=None):
+        self.in_sub_code = in_sub_code
+        self.out_sub_code = out_sub_code
 
     def predict_front(self, in_x):
-        return 1, self.base_out
+        return 1, self.out_sub_code, ClusterAnswer.ACTIVE
 
     def predict_back(self, out_x):
-        return 1, self.base_in
+        return 1, self.in_sub_code, ClusterAnswer.ACTIVE
 
     def modify(self, in_x, out_x):
-        return 1
+        return ClusterAnswer.MODIFY
 
 
-class ClusterMockGetDotCustomBase:
+class ClusterMockCustomDot:
     def __init__(self,
-                 base_in, base_out,
-                 in_threshold_modify, out_threshold_modify,
-                 threshold_bin,
-                 base_lr,
-                 is_modify_lr):
-        self.base_in = base_in
-        self.base_out = base_out
+                 in_sub_code=None, out_sub_code=None,
+                 in_cluster_modify=None, out_cluster_modify=None,
+                 binarization=None,
+                 lr=None,
+                 is_modify_lr=None):
+        self.in_sub_code = in_sub_code
+        self.out_sub_code = out_sub_code
 
     def predict_front(self, in_x):
-        return np.dot(self.base_in, in_x), self.base_out,
+        return np.dot(self.in_sub_code, in_x), self.out_sub_code, ClusterAnswer.ACTIVE
 
     def predict_back(self, out_x):
-        return np.dot(self.base_in, out_x), self.base_in
+        return np.dot(self.in_sub_code, out_x), self.in_sub_code, ClusterAnswer.ACTIVE
 
     def modify(self, in_x, out_x):
-        return 1
+        return ClusterAnswer.MODIFY
 
 
-class ClusterMockForPointWeight:
+class ClusterMockWeight:
     def __init__(self,
-                 base_in, base_out,
-                 in_threshold_modify=5, out_threshold_modify=0,
-                 threshold_bin=0.1,
-                 base_lr=0.01,
+                 in_sub_code, out_sub_code,
+                 in_cluster_modify=5, out_cluster_modify=0,
+                 binarization=0.1,
+                 lr=0.01,
                  is_modify_lr=True):
-        self.in_w, self.out_w = base_in, base_out
+        self.in_w, self.out_w = in_sub_code, out_sub_code
 
     def predict_front(self, in_x):
         return self.in_w

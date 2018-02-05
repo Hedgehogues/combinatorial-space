@@ -3,7 +3,7 @@
 import unittest
 import numpy as np
 from src.combinatorial_space.minicolumn import Minicolumn, PredictEnum
-from test.unittest.cluster_mock import ClusterMockForPointWeight
+from test.unittest.cluster_mock import ClusterMockWeight
 from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMockInOutCode, PointMockZeros, \
     PointMockDoubleIdentical, PointMockCodeAligment, PointMockControversyIn, PointMockAssertDem2
 
@@ -311,7 +311,7 @@ class TestPointSleep(unittest.TestCase):
         self.minicolumn_activate.count_clusters = 5 * 5
         for point in self.minicolumn_activate.space:
             for _ in range(5):
-                point.clusters.append(ClusterMockForPointWeight(in_vec, out_vec))
+                point.clusters.append(ClusterMockWeight(in_vec, out_vec))
 
     def test_active_out_mask_less_threshold(self):
         self.__init_active_mask_less_threshold(np.array([0, 0, 0, 0, 0]), np.array([1, 1, 1, 1, 1]))
@@ -348,7 +348,7 @@ class TestPointSleep(unittest.TestCase):
         self.minicolumn_activate.count_clusters = 5 * 5
         for point in self.minicolumn_activate.space:
             for i in range(5):
-                point.clusters.append(ClusterMockForPointWeight(
+                point.clusters.append(ClusterMockWeight(
                     np.array([1] * i + [0] * (5 - i)),
                     np.array([1] * i + [0] * (5 - i))
                 ))
