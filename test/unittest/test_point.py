@@ -106,7 +106,7 @@ class TestPointBase(unittest.TestCase):
             in_dimensions=3, out_dimensions=3,
             lr=0, is_modify_lr=True,
             max_clusters_per_point=5,
-            cluster_class=cluster_mock.ClusterMock1None
+            cluster_class=cluster_mock.ClusterMockNone
         )
 
         self.base_point_f = Point(
@@ -153,11 +153,11 @@ class TestPointException(TestPointBase):
         self.assertRaises(AssertionError, self.base_point_a.predict_back, [-1] * 1 + [0] * 9)
 
     def test_front_none(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
         self.assertRaises(ValueError, self.base_point_b.predict_front, None)
 
     def test_back_none(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
         self.assertRaises(ValueError, self.base_point_b.predict_back, None)
 
 
@@ -328,35 +328,35 @@ class TestPointPredict(TestPointBase):
 class TestPointAddExceptions(TestPointBase):
 
     def test_add_in_none(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
         self.assertRaises(ValueError, self.base_point_b.add, None, np.array([1]))
 
     def test_add_out_none(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
         self.assertRaises(ValueError, self.base_point_b.add, np.array([1]), None)
 
     def test_add_in_not_valid_len(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
         self.assertRaises(AssertionError, self.base_point_b.add, np.array([1, 1]), np.array([1]))
 
     def test_add_out_not_valid_len(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
         self.assertRaises(AssertionError, self.base_point_b.add, np.array([1]), np.array([1, 1]))
 
     def test_add_in_not_valid_value(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
         self.assertRaises(ValueError, self.base_point_b.add, np.array([-1]), np.array([1]))
 
     def test_add_out_not_valid_value(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
         self.assertRaises(ValueError, self.base_point_b.add, np.array([1]), np.array([-1]))
 
 
 class TestPointAdd(TestPointBase):
     def test_add_more_max_clusters(self):
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
-        self.base_point_b.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
+        self.base_point_b.clusters.append(cluster_mock.ClusterMockNone())
         in_ = np.array([1])
         out_ = np.array([1])
         is_add = self.base_point_b.add(in_, out_)
@@ -377,9 +377,9 @@ class TestPointAdd(TestPointBase):
         self.assertEqual(len(self.base_point_d.clusters), 3)
 
     def test_add_all_clusters_modify(self):
-        self.base_point_e.clusters.append(cluster_mock.ClusterMock1None())
-        self.base_point_e.clusters.append(cluster_mock.ClusterMock1None())
-        self.base_point_e.clusters.append(cluster_mock.ClusterMock1None())
+        self.base_point_e.clusters.append(cluster_mock.ClusterMockNone())
+        self.base_point_e.clusters.append(cluster_mock.ClusterMockNone())
+        self.base_point_e.clusters.append(cluster_mock.ClusterMockNone())
         in_ = np.array([1, 0, 0])
         out_ = np.array([1, 0, 0])
         is_add = self.base_point_e.add(in_, out_)

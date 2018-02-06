@@ -4,8 +4,7 @@ import cv2
 
 class ContextTransformer:
 
-    def __init__(self, directs=16, width_angle=np.pi / 2, strength=0,
-                 window_size=np.array([4, 4]), non_zeros_bits=5):
+    def __init__(self, directs=16, width_angle=np.pi / 2, strength=0,window_size=np.array([4, 4]), non_zeros_bits=5):
         self.directs = directs
         self.width_angle = width_angle
         self.strength = strength

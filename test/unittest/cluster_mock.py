@@ -22,7 +22,7 @@ class ClusterMockNoneNotActive:
         pass
 
 
-class ClusterMock1None:
+class ClusterMockNone:
     def __init__(self,
                  in_sub_code=None, out_sub_code=None,
                  in_cluster_modify=None, out_cluster_modify=None,

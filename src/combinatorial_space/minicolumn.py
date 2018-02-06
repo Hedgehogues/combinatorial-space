@@ -480,7 +480,7 @@ class Minicolumn:
                 in_codes, in_controversy, out_controversy
             )
 
-        if opt_ind is not None:
+        if opt_ind is None or out_code is None or in_code is None:
             return opt_ind, out_code, MINICOLUMN.BAD_CODES
 
         for ind, point in enumerate(self.space):

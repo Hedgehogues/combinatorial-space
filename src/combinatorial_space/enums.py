@@ -22,4 +22,4 @@ class MINICOLUMN_LEARNING(Enum):
 class MINICOLUMN(Enum):
     LEARN = 0
     SLEEP = 1
-    BAD_CODES = 1
+    BAD_CODES = 2
