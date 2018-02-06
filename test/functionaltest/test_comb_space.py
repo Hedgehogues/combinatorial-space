@@ -86,17 +86,17 @@ class TestFunctionalMinicolumn(unittest.TestCase):
                 self.Answer.EMPTY_CODE: False
             },
             {
-                self.Answer.STATUS: MINICOLUMN.LEARN,
-                self.Answer.OPT_OUT: np.array([0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]),
-                self.Answer.MEANS: 1.97,
-                self.Answer.CONT_NUM: 985,
-                self.Answer.OPT_IND: 6,
+                self.Answer.STATUS: MINICOLUMN.SLEEP,
+                self.Answer.OPT_OUT: None,
+                self.Answer.MEANS: 1.928,
+                self.Answer.CONT_NUM: 964,
+                self.Answer.OPT_IND: None,
                 self.Answer.EMPTY_CODE: False
             },
             {
                 self.Answer.STATUS: MINICOLUMN.SLEEP,
                 self.Answer.OPT_OUT: None,
-                self.Answer.MEANS: 1.97,
+                self.Answer.MEANS: 1.928,
                 self.Answer.CONT_NUM: 964,
                 self.Answer.OPT_IND: None,
                 self.Answer.EMPTY_CODE: False
