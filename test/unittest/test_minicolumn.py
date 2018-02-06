@@ -158,69 +158,50 @@ class TestPointPredict(unittest.TestCase):
             class_point=PointMockAssertDim2
         )
 
-    def test_front_assert_not_valid_value(self):
+    def test_not_valid_value(self):
         self.assertRaises(ValueError, self.minicolumn_front.front_predict, [-1] * 10)
         self.assertRaises(ValueError, self.minicolumn_front.front_predict, [2] * 10)
         self.assertRaises(ValueError, self.minicolumn_front.front_predict, [0.8] * 10)
         self.assertRaises(ValueError, self.minicolumn_front.front_predict, None)
 
-    def test_back_assert_not_valid_value(self):
         self.assertRaises(ValueError, self.minicolumn_back.back_predict, [-1] * 10)
         self.assertRaises(ValueError, self.minicolumn_back.back_predict, [2] * 10)
         self.assertRaises(ValueError, self.minicolumn_back.back_predict, [0.8] * 10)
         self.assertRaises(ValueError, self.minicolumn_back.back_predict, None)
 
-    def test_front_assert_not_valid_dim(self):
-        self.assertRaises(AssertionError, self.minicolumn_front.front_predict, [1])
-
-    def test_back_assert_not_valid_dim(self):
-        self.assertRaises(AssertionError, self.minicolumn_back.back_predict, [1])
-
-    def test_front_assert_not_active_point(self):
-        code = [1]
-        controversy, out_code, accept = self.minicolumn_none.front_predict(code)
+    def __not_active_point(self, code, out_code, controversy, status):
         self.assertEqual([1], code)
         self.assertEqual(None, out_code)
         self.assertEqual(None, controversy)
-        self.assertEqual(MINICOLUMN_LEARNING.INACTIVE_POINTS, accept)
+        self.assertEqual(MINICOLUMN_LEARNING.INACTIVE_POINTS, status)
 
-    def test_back_assert_not_active_point(self):
+    def test_not_active_point(self):
         code = [1]
-        controversy, in_code, accept = self.minicolumn_none.back_predict(code)
-        self.assertEqual([1], code)
-        self.assertEqual(None, in_code)
-        self.assertEqual(None, controversy)
-        self.assertEqual(MINICOLUMN_LEARNING.INACTIVE_POINTS, accept)
+        controversy, out_code, status = self.minicolumn_none.front_predict(code)
+        self.__not_active_point(code, out_code, controversy, status)
+        controversy, in_code, status = self.minicolumn_none.back_predict(code)
+        self.__not_active_point(code, out_code, controversy, status)
 
-    def test_front_not_valid_dim(self):
+    def test_not_valid_dim(self):
         self.assertRaises(AssertionError, self.minicolumn_assert_dim_2.front_predict, [1] * 3)
-
-    def test_back_assert_not_valid_dim(self):
         self.assertRaises(AssertionError, self.minicolumn_assert_dim_2.back_predict, [1] * 8)
 
-    def test_front_assert_there_are(self):
-        code = [1]
-        controversy, out_code, accept = self.minicolumn_none.front_predict(code)
-        self.assertEqual([1], code)
-        self.assertEqual(None, out_code)
-        self.assertEqual(None, controversy)
-        self.assertEqual(MINICOLUMN_LEARNING.INACTIVE_POINTS, accept)
+    def __front_active_point(self, input_code, status, output_code, controversy, target, target_controversy):
+        self.assertEqual([1] * 10, input_code)
+        np.testing.assert_array_equal(target, output_code)
+        self.assertEqual(target_controversy, controversy)
+        self.assertEqual(MINICOLUMN_LEARNING.ACCEPT, status)
 
     def test_front_active_point(self):
-        in_code = [1] * 10
-        controversy, out_code, accept = self.minicolumn.front_predict(in_code)
-        self.assertEqual([1] * 10, in_code)
-        np.testing.assert_array_equal(np.array([1, 0, 1, 0, 1, 0, 0, 1, 1, 0]), out_code)
-        self.assertEqual(2, controversy)
-        self.assertEqual(MINICOLUMN_LEARNING.ACCEPT, accept)
-
-    def test_back_active_point(self):
-        out_code = [1] * 10
-        controversy, code, accept = self.minicolumn.back_predict(out_code)
-        self.assertEqual([1] * 10, out_code)
-        np.testing.assert_array_equal(np.array([1, 0, 1, 0, 1, 0, 0, 1, 1, 0]), code)
-        self.assertEqual(2, controversy)
-        self.assertEqual(MINICOLUMN_LEARNING.ACCEPT, accept)
+        input_code = [1] * 10
+        controversy, output_code, status = self.minicolumn.back_predict(input_code)
+        self.__front_active_point(
+            input_code, status, output_code, controversy, np.array([1, 0, 1, 0, 1, 0, 0, 1, 1, 0]), 2
+        )
+        controversy, output_code, status = self.minicolumn.front_predict(input_code)
+        self.__front_active_point(
+            input_code, status, output_code, controversy, np.array([1, 0, 1, 0, 0, 0, 1, 0, 0, 0]), 4
+        )
 
 
 class TestPointSleep(unittest.TestCase):
@@ -488,10 +469,6 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
         np.testing.assert_array_equal([1], min_in_code)
         np.testing.assert_array_equal([1], min_out_code)
         self.assertEqual(1, min_ind_hamming)
-
-    @unittest.skip('Не реализован. Выбор минимального оптимального кода')
-    def test_code_hamming_min(self):
-        pass
 
 
 if __name__ == '__main__':
