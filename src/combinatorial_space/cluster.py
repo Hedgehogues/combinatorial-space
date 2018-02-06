@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.combinatorial_space.enums import ClusterAnswer
+from src.combinatorial_space.enums import CLUSTER
 from src.combinatorial_space.expetions import CombSpaceExceptions
 
 np.warnings.filterwarnings('ignore')
@@ -54,9 +54,9 @@ class Cluster:
 
         dot = np.dot(x, w_0)
         if np.abs(dot) < cluster_modify:
-            return None, None, ClusterAnswer.NOT_ACTIVE
+            return None, None, CLUSTER.NOT_ACTIVE
 
-        return dot, np.int8(w_1 >= self.binarization), ClusterAnswer.ACTIVE
+        return dot, np.int8(w_1 >= self.binarization), CLUSTER.ACTIVE
 
     """
         Предсказание вперёд, т.е. предсказание входа по выходу
@@ -120,9 +120,9 @@ class Cluster:
         CombSpaceExceptions.none(out_x)
 
         if np.dot(in_x, np.uint8(np.abs(self.in_w) >= self.binarization)) < self.in_cluster_modify:
-            return ClusterAnswer.NOT_MODIFY
+            return CLUSTER.NOT_MODIFY
         if np.dot(out_x, np.uint8(np.abs(self.out_w) >= self.binarization)) < self.out_cluster_modify:
-            return ClusterAnswer.NOT_MODIFY
+            return CLUSTER.NOT_MODIFY
 
         # TODO: Правило Ойо почему-то расходится, поэтому используется лобовое решение
         #############
@@ -131,4 +131,4 @@ class Cluster:
         self.in_w = np.divide((self.in_w + delta_in), (np.sqrt(np.sum(np.square(self.in_w)))))
         self.out_w = np.divide((self.out_w + delta_out), (np.sqrt(np.sum(np.square(self.out_w)))))
 
-        return ClusterAnswer.MODIFY
+        return CLUSTER.MODIFY

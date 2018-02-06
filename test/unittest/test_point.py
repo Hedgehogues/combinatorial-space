@@ -2,7 +2,7 @@
 
 import unittest
 import numpy as np
-from src.combinatorial_space.point import Point, PointPredictAnswer
+from src.combinatorial_space.point import Point, POINT_PREDICT
 from test.unittest import cluster_mock
 from test.unittest.cluster_mock import ClusterMockNoneNotActive
 
@@ -167,14 +167,14 @@ class TestPointPredict(TestPointBase):
         opt_in_code, status = self.base_point_a.predict_back(code)
         self.assertEqual([1], code)
         self.assertIsNone(opt_in_code)
-        self.assertEqual(status, PointPredictAnswer.NO_CLUSTERS)
+        self.assertEqual(status, POINT_PREDICT.NO_CLUSTERS)
 
     def test_front_not_active(self):
         code = [1]
         opt_in_code, status = self.base_point_a.predict_front(code)
         self.assertEqual([1], code)
         self.assertIsNone(opt_in_code)
-        self.assertEqual(status, PointPredictAnswer.NO_CLUSTERS)
+        self.assertEqual(status, POINT_PREDICT.NO_CLUSTERS)
 
     def test_back_active_empty_cluster(self):
         code = [0]
@@ -182,7 +182,7 @@ class TestPointPredict(TestPointBase):
         opt_in_code, status = self.base_point_b.predict_back(code)
         self.assertEqual([0], code)
         self.assertIsNone(opt_in_code)
-        self.assertEqual(status, PointPredictAnswer.NOT_ACTIVE)
+        self.assertEqual(status, POINT_PREDICT.NOT_ACTIVE)
 
     def test_front_active_empty_cluster(self):
         code = [0]
@@ -190,7 +190,7 @@ class TestPointPredict(TestPointBase):
         opt_in_code, status = self.base_point_b.predict_front(code)
         self.assertEqual([0], code)
         self.assertIsNone(opt_in_code)
-        self.assertEqual(status, PointPredictAnswer.NOT_ACTIVE)
+        self.assertEqual(status, POINT_PREDICT.NOT_ACTIVE)
 
     def test_back_opt_code_0(self):
         for _ in np.arange(0, 100):
@@ -214,7 +214,7 @@ class TestPointPredict(TestPointBase):
             target = np.array([0, 0, 0, 0])
             target[base_point_d.in_coords] = np.array([1, 1, 1, -1])[base_point_d.in_coords]
             np.testing.assert_array_equal(target, opt_in_code)
-            self.assertEqual(PointPredictAnswer.ACTIVE, status)
+            self.assertEqual(POINT_PREDICT.ACTIVE, status)
 
     def test_front_opt_code_0(self):
         for _ in np.arange(0, 100):
@@ -238,7 +238,7 @@ class TestPointPredict(TestPointBase):
             target = np.array([0, 0, 0, 0])
             target[base_point_d.out_coords] = np.array([1, 1, 1, 0])[base_point_d.out_coords]
             np.testing.assert_array_equal(target, opt_out_code)
-            self.assertEqual(PointPredictAnswer.ACTIVE, status)
+            self.assertEqual(POINT_PREDICT.ACTIVE, status)
 
     def test_back_opt_code_1(self):
         for _ in np.arange(0, 100):
@@ -262,7 +262,7 @@ class TestPointPredict(TestPointBase):
             target = np.array([0, 0, 0, 0])
             target[base_point_d.in_coords] = np.array([1, 1, 1, 0])[base_point_d.in_coords]
             np.testing.assert_array_equal(target, opt_in_code)
-            self.assertEqual(PointPredictAnswer.ACTIVE, status)
+            self.assertEqual(POINT_PREDICT.ACTIVE, status)
 
     def test_front_opt_code_1(self):
         for _ in np.arange(0, 100):
@@ -286,7 +286,7 @@ class TestPointPredict(TestPointBase):
             target = np.array([0, 0, 0, 0])
             target[base_point_d.out_coords] = np.array([1, 1, 1, -1])[base_point_d.out_coords]
             np.testing.assert_array_equal(target, opt_out_code)
-            self.assertEqual(PointPredictAnswer.ACTIVE, status)
+            self.assertEqual(POINT_PREDICT.ACTIVE, status)
 
     def test_back_max_dot(self):
         self.base_point_c.clusters = [
@@ -304,7 +304,7 @@ class TestPointPredict(TestPointBase):
         self.assertEqual([1, 1, 1, 1], code)
         target = np.array([1, 1, 1, 1])
         np.testing.assert_array_equal(target, opt_in_code)
-        self.assertEqual(PointPredictAnswer.ACTIVE, status)
+        self.assertEqual(POINT_PREDICT.ACTIVE, status)
 
     def test_front_max_dot(self):
         self.base_point_c.clusters = [
@@ -322,7 +322,7 @@ class TestPointPredict(TestPointBase):
         self.assertEqual([1, 1, 1, 1], code)
         target = np.array([1, 1, 1, 1])
         np.testing.assert_array_equal(target, opt_out_code)
-        self.assertEqual(PointPredictAnswer.ACTIVE, status)
+        self.assertEqual(POINT_PREDICT.ACTIVE, status)
 
 
 class TestPointAddExceptions(TestPointBase):

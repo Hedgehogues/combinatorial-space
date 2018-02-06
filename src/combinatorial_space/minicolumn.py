@@ -3,9 +3,9 @@ from copy import deepcopy
 import Levenshtein
 import numpy as np
 
-from src.combinatorial_space.enums import PredictEnum, LearnEnum
+from src.combinatorial_space.enums import MINICOLUMN_LEARNING, MINICOLUMN
 from src.combinatorial_space.expetions import CombSpaceExceptions
-from src.combinatorial_space.point import Point, PointPredictAnswer
+from src.combinatorial_space.point import Point, POINT_PREDICT
 
 
 class Minicolumn:
@@ -81,6 +81,7 @@ class Minicolumn:
         CombSpaceExceptions.less(code_alignment, 0)
         CombSpaceExceptions.less(in_code_activate, 0)
         CombSpaceExceptions.less(out_code_activate, 0)
+        CombSpaceExceptions.less(min_active_points, 0)
 
         CombSpaceExceptions.is_type(is_modify_lr, bool)
 
@@ -95,10 +96,9 @@ class Minicolumn:
                 class_point(
                     in_cluster_modify, out_cluster_modify,
                     in_point_activate, out_point_activate,
-                    binarization,
+                    binarization, lr, is_modify_lr,
                     in_random_bits, out_random_bits,
                     in_dimensions, out_dimensions,
-                    lr, is_modify_lr,
                     max_clusters_per_point
                 ) for _ in range(space_size)
             ]
@@ -149,7 +149,7 @@ class Minicolumn:
 
             predicted_sub_code, status = self.__select_predict_function(point, code, is_front)
 
-            if status is PointPredictAnswer.ACTIVE:
+            if status is POINT_PREDICT.ACTIVE:
                 active_points += 1
                 CombSpaceExceptions.none(predicted_sub_code, 'Не определён входной аргумент')
                 CombSpaceExceptions.eq(len(predicted_sub_code), dimensions_1, 'Не совпадает размерность')
@@ -158,10 +158,10 @@ class Minicolumn:
                 total_sub_code += predicted_sub_code
 
         if active_points < self.min_active_points:
-            return None, None, PredictEnum.INACTIVE_POINTS
+            return None, None, MINICOLUMN_LEARNING.INACTIVE_POINTS
 
         controversy = self.__predict_prepare_code(total_sub_code, count)
-        return controversy, total_sub_code, PredictEnum.ACCEPT
+        return controversy, total_sub_code, MINICOLUMN_LEARNING.ACCEPT
 
     """
         Получение выходного кода по входному. Прямое предсказание в каждой точке комбинаторного пространства
@@ -309,10 +309,10 @@ class Minicolumn:
     def unsupervised_learning(self, in_codes, controversy_in=3, controversy_out=3):
 
         CombSpaceExceptions.codes(in_codes, self.in_dimensions)
-        CombSpaceExceptions.none(controversy_in, 'Неопределён аргумент')
-        CombSpaceExceptions.none(controversy_out, 'Неопределён аргумент')
-        CombSpaceExceptions.less(controversy_in, 0, 'Недопустимое значение переменной')
-        CombSpaceExceptions.less(controversy_out, 0, 'Недопустимое значение переменной')
+        CombSpaceExceptions.none(controversy_in)
+        CombSpaceExceptions.none(controversy_out)
+        CombSpaceExceptions.less(controversy_in, 0)
+        CombSpaceExceptions.less(controversy_out, 0)
 
         min_hamming = np.inf
         min_ind_hamming = None
@@ -333,27 +333,27 @@ class Minicolumn:
             # TODO: что делать, если в одном из контекстов мы не можем распознать ничего, а в других можем?
             # TODO: на данном этапе забиваем на такие коды
             #############
-            controversy_out, out_code, status = self.front_predict(np.array(in_codes[index]))
-            if status is PredictEnum.INACTIVE_POINTS:
+            controversy_out_predict, out_code, status = self.front_predict(np.array(in_codes[index]))
+            if status is MINICOLUMN_LEARNING.INACTIVE_POINTS:
                 continue
 
             # TODO: что если все коды противоречивые? как быть?
             # TODO: на данном этапе такой код не добавляем
             ############
-            if controversy_out >= controversy_out:
+            if controversy_out_predict >= controversy_out:
                 continue
                 
             # Удаляем или добавляем единицы (если их мало или много)
             out_code = self.__code_alignment(out_code)
             
-            controversy_in, in_code, status = self.back_predict(np.array(out_code))
+            controversy_in_predict, in_code, status = self.back_predict(np.array(out_code))
             # TODO: при обратном предсказании не распознано, а при прямом -- распознано
             # TODO: на данном этапе забиваем на такие коды
             ############
-            if status is PredictEnum.INACTIVE_POINTS:
+            if status is MINICOLUMN_LEARNING.INACTIVE_POINTS:
                 continue
 
-            if controversy_in >= controversy_in:
+            if controversy_in_predict >= controversy_in:
                 continue
 
             hamming_dist = Levenshtein.hamming(''.join(map(str, in_code)), ''.join(map(str, in_codes[index])))
@@ -420,14 +420,14 @@ class Minicolumn:
             # TODO: что делать, если в одном из контекстов мы не можем распознать ничего, а в других можем?
             # TODO: на данном этапе забиваем на такие коды
             #############
-            controversy_out, out_code, status = self.front_predict(np.array(in_codes[index]))
-            if status is PredictEnum.INACTIVE_POINTS:
+            controversy_out_predict, out_code, status = self.front_predict(np.array(in_codes[index]))
+            if status is MINICOLUMN_LEARNING.INACTIVE_POINTS:
                 continue
 
             # TODO: что если все коды противоречивые? как быть?
             # TODO: на данном этапе такой код не добавляем
             ############
-            if controversy_out >= out_controversy:
+            if controversy_out_predict >= out_controversy:
                 continue
             
             hamming_dist = Levenshtein.hamming(''.join(map(str, out_code)), ''.join(map(str, out_codes[index])))
@@ -469,7 +469,7 @@ class Minicolumn:
     def learn(self, in_codes, step_number, out_codes=None, in_controversy=20, out_controversy=6):
 
         if self.is_sleep():
-            return None, None, LearnEnum.SLEEP
+            return None, None, MINICOLUMN.SLEEP
 
         if out_codes is not None:
             in_code, out_code, opt_ind = self.supervised_learning(
@@ -481,9 +481,9 @@ class Minicolumn:
             )
 
         if opt_ind is not None:
-            return opt_ind, out_code, LearnEnum.BAD_CODES
+            return opt_ind, out_code, MINICOLUMN.BAD_CODES
 
         for ind, point in enumerate(self.space):
             self.count_clusters += point.add(in_code, out_code, step_number)
 
-        return opt_ind, out_code, LearnEnum.LEARN
+        return opt_ind, out_code, MINICOLUMN.LEARN

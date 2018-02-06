@@ -3,7 +3,7 @@ import numpy as np
 import pickle
 
 from src.image import transformers
-from src.combinatorial_space.minicolumn import Minicolumn, LearnEnum
+from src.combinatorial_space.minicolumn import Minicolumn, MINICOLUMN
 from src.context.transformer import ContextTransformer
 
 
@@ -78,10 +78,10 @@ for image_number in range(max_number):
         opt_out.append(out_code)
         opt_ind_arr.append(opt_ind)
 
-        if status == LearnEnum.LEARN:
+        if status == MINICOLUMN.LEARN:
             print('№', ind, 'Всего кластеров:', minicolumn.count_clusters)
             means.append(np.mean([len(p.clusters) for p in minicolumn.space]))
-        elif status == LearnEnum.SLEEP:
+        elif status == MINICOLUMN.SLEEP:
             sleep__(minicolumn)
         ind += 1
     print('Изменение кол-ва кластеров', minicolumn.count_clusters - start)

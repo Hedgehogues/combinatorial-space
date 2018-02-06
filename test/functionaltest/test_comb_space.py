@@ -3,7 +3,7 @@ import pandas as pd
 
 from src.image import transformers
 from src.context import transformer
-from src.combinatorial_space.minicolumn import Minicolumn, LearnEnum, StatisicsMinicolumn
+from src.combinatorial_space.minicolumn import Minicolumn, MINICOLUMN, StatisicsMinicolumn
 
 df = pd.read_csv('data/test_image.csv', header=None)
 
@@ -24,7 +24,7 @@ for image_number in range(max_number):
         # TODO:  (нужны правки)
         codes = transformer.get_shift_context(image_sample)
         status = minicolumn.learn(codes)
-        if status == LearnEnum.LEARN:
+        if status == MINICOLUMN.LEARN:
             stats = minicolumn.statistics
             print(
                 'Изменения:', stats[StatisicsMinicolumn.MINICOLUMN_COUNT_MODIFY],

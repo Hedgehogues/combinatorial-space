@@ -1,7 +1,7 @@
 import numpy as np
 
 from src.combinatorial_space.cluster import Cluster
-from src.combinatorial_space.enums import PointPredictAnswer, ClusterAnswer
+from src.combinatorial_space.enums import POINT_PREDICT, CLUSTER
 from src.combinatorial_space.expetions import CombSpaceExceptions
 
 
@@ -91,7 +91,7 @@ class Point:
         CombSpaceExceptions.code_value(code)
 
         if len(self.clusters) == 0:
-            return None, PointPredictAnswer.NO_CLUSTERS
+            return None, POINT_PREDICT.NO_CLUSTERS
 
         sub_code = np.array(code)[coords_0]
         opt_dot = -np.inf
@@ -100,7 +100,7 @@ class Point:
             for cluster in self.clusters:
                 dot, predicted_sub_code, status = self.__select_predict_function(cluster, sub_code, is_front)
 
-                if status == ClusterAnswer.ACTIVE and dot > opt_dot:
+                if status == CLUSTER.ACTIVE and dot > opt_dot:
                     CombSpaceExceptions.less(dot, 0, "Отрицательное значение скалярного произведения")
                     CombSpaceExceptions.none(dot, "Скалярное произведение None")
                     CombSpaceExceptions.none(predicted_sub_code, "Предсказанный вектор None")
@@ -112,8 +112,8 @@ class Point:
                     opt_sub_code[coords_1] = predicted_sub_code
 
         if opt_sub_code is None:
-            return None, PointPredictAnswer.NOT_ACTIVE
-        return opt_sub_code, PointPredictAnswer.ACTIVE
+            return None, POINT_PREDICT.NOT_ACTIVE
+        return opt_sub_code, POINT_PREDICT.ACTIVE
 
     """
         Осуществление выбора оптимального кластера при прямом предсказании 
@@ -184,7 +184,7 @@ class Point:
             if np.sum(in_x) >= self.in_point_activate and np.sum(out_x) >= self.out_point_activate:
 
                 for cluster_id, cluster in enumerate(self.clusters):
-                    if cluster.modify(in_x, out_x) is ClusterAnswer.MODIFY:
+                    if cluster.modify(in_x, out_x) is CLUSTER.MODIFY:
                         # tmp = self.statistics[cluster_id]
                         # tmp.append(step_number)
                         # self.statistics[cluster_id] = tmp

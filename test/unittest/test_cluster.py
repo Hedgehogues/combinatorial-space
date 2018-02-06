@@ -2,7 +2,7 @@
 
 import unittest
 import numpy as np
-from src.combinatorial_space.cluster import Cluster, ClusterAnswer
+from src.combinatorial_space.cluster import Cluster, CLUSTER
 
 
 class TestClusterConstructor(unittest.TestCase):
@@ -137,7 +137,7 @@ class TestClusterPredict(TestClusterBase):
     def test_front_0(self):
         code = [1] * 1 + [0] * 9
         dot, out_sub_code, status = self.base_cluster_a.predict_front(code)
-        self.assertEqual(status, ClusterAnswer.NOT_ACTIVE)
+        self.assertEqual(status, CLUSTER.NOT_ACTIVE)
         self.assertEqual([1] * 1 + [0] * 9, code)
         self.assertEqual(dot, None)
         self.assertIsNone(out_sub_code)
@@ -145,7 +145,7 @@ class TestClusterPredict(TestClusterBase):
     def test_back_0(self):
         code = [1] * 1 + [0] * 5
         dot, in_sub_code, status = self.base_cluster_a.predict_back(code)
-        self.assertEqual(status, ClusterAnswer.NOT_ACTIVE)
+        self.assertEqual(status, CLUSTER.NOT_ACTIVE)
         self.assertEqual([1] * 1 + [0] * 5, code)
         self.assertEqual(dot, None)
         self.assertIsNone(in_sub_code)
@@ -153,7 +153,7 @@ class TestClusterPredict(TestClusterBase):
     def test_front_1(self):
         code = [1] * 1 + [0] * 9
         dot, out_sub_code, status = self.base_cluster_b.predict_front(code)
-        self.assertEqual(status, ClusterAnswer.ACTIVE)
+        self.assertEqual(status, CLUSTER.ACTIVE)
         self.assertEqual([1] * 1 + [0] * 9, code)
         self.assertAlmostEqual(dot, 0.2, places=5)
         np.testing.assert_array_equal(out_sub_code, [1] * 3 + [0] * 3)
@@ -161,7 +161,7 @@ class TestClusterPredict(TestClusterBase):
     def test_back_1(self):
         code = [1] * 1 + [0] * 5
         dot, in_sub_code, status = self.base_cluster_d.predict_back(code)
-        self.assertEqual(status, ClusterAnswer.ACTIVE)
+        self.assertEqual(status, CLUSTER.ACTIVE)
         self.assertEqual([1] * 1 + [0] * 5, code)
         self.assertAlmostEqual(dot, 0.2, places=5)
         np.testing.assert_array_equal(in_sub_code, [1] * 5 + [0] * 5)
@@ -169,7 +169,7 @@ class TestClusterPredict(TestClusterBase):
     def test_front_2(self):
         code = [0] * 1 + [1] * 9
         dot, out_sub_code, status = self.base_cluster_c.predict_front(code)
-        self.assertEqual(status, ClusterAnswer.ACTIVE)
+        self.assertEqual(status, CLUSTER.ACTIVE)
         self.assertEqual([0] * 1 + [1] * 9, code)
         self.assertAlmostEqual(dot, 1.4, places=5)
         np.testing.assert_array_equal(out_sub_code, [1] * 6)
@@ -177,7 +177,7 @@ class TestClusterPredict(TestClusterBase):
     def test_back_2(self):
         code = [0] * 1 + [1] * 5
         dot, in_sub_code, status = self.base_cluster_e.predict_back(code)
-        self.assertEqual(status, ClusterAnswer.ACTIVE)
+        self.assertEqual(status, CLUSTER.ACTIVE)
         self.assertEqual([0] * 1 + [1] * 5, code)
         self.assertAlmostEqual(dot, 0.6, places=5)
         np.testing.assert_array_equal(in_sub_code, [1] * 5 + [0] * 5)
@@ -190,7 +190,7 @@ class TestClusterModify(TestClusterBase):
         is_modify = self.base_cluster_a.modify(in_x, out_x)
         self.assertEqual([1] * 1 + [0] * 9, in_x)
         self.assertEqual([1] * 1 + [0] * 5, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.NOT_MODIFY)
+        self.assertEqual(is_modify, CLUSTER.NOT_MODIFY)
         self.assertEqual(self.base_cluster_a.count_modify, 0)
         np.testing.assert_array_almost_equal(
             self.base_cluster_a.in_w,
@@ -209,7 +209,7 @@ class TestClusterModify(TestClusterBase):
         is_modify = self.base_cluster_b.modify(in_x, out_x)
         self.assertEqual([0] * 9 + [1] * 1, in_x)
         self.assertEqual([1] * 5 + [0] * 1, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.NOT_MODIFY)
+        self.assertEqual(is_modify, CLUSTER.NOT_MODIFY)
         self.assertEqual(self.base_cluster_b.count_modify, 0)
         np.testing.assert_array_almost_equal(
             self.base_cluster_b.in_w,
@@ -228,7 +228,7 @@ class TestClusterModify(TestClusterBase):
         is_modify = self.base_cluster_b.modify(in_x, out_x)
         self.assertEqual([1] * 9 + [0] * 1, in_x)
         self.assertEqual([0] * 5 + [1] * 1, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.NOT_MODIFY)
+        self.assertEqual(is_modify, CLUSTER.NOT_MODIFY)
         self.assertEqual(self.base_cluster_b.count_modify, 0)
         np.testing.assert_array_almost_equal(
             self.base_cluster_b.in_w,
@@ -247,7 +247,7 @@ class TestClusterModify(TestClusterBase):
         is_modify = self.base_cluster_b.modify(in_x, out_x)
         self.assertEqual([1] * 9 + [0] * 1, in_x)
         self.assertEqual([1] * 5 + [0] * 1, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.MODIFY)
+        self.assertEqual(is_modify, CLUSTER.MODIFY)
         self.assertEqual(self.base_cluster_b.count_modify, 1)
         np.testing.assert_array_almost_equal(
             self.base_cluster_b.in_w,
@@ -267,7 +267,7 @@ class TestClusterModify(TestClusterBase):
         is_modify = self.base_cluster_c.modify(in_x, out_x)
         self.assertEqual([1] * 9 + [0] * 1, in_x)
         self.assertEqual([1] * 5 + [0] * 1, out_x)
-        self.assertEqual(is_modify, ClusterAnswer.MODIFY)
+        self.assertEqual(is_modify, CLUSTER.MODIFY)
         self.assertEqual(self.base_cluster_c.count_modify, 1)
         np.testing.assert_array_almost_equal(
             self.base_cluster_c.in_w,

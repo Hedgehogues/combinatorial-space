@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.combinatorial_space.enums import ClusterAnswer
+from src.combinatorial_space.enums import CLUSTER
 
 
 class ClusterMockNoneNotActive:
@@ -13,10 +13,10 @@ class ClusterMockNoneNotActive:
         pass
 
     def predict_front(self, in_x):
-        return 0, None, ClusterAnswer.NOT_ACTIVE
+        return 0, None, CLUSTER.NOT_ACTIVE
 
     def predict_back(self, out_x):
-        return 0, None, ClusterAnswer.NOT_ACTIVE
+        return 0, None, CLUSTER.NOT_ACTIVE
 
     def modify(self, in_x, out_x):
         pass
@@ -38,7 +38,7 @@ class ClusterMock1None:
         pass
 
     def modify(self, in_x, out_x):
-        return ClusterAnswer.MODIFY
+        return CLUSTER.MODIFY
 
 
 class ClusterMockCustom:
@@ -52,13 +52,13 @@ class ClusterMockCustom:
         self.out_sub_code = out_sub_code
 
     def predict_front(self, in_x):
-        return 1, self.out_sub_code, ClusterAnswer.ACTIVE
+        return 1, self.out_sub_code, CLUSTER.ACTIVE
 
     def predict_back(self, out_x):
-        return 1, self.in_sub_code, ClusterAnswer.ACTIVE
+        return 1, self.in_sub_code, CLUSTER.ACTIVE
 
     def modify(self, in_x, out_x):
-        return ClusterAnswer.MODIFY
+        return CLUSTER.MODIFY
 
 
 class ClusterMockCustomDot:
@@ -72,13 +72,13 @@ class ClusterMockCustomDot:
         self.out_sub_code = out_sub_code
 
     def predict_front(self, in_x):
-        return np.dot(self.in_sub_code, in_x), self.out_sub_code, ClusterAnswer.ACTIVE
+        return np.dot(self.in_sub_code, in_x), self.out_sub_code, CLUSTER.ACTIVE
 
     def predict_back(self, out_x):
-        return np.dot(self.in_sub_code, out_x), self.in_sub_code, ClusterAnswer.ACTIVE
+        return np.dot(self.in_sub_code, out_x), self.in_sub_code, CLUSTER.ACTIVE
 
     def modify(self, in_x, out_x):
-        return ClusterAnswer.MODIFY
+        return CLUSTER.MODIFY
 
 
 class ClusterMockWeight:
