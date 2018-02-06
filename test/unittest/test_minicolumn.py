@@ -4,27 +4,11 @@ import unittest
 import numpy as np
 from src.combinatorial_space.minicolumn import Minicolumn, MINICOLUMN_LEARNING
 from test.unittest.cluster_mock import ClusterMockWeight
-from test.unittest.point_mock import PointMockNone, PointMockOddEven, PointMockZeros, \
-    PointMockDoubleIdentical, PointMockCodeAligment, PointMockControversyIn, PointMockAssertDim2
+from test.unittest.point_mock import PointNoneMock, PointOddEvenMock, PointZerosMock,\
+    PointCodeAligmentMock, PointControversyInMock, PointEmptyMock
 
 
 class TestMinicolumnConstructor(unittest.TestCase):
-    def test_code_alignment_count_dim(self):
-        self.assertRaises(
-            ValueError, Minicolumn,
-            code_alignment=3, in_dimensions=4, out_dimensions=2,
-            in_random_bits=1, out_random_bits=1
-        )
-        self.assertRaises(
-            ValueError, Minicolumn,
-            code_alignment=3, in_dimensions=3, out_dimensions=2,
-            in_random_bits=1, out_random_bits=1
-        )
-        Minicolumn(
-            space_size=10,
-            code_alignment=2, in_dimensions=4, out_dimensions=4,
-            in_random_bits=1, out_random_bits=1
-        )
 
     def test_space_size(self):
         self.assertRaises(ValueError, Minicolumn, space_size=-10)
@@ -83,13 +67,28 @@ class TestMinicolumnConstructor(unittest.TestCase):
     def test_code_alignment(self):
         self.assertRaises(ValueError, Minicolumn, code_alignment=-5)
         self.assertRaises(ValueError, Minicolumn, code_alignment=None)
+        self.assertRaises(
+            ValueError, Minicolumn,
+            code_alignment=3, in_dimensions=4, out_dimensions=2,
+            in_random_bits=1, out_random_bits=1
+        )
+        self.assertRaises(
+            ValueError, Minicolumn,
+            code_alignment=3, in_dimensions=3, out_dimensions=2,
+            in_random_bits=1, out_random_bits=1
+        )
+        Minicolumn(
+            space_size=10,
+            code_alignment=2, in_dimensions=4, out_dimensions=4,
+            in_random_bits=1, out_random_bits=1
+        )
 
     def test_class_point(self):
         self.assertRaises(ValueError, Minicolumn, class_point=None)
 
     def test_size_space(self):
         space_size = 100
-        minicolumn = Minicolumn(space_size=space_size, class_point=PointMockNone)
+        minicolumn = Minicolumn(space_size=space_size, class_point=PointNoneMock)
         self.assertEqual(len(minicolumn.space), space_size)
 
     def test_size_random_bits_count_dimensions(self):
@@ -110,7 +109,7 @@ class TestPointPredict(unittest.TestCase):
             in_dimensions=1,
             out_dimensions=1,
             code_alignment=1,
-            class_point=PointMockNone
+            class_point=PointNoneMock
         )
         self.minicolumn = Minicolumn(
             space_size=20,
@@ -122,7 +121,7 @@ class TestPointPredict(unittest.TestCase):
             controversy=0.05,
             code_alignment=1,
             min_active_points=0,
-            class_point=PointMockOddEven
+            class_point=PointOddEvenMock
         )
         self.minicolumn_front = Minicolumn(
             space_size=20,
@@ -133,7 +132,7 @@ class TestPointPredict(unittest.TestCase):
             seed=41,
             controversy=0.05,
             code_alignment=1,
-            class_point=PointMockOddEven
+            class_point=PointEmptyMock
         )
         self.minicolumn_back = Minicolumn(
             space_size=20,
@@ -144,7 +143,7 @@ class TestPointPredict(unittest.TestCase):
             seed=41,
             controversy=0.05,
             code_alignment=1,
-            class_point=PointMockOddEven
+            class_point=PointEmptyMock
         )
         self.minicolumn_assert_dim_2 = Minicolumn(
             space_size=20,
@@ -155,7 +154,7 @@ class TestPointPredict(unittest.TestCase):
             seed=41,
             controversy=0.05,
             code_alignment=1,
-            class_point=PointMockAssertDim2
+            class_point=PointEmptyMock
         )
 
     def test_not_valid_value(self):
@@ -192,7 +191,7 @@ class TestPointPredict(unittest.TestCase):
         self.assertEqual(target_controversy, controversy)
         self.assertEqual(MINICOLUMN_LEARNING.ACCEPT, status)
 
-    def test_front_active_point(self):
+    def test_active_point(self):
         input_code = [1] * 10
         controversy, output_code, status = self.minicolumn.back_predict(input_code)
         self.__front_active_point(
@@ -213,7 +212,7 @@ class TestPointSleep(unittest.TestCase):
             in_dimensions=1,
             out_dimensions=1,
             code_alignment=1,
-            class_point=PointMockNone
+            class_point=PointNoneMock
         )
         self.minicolumn_activate = Minicolumn(
             space_size=5,
@@ -226,7 +225,7 @@ class TestPointSleep(unittest.TestCase):
             code_alignment=1,
             in_code_activate=2,
             out_code_activate=2,
-            class_point=PointMockNone
+            class_point=PointNoneMock
         )
 
     def test_assert_input_params(self):
@@ -310,7 +309,7 @@ class TestPointUnsupervisedLearningException(unittest.TestCase):
             in_dimensions=1,
             out_dimensions=1,
             code_alignment=1,
-            class_point=PointMockNone
+            class_point=PointNoneMock
         )
 
     def test_in_codes(self):
@@ -345,7 +344,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             out_dimensions=1,
             code_alignment=1,
             in_code_activate=0,
-            class_point=PointMockNone
+            class_point=PointNoneMock
         )
         self.minicolumn_zeros = Minicolumn(
             space_size=5,
@@ -356,7 +355,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             code_alignment=2,
             seed=42,
             in_code_activate=0,
-            class_point=PointMockZeros
+            class_point=PointZerosMock
         )
         self.minicolumn_controversy_out = Minicolumn(
             space_size=5,
@@ -367,7 +366,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             code_alignment=4,
             seed=42,
             controversy=2,
-            class_point=PointMockDoubleIdentical
+            class_point=PointEmptyMock
         )
         self.minicolumn_controversy_in = Minicolumn(
             space_size=200,
@@ -379,7 +378,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             seed=42,
             controversy=0.2,
             in_code_activate=0,
-            class_point=PointMockControversyIn
+            class_point=PointControversyInMock
         )
         self.minicolumn_code_alignment = Minicolumn(
             space_size=5,
@@ -392,7 +391,7 @@ class TestPointUnsupervisedLearning(unittest.TestCase):
             controversy=0.1,
             in_code_activate=0,
             min_active_points=0,
-            class_point=PointMockCodeAligment
+            class_point=PointCodeAligmentMock
         )
 
     def test_continue_zeros_codes(self):

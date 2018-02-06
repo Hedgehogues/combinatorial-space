@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2252da76-c76a-4dd3-b1b5-7d9cbe3e397d" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/test/unittest/point_mock.py" afterPath="$PROJECT_DIR$/test/unittest/point_mock.py" />
       <change beforePath="$PROJECT_DIR$/test/unittest/test_minicolumn.py" afterPath="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,11 +15,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="test_minicolumn.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test_minicolumn.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unittest/test_minicolumn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="203" column="89" lean-forward="false" selection-start-line="203" selection-start-column="89" selection-end-line="203" selection-end-column="89" />
+            <state relative-caret-position="6354">
+              <caret line="380" column="46" lean-forward="false" selection-start-line="380" selection-start-column="24" selection-end-line="380" selection-end-column="46" />
               <folding>
                 <element signature="e#27#42#0" expanded="true" />
               </folding>
@@ -28,8 +30,8 @@
       <file leaf-file-name="minicolumn.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="159" column="0" lean-forward="false" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+            <state relative-caret-position="182">
+              <caret line="184" column="28" lean-forward="false" selection-start-line="184" selection-start-column="28" selection-end-line="184" selection-end-column="28" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -37,11 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="point_mock.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="point_mock.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/unittest/point_mock.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+            <state relative-caret-position="198">
+              <caret line="47" column="12" lean-forward="false" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -60,11 +62,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>min_active_point</find>
-      <find>show_image_data_frame</find>
-      <find>type(variable)</find>
-      <find>list</find>
-      <find>in_threshold_modify</find>
       <find>base_lr</find>
       <find>out_threshold_activate</find>
       <find>code_aligment_threshold</find>
@@ -80,16 +77,21 @@
       <find>dem</find>
       <find>PRED</find>
       <find>PointMockOddEven</find>
-      <find>PointMockNone</find>
       <find>PointMockZeros</find>
       <find>PointMockCodeAligment</find>
       <find>PointMockControversyIn</find>
       <find>PointMockDoubleIdentical</find>
-      <find>minicolumn_controversy_out</find>
       <find>PointMockAssertDim2</find>
       <find>minicolumn_assert_dim_2</find>
       <find>PointMockInOutCode</find>
       <find>test_back_assert_not_valid_dim</find>
+      <find>_front_</find>
+      <find>minicolumn_controversy_out</find>
+      <find>test_code_alignment</find>
+      <find>PointOddEvenMock</find>
+      <find>minicolumn</find>
+      <find>PointMockNone</find>
+      <find>PointControversyInMock</find>
     </findStrings>
     <replaceStrings>
       <replace>out_cluster_modify</replace>
@@ -121,11 +123,11 @@
         <option value="$PROJECT_DIR$/test/unittest/test_cluster.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/point.py" />
         <option value="$PROJECT_DIR$/test/unittest/test_point.py" />
-        <option value="$PROJECT_DIR$/test/unittest/cluster_mock.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/enums.py" />
         <option value="$PROJECT_DIR$/src/combinatorial_space/minicolumn.py" />
-        <option value="$PROJECT_DIR$/test/unittest/point_mock.py" />
+        <option value="$PROJECT_DIR$/test/unittest/cluster_mock.py" />
         <option value="$PROJECT_DIR$/test/unittest/test_minicolumn.py" />
+        <option value="$PROJECT_DIR$/test/unittest/point_mock.py" />
       </list>
     </option>
   </component>
@@ -313,11 +315,11 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -336,11 +338,6 @@
           <url>file://$PROJECT_DIR$/test/unittest/test_point.py</url>
           <line>384</line>
           <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/unittest/test_minicolumn.py</url>
-          <line>201</line>
-          <option name="timeStamp" value="143" />
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="144" />
@@ -463,7 +460,7 @@
         <state relative-caret-position="3456">
           <caret line="197" column="0" lean-forward="false" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -531,16 +528,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unittest/cluster_mock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="86" column="7" lean-forward="true" selection-start-line="86" selection-start-column="7" selection-end-line="86" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/combinatorial_space/cluster.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
@@ -564,7 +551,7 @@
         <state relative-caret-position="-133">
           <caret line="85" column="8" lean-forward="false" selection-start-line="85" selection-start-column="8" selection-end-line="85" selection-end-column="8" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -613,10 +600,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unittest/point_mock.py">
+    <entry file="file://$PROJECT_DIR$/test/unittest/cluster_mock.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+        <state relative-caret-position="162">
+          <caret line="29" column="25" lean-forward="true" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -625,8 +612,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/combinatorial_space/minicolumn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="159" column="0" lean-forward="false" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+        <state relative-caret-position="182">
+          <caret line="184" column="28" lean-forward="false" selection-start-line="184" selection-start-column="28" selection-end-line="184" selection-end-column="28" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
@@ -635,10 +622,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/unittest/test_minicolumn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="203" column="89" lean-forward="false" selection-start-line="203" selection-start-column="89" selection-end-line="203" selection-end-column="89" />
+        <state relative-caret-position="6354">
+          <caret line="380" column="46" lean-forward="false" selection-start-line="380" selection-start-column="24" selection-end-line="380" selection-end-column="46" />
           <folding>
             <element signature="e#27#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unittest/point_mock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="47" column="12" lean-forward="false" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>

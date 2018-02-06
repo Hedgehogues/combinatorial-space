@@ -5,7 +5,7 @@ from src.combinatorial_space.cluster import Cluster
 from src.combinatorial_space.enums import POINT_PREDICT
 
 
-class PointMockOddEven:
+class PointOddEvenMock:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -35,7 +35,7 @@ class PointMockOddEven:
         pass
 
 
-class PointMockAssertDim2:
+class PointEmptyMock:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -45,21 +45,10 @@ class PointMockAssertDim2:
                  base_lr=0.01, is_modify_lr=True,
                  max_cluster_per_point=100,
                  cluster_class=Cluster):
-        self.clusters = []
-        self.count_in_demensions = count_in_demensions
-        self.count_out_demensions = count_out_demensions
-
-    def predict_front(self, in_code, type_code=-1):
-        pass
-
-    def predict_back(self, out_code, type_code=-1):
-        pass
-
-    def add(self, in_code, out_code):
         pass
 
 
-class PointMockNone:
+class PointNoneMock:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -81,7 +70,7 @@ class PointMockNone:
         return False
 
 
-class PointMockZeros:
+class PointZerosMock:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -96,36 +85,8 @@ class PointMockZeros:
     def predict_front(self, in_code, type_code=-1):
         return np.array([0] * len(in_code)), POINT_PREDICT.ACTIVE
 
-    def predict_back(self, out_code, type_code=-1):
-        pass
 
-    def add(self, in_code, out_code):
-        pass
-
-
-class PointMockDoubleIdentical:
-    def __init__(self,
-                 in_threshold_modify=5, out_threshold_modify=0,
-                 in_threshold_activate=5, out_threshold_activate=0,
-                 threshold_bin=0.1,
-                 in_random_bits=24, out_random_bits=10,
-                 count_in_demensions=256, count_out_demensions=16,
-                 base_lr=0.01, is_modify_lr=True,
-                 max_cluster_per_point=100,
-                 cluster_class=Cluster):
-        self.clusters = []
-
-    def predict_front(self, in_code, type_code=-1):
-        pass
-
-    def predict_back(self, out_code, type_code=-1):
-        pass
-
-    def add(self, in_code, out_code):
-        pass
-
-
-class PointMockCodeAligment:
+class PointCodeAligmentMock:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
@@ -149,7 +110,7 @@ class PointMockCodeAligment:
         pass
 
 
-class PointMockControversyIn:
+class PointControversyInMock:
     def __init__(self,
                  in_threshold_modify=5, out_threshold_modify=0,
                  in_threshold_activate=5, out_threshold_activate=0,
