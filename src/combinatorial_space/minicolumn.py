@@ -91,18 +91,16 @@ class Minicolumn:
 
         np.random.seed(seed)
 
-        self.space = np.array(
-            [
-                class_point(
-                    in_cluster_modify, out_cluster_modify,
-                    in_point_activate, out_point_activate,
-                    binarization, lr, is_modify_lr,
-                    in_random_bits, out_random_bits,
-                    in_dimensions, out_dimensions,
-                    max_clusters_per_point
-                ) for _ in range(space_size)
-            ]
-        )
+        self.space = [
+            class_point(
+                in_cluster_modify, out_cluster_modify,
+                in_point_activate, out_point_activate,
+                binarization, lr, is_modify_lr,
+                in_random_bits, out_random_bits,
+                in_dimensions, out_dimensions,
+                max_clusters_per_point
+            ) for _ in range(space_size)
+        ]
         self.max_clusters = max_clusters
         self.controversy = controversy
         self.alignment = code_alignment
@@ -333,7 +331,7 @@ class Minicolumn:
             # TODO: что делать, если в одном из контекстов мы не можем распознать ничего, а в других можем?
             # TODO: на данном этапе забиваем на такие коды
             #############
-            controversy_out_predict, out_code, status = self.front_predict(np.array(in_codes[index]))
+            controversy_out_predict, out_code, status = self.front_predict(in_codes[index])
             if status is MINICOLUMN_LEARNING.INACTIVE_POINTS:
                 continue
 
@@ -346,7 +344,7 @@ class Minicolumn:
             # Удаляем или добавляем единицы (если их мало или много)
             out_code = self.__code_alignment(out_code)
             
-            controversy_in_predict, in_code, status = self.back_predict(np.array(out_code))
+            controversy_in_predict, in_code, status = self.back_predict(out_code)
             # TODO: при обратном предсказании не распознано, а при прямом -- распознано
             # TODO: на данном этапе забиваем на такие коды
             ############
@@ -420,7 +418,7 @@ class Minicolumn:
             # TODO: что делать, если в одном из контекстов мы не можем распознать ничего, а в других можем?
             # TODO: на данном этапе забиваем на такие коды
             #############
-            controversy_out_predict, out_code, status = self.front_predict(np.array(in_codes[index]))
+            controversy_out_predict, out_code, status = self.front_predict(in_codes[index])
             if status is MINICOLUMN_LEARNING.INACTIVE_POINTS:
                 continue
 

@@ -93,7 +93,7 @@ class Point:
         if len(self.clusters) == 0:
             return None, POINT_PREDICT.NO_CLUSTERS
 
-        sub_code = np.array(code)[coords_0]
+        sub_code = code[coords_0]
         opt_dot = -np.inf
         opt_sub_code = None
         if np.sum(sub_code) >= point_activate:
@@ -174,8 +174,8 @@ class Point:
 
         if len(self.clusters) < self.max_clusters_per_point:
 
-            in_x = np.array(in_code)[self.in_coords]
-            out_x = np.array(out_code)[self.out_coords]
+            in_x = in_code[self.in_coords]
+            out_x = out_code[self.out_coords]
 
             is_modify_cluster = False
 

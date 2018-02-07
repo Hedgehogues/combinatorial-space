@@ -60,5 +60,5 @@ class CombSpaceExceptions:
     @staticmethod
     def code_value(code, msg="Значение аргумента может принимать значение 0 или 1"):
         # Значения выходного вектора могут быть равны 0 или 1
-        if np.sum(np.uint8(np.logical_not(np.array(code) != 0) ^ (np.array(code) != 1))) > 0:
+        if np.sum(np.uint8(np.logical_not(code != 0) ^ (code != 1))) > 0:
             raise ValueError(msg)

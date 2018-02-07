@@ -98,8 +98,8 @@ class Cluster:
 
         lr = self.base_lr / self.count_modify if self.is_modify_lr else self.base_lr
 
-        delta_in = np.array(lr * np.multiply(in_y, np.array(in_x)))
-        delta_out = np.array(lr * np.multiply(out_y, np.array(out_x)))
+        delta_in = lr * np.multiply(in_y, in_x)
+        delta_out = lr * np.multiply(out_y, out_x)
 
         return delta_in, delta_out
 
