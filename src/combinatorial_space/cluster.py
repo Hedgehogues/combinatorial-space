@@ -90,7 +90,7 @@ class Cluster:
         return self.__predict(out_x, self.out_w, self.in_w, self.out_cluster_modify)
 
     """
-        Получение величин delta, используемых в обучении Хебба (Ойо)
+        Получение величин delta, используемых в обучении Хебба (Ойа)
     """
     def __get_delta(self, in_x, out_x):
         in_y = np.dot(in_x, self.in_w)
@@ -124,7 +124,7 @@ class Cluster:
         if np.dot(out_x, np.uint8(np.abs(self.out_w) >= self.binarization)) < self.out_cluster_modify:
             return CLUSTER.NOT_MODIFY
 
-        # TODO: Правило Ойо почему-то расходится, поэтому используется лобовое решение
+        # TODO: Правило Ойа почему-то расходится, поэтому используется лобовое решение
         #############
         self.count_modify += 1
         delta_in, delta_out = self.__get_delta(in_x, out_x)
